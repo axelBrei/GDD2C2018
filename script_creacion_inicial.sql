@@ -95,7 +95,7 @@ CREATE TABLE [TheBigBangQuery].[Usuario] (
     [usua_rol] NUMERIC(12,0),
     [usua_usuario] nvarchar(255),
     [usua_password] nvarchar(255),
-    [usua_n_intentos] INTEGER,
+    [usua_n_intentos] INTEGER DEFAULT 0,
 
     CONSTRAINT [PK_USUA] PRIMARY KEY([usua_id])
 );
@@ -322,9 +322,14 @@ CREATE TABLE [TheBigBangQuery].[FormaDePago] (
 	CONSTRAINT [PK_FORMA_PAGO] PRIMARY KEY ([form_id])
 );
 
+
+
 COMMIT
 
 BEGIN TRANSACTION
+
+
+
 
 -- Inserto los Roles por Default del enunciado
 INSERT INTO [TheBigBangQuery].[Rol](rol_nombre) VALUES ('Empresa');
@@ -354,12 +359,12 @@ INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Listado Estad
 
 INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Drama'), ('StandUp'), ('Comedia'), ('Opera'), ('Infantil');
 
-INSERT INTO [TheBigBangQuery].[Funcionalidades_rol]
+INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
     WHERE R.rol_nombre = 'Cliente' AND F.func_desc = 'Comprar'
 
-INSERT INTO [TheBigBangQuery].[Funcionalidades_rol]
+INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
     WHERE R.rol_nombre = 'Empresa' AND (
@@ -367,7 +372,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol]
             F.func_desc = 'Editar Publicacion'
     )
 
-INSERT INTO [TheBigBangQuery].[Funcionalidades_rol]
+INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
     WHERE R.rol_nombre = 'Administrativo' AND (
@@ -386,6 +391,12 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol]
         F.func_desc = 'Generar pago de comisiones' OR
         F.func_desc = 'Listado Estadistico'
     )
+
+	-- INSERTO EL USUARIO ADMIN
+INSERT INTO [TheBigBangQuery].[Usuario] (usua_usuario, usua_password, usua_rol) VALUES (
+	'admin', HASHBYTES('SHA2_256', 'admin'),1
+);
+INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1);
 
     -- inserto premios en Tabla de Premios
     INSERT INTO [TheBigBangQuery].[Premio] VALUES (1000,'Bebida a Eleccion', '20200101 12:00:00 PM');

@@ -12,6 +12,7 @@ namespace PalcoNet.Dao
 {
     class FuncionalidadesDao
     {
+
         public List<Funcionalidad> getFuncionalidades() {
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             string query = "SELECT * FROM TheBigBangQuery.Funcionalidad ORDER BY func_id ASC";

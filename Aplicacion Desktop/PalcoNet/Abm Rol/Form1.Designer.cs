@@ -57,6 +57,7 @@
             this.AgregarButton.TabIndex = 1;
             this.AgregarButton.Text = "Agregar";
             this.AgregarButton.UseVisualStyleBackColor = false;
+            this.AgregarButton.Click += new System.EventHandler(this.AgregarButton_Click);
             // 
             // EditarButton
             // 
@@ -82,7 +83,7 @@
             this.EliminarButton.Name = "EliminarButton";
             this.EliminarButton.Size = new System.Drawing.Size(75, 23);
             this.EliminarButton.TabIndex = 6;
-            this.EliminarButton.Text = "Eliminar";
+            this.EliminarButton.Text = "Deshabilitar";
             this.EliminarButton.UseVisualStyleBackColor = false;
             // 
             // SalirButton
@@ -97,6 +98,7 @@
             this.SalirButton.TabIndex = 7;
             this.SalirButton.Text = "Salir";
             this.SalirButton.UseVisualStyleBackColor = false;
+            this.SalirButton.Click += new System.EventHandler(this.SalirButton_Click);
             // 
             // listaRoles
             // 

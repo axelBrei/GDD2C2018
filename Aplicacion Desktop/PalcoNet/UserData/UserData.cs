@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PalcoNet.Model;
+using PalcoNet.Dao;
 
 namespace PalcoNet.UserData
 {
@@ -45,6 +46,11 @@ namespace PalcoNet.UserData
 
         public static Rol getRolActivo() {
             return activeRol;
+        }
+
+        public static void actualizarRolActual() {
+            RolesDao rolesDao = new RolesDao();
+            activeRol = rolesDao.getRolPorId(activeRol.id);
         }
     }
 }

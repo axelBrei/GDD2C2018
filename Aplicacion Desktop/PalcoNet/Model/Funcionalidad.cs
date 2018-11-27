@@ -10,5 +10,10 @@ namespace PalcoNet.Model
     {
         public int id { get; set; }
         public string descripcion { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return this.id.Equals( ((Funcionalidad)obj).id );
+        }
     }
 }

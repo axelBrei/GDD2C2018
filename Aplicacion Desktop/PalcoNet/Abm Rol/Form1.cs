@@ -36,24 +36,56 @@ namespace PalcoNet.Abm_Rol
 
         private void EditarButton_Click(object sender, EventArgs e)
         {
-            new EditarRol(rolSeleccionado).ShowDialog();
+            EditarRol form = new EditarRol(rolSeleccionado);
+            form.updateRol += this.updateRol;
+            form.ShowDialog();
         }
 
         private void listaRoles_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListView listBox = (ListView)sender;
-            string selectedItem = listBox.SelectedItems[0].Text;
-            Rol rol = roles.Find(x => x.nombre.Equals(selectedItem));
-            if (rol.bajaLogica != null)
-            {
-                rolSeleccionado = rol;
+            try {
+                string selectedItem = listBox.SelectedItems[0].Text;
+                Rol rol = roles.Find(x => x.nombre.Equals(selectedItem));
+                if (rol.bajaLogica != null)
+                {
+                    rolSeleccionado = rol;
+                }
+                else
+                {
+
+                }
             }
-            else
-            {
+            catch (ArgumentOutOfRangeException ex) { 
 
             }
         }
 
-        
+
+        public void updateRol(Rol rol)
+        {
+            RolesDao rolesDao = new RolesDao();
+            roles.Insert(roles.IndexOf(rol), rolesDao.getRolPorId(rol.id));
+        }
+
+        private void SalirButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AgregarButton_Click(object sender, EventArgs e)
+        {
+            NuevRol nuevoRolForm = new NuevRol();
+            nuevoRolForm.nuevoRol += this.añadirNuevoRol;
+            nuevoRolForm.ShowDialog();
+        }
+
+        private void añadirNuevoRol(Rol rol){
+            RolesDao rolesDao = new RolesDao();
+            Rol rolActualizado = rolesDao.getRolPorId(rol.id);
+            listaRoles.Items.Add(new ListViewItem(rolActualizado.nombre));
+            roles.Add(rolActualizado);
+            
+        }
     }
 }

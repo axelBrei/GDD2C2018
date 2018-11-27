@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Dao;
-
+using PalcoNet.UserData;
 
 
 namespace PalcoNet.Abm_Rol
@@ -17,25 +17,32 @@ namespace PalcoNet.Abm_Rol
     public partial class EditarRol : Form
     {
 
+
         private string nuevoNombreRol;
         private Rol rolActual;
         private Funcionalidad funcionalidadSeleccionada;
-        private List<Funcionalidad> funcionalidadesBorradas = new List<Funcionalidad>();
+        private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+        private Dictionary<string, List<Funcionalidad>> diccionarioActualizacion = new Dictionary<string, List<Funcionalidad>>();
+
+        public delegate void UpdateRolHandler(Rol rol);
+        public event UpdateRolHandler updateRol;
 
         public EditarRol(Rol rol)
         {
             
             InitializeComponent();
             rolActual = rol;
-
             this.RolNombre.Text = rol.nombre;;
-            funcionalidadesRol.View = View.Details;
-            funcionalidadesRol.HeaderStyle = ColumnHeaderStyle.None;
 
-            foreach (Funcionalidad fun in rol.funcionalidades)
+            FuncionalidadesDao funcionalidadesDao = new FuncionalidadesDao();
+            funcionalidades = funcionalidadesDao.getFuncionalidades();
+
+            diccionarioActualizacion.Add(RolesDao.AGREGAR , new List<Funcionalidad>());
+            diccionarioActualizacion.Add(RolesDao.BORRAR , new List<Funcionalidad>());
+
+            foreach (Funcionalidad fun in funcionalidades)
             {
-                ListViewItem item = new ListViewItem(fun.descripcion);
-                this.funcionalidadesRol.Items.Add(item);
+                funcionalidadesRol.Items.Add(fun.descripcion, rol.funcionalidades.Contains(fun));
             }
 
 
@@ -47,18 +54,6 @@ namespace PalcoNet.Abm_Rol
             nuevoNombreRol = textBox.Text;
         }
 
-        private void EliminarRol_Click(object sender, EventArgs e)
-        {
-            
-            Funcionalidad funci = rolActual.funcionalidades.Find(x => x.descripcion == funcionalidadesRol.SelectedItems[0].Text);
-            if (funci != null)
-            {
-                funcionalidadesBorradas.Add(funci);
-                this.funcionalidadesRol.Items.Remove(funcionalidadesRol.SelectedItems[0]);
-            }
-
-            
-        }
 
         private void funcionalidadesRol_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -73,7 +68,7 @@ namespace PalcoNet.Abm_Rol
 
         private void CancelarButton_Click(object sender, EventArgs e)
         {
-            new MainMenu.Form1().Show(); 
+            new Abm_Rol.Form1().Show();
             this.Hide();
         }
 
@@ -85,11 +80,35 @@ namespace PalcoNet.Abm_Rol
             if (!rolActual.nombre.Equals(nuevoNombreRol)) {
                 rolesDao.actualizarRol(rolActual);
             }
-            if (funcionalidadesBorradas.Count > 0){
-                rolesDao.actualizarRol(rolActual, funcionalidadesBorradas);
-            }
+            rolesDao.actualizarRol(rolActual, diccionarioActualizacion[RolesDao.BORRAR], diccionarioActualizacion[RolesDao.AGREGAR]);
 
-            
+            diccionarioActualizacion[RolesDao.AGREGAR].Clear();
+            diccionarioActualizacion[RolesDao.BORRAR].Clear();
+
+            if (this.updateRol != null)
+                this.updateRol(rolActual);
+
+            this.Close();
+        }
+
+        private void funcionalidadesRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckedListBox list = (CheckedListBox)sender;
+            Funcionalidad funcio = funcionalidades.Find(x => x.descripcion == list.SelectedItem.ToString());
+            bool hola = list.GetSelected(list.SelectedIndex) == funcionalidadesRol.GetSelected(list.SelectedIndex);
+            // list.SetSelected(list.SelectedIndex, true);
+            if(diccionarioActualizacion[RolesDao.AGREGAR].Contains(funcio) & list.GetSelected(list.SelectedIndex)){
+                diccionarioActualizacion[RolesDao.AGREGAR].Remove(funcio);
+            }
+            else if (diccionarioActualizacion[RolesDao.BORRAR].Contains(funcio) & !list.GetSelected(list.SelectedIndex)){
+                diccionarioActualizacion[RolesDao.BORRAR].Remove(funcio);
+            } else if (rolActual.funcionalidades.Contains(funcio)) {
+                // DEBO BORRAR DICHA FUNCIONALIDAD
+                if (!diccionarioActualizacion[RolesDao.BORRAR].Contains(funcio) & rolActual.funcionalidades.Contains(funcio))
+                    diccionarioActualizacion[RolesDao.BORRAR].Add(funcio);
+            }
+            else if (!diccionarioActualizacion[RolesDao.AGREGAR].Contains(funcio) & !rolActual.funcionalidades.Contains(funcio))
+                diccionarioActualizacion[RolesDao.AGREGAR].Add(funcio);
         }
     }
 }

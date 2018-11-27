@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.UserData;
 using PalcoNet.Dao;
+using System.Drawing;
 
 namespace PalcoNet.Abm_Rol
 {
@@ -29,8 +30,15 @@ namespace PalcoNet.Abm_Rol
             listaRoles.HeaderStyle = ColumnHeaderStyle.None;
 
             foreach (Rol rol in roles) {
-                
-                this.listaRoles.Items.Add(new ListViewItem(rol.nombre));
+                ListViewItem item = new ListViewItem(rol.nombre);
+                if (rol.bajaLogica == DateTime.Parse("01/01/1900 0:00:00"))
+                {
+                    item.ForeColor = Color.Black;
+                }
+                else { 
+                    item.ForeColor = Color.Gray; 
+                }
+                this.listaRoles.Items.Add(item);
             }
         }
 
@@ -45,8 +53,15 @@ namespace PalcoNet.Abm_Rol
         {
             ListView listBox = (ListView)sender;
             try {
-                string selectedItem = listBox.SelectedItems[0].Text;
-                Rol rol = roles.Find(x => x.nombre.Equals(selectedItem));
+                ListViewItem selectedItem = listBox.SelectedItems[0];
+                if (selectedItem.ForeColor == Color.Gray)
+                {
+                    EliminarButton.Text = "Habilitar";
+                }
+                else {
+                    EliminarButton.Text = "Deshabilitar";
+                }
+                Rol rol = roles.Find(x => x.nombre.Equals(selectedItem.Text));
                 if (rol.bajaLogica != null)
                 {
                     rolSeleccionado = rol;
@@ -86,6 +101,26 @@ namespace PalcoNet.Abm_Rol
             listaRoles.Items.Add(new ListViewItem(rolActualizado.nombre));
             roles.Add(rolActualizado);
             
+        }
+
+        private void EliminarButton_Click(object sender, EventArgs e)
+        {
+            
+            ListViewItem item = listaRoles.SelectedItems[0];
+            
+            Rol rol = roles.Find(elem => elem.nombre.Equals(item.Text));
+            if (item.ForeColor == Color.Gray)
+            {
+                // Le quito la baja logica al ROl
+                rol.bajaLogica = DateTime.MinValue;
+            }
+            else { 
+                // Le agrego la baja logica con la fecha de hoy
+                rol.bajaLogica = DateTime.Now;
+            }
+            item.ForeColor = item.ForeColor == Color.Gray ? Color.Black : Color.Gray;
+            RolesDao rolesDao = new RolesDao();
+            rolesDao.actualizarRol(rol);
         }
     }
 }

@@ -16,18 +16,17 @@ namespace PalcoNet.Dao
         public static string BORRAR = "BORRAR";
 
         public void actualizarRol(Rol rol) {
-            string query;
-            if (rol.bajaLogica.Millisecond != 0)
-            {
+            string query = "UPDATE TheBigBangQuery.Rol " +
+                "SET rol_nombre= '" + rol.nombre + "', rol_dado_baja = " +
+                    "CONVERT(datetime, '" + rol.bajaLogica.ToString("yyyy-MM-dd HH:mm:ss") + "',20) " +
+                "WHERE rol_cod = " + rol.id;
+
+            if (rol.bajaLogica == DateTime.MinValue) {
                 query = "UPDATE TheBigBangQuery.Rol " +
-                "SET rol_nombre= '" + rol.nombre + "', rol_dado_baja= '" + rol.bajaLogica.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
+                "SET rol_nombre= '" + rol.nombre + "', rol_dado_baja = NULL " +
                 "WHERE rol_cod = " + rol.id;
             }
-            else {
-                query = "UPDATE TheBigBangQuery.Rol " +
-                "SET rol_nombre= '" + rol.nombre + "' " +
-                "WHERE rol_cod = " + rol.id;
-            }
+            
             
             
             DatabaseConection.executeQuery(query).Close();
@@ -49,7 +48,7 @@ namespace PalcoNet.Dao
         }
 
         public List<Rol> getRoles() {
-            string query = "SELECT rol_cod, rol_nombre, func_id, func_desc " +
+            string query = "SELECT rol_cod, rol_nombre, rol_dado_baja, func_id, func_desc " +
                 "FROM TheBigBangQuery.Rol JOIN TheBigBangQuery.Funcionalidades_rol ON (fpr_rol = rol_cod) " +
                 "JOIN TheBigBangQuery.Funcionalidad ON (func_id = fpr_id) " +
                 "Order by rol_nombre ASC";
@@ -64,10 +63,11 @@ namespace PalcoNet.Dao
                 
                 rol.id = (int)reader.GetSqlDecimal(0);
                 rol.nombre = (string)reader.GetSqlString(1);
+                rol.bajaLogica = (DateTime)reader.GetSqlDateTime(2);
 
                 
-                fun.id = (int) reader.GetSqlDecimal(2);
-                fun.descripcion = (string) reader.GetSqlString(3);
+                fun.id = (int) reader.GetSqlDecimal(3);
+                fun.descripcion = (string) reader.GetSqlString(4);
                 rol.agregarFuncionalidad(fun);    
                 
                 while(reader.Read()) {
@@ -75,8 +75,8 @@ namespace PalcoNet.Dao
                     if (rolNombre.Equals(rol.nombre))
                     {
                         fun = new Funcionalidad();
-                        fun.id = (int)reader.GetSqlDecimal(2);
-                        fun.descripcion = (string)reader.GetSqlString(3);
+                        fun.id = (int)reader.GetSqlDecimal(3);
+                        fun.descripcion = (string)reader.GetSqlString(4);
                         rol.agregarFuncionalidad(fun);
                     }
                     else 
@@ -85,10 +85,11 @@ namespace PalcoNet.Dao
                         rol = new Rol();
                         rol.id = (int)reader.GetSqlDecimal(0);
                         rol.nombre = rolNombre;
+                        rol.bajaLogica = (DateTime)reader.GetSqlDateTime(2);
 
                         fun = new Funcionalidad();
-                        fun.id = (int)reader.GetSqlDecimal(2);
-                        fun.descripcion = (string)reader.GetSqlString(3);
+                        fun.id = (int)reader.GetSqlDecimal(3);
+                        fun.descripcion = (string)reader.GetSqlString(4);
                         rol.agregarFuncionalidad(fun);  
                     }
                 }

@@ -85,6 +85,7 @@
             this.EliminarButton.TabIndex = 6;
             this.EliminarButton.Text = "Deshabilitar";
             this.EliminarButton.UseVisualStyleBackColor = false;
+            this.EliminarButton.Click += new System.EventHandler(this.EliminarButton_Click);
             // 
             // SalirButton
             // 

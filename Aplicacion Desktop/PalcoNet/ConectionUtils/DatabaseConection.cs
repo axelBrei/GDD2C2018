@@ -36,5 +36,11 @@ namespace PalcoNet.ConectionUtils
             SqlDataReader result = com.ExecuteReader();
             return result;
         }
+
+        public static SqlDataReader executeQuery(SqlCommand command) {
+            command.Connection = DatabaseConection.getInstance();
+            return command.ExecuteReader();
+        }
+
     }
 }

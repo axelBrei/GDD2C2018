@@ -376,7 +376,6 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
     WHERE R.rol_nombre = 'Administrativo' AND (
-        F.func_desc = 'Login Y Seguridad' OR
         F.func_desc = 'ABM Rol' OR
         F.func_desc = 'Registro de Usuarios' OR
         F.func_desc = 'ABM de Clientes' OR
@@ -621,5 +620,47 @@ BEGIN TRANSACTION
 		p.publ_id IS NOT NULL AND 
 		u.ubi_id IS NOT NULL
 
-COMMIT 
+COMMIT
+
+GO
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE [name] = N'trg' AND [type] = 'FN')
+	DROP TRIGGER [TheBigBangQuery].[ExisteUsuario];
+
+GO
+
+CREATE FUNCTION [TheBigBangQuery].[ExisteUsuario]( @usuario nvarchar(255))
+RETURNS INT AS BEGIN
+	
+	IF @usuario IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario])
+	BEGIN
+		RETURN 1;
+	END
+
+	RETURN 0;
+END
+
+GO
+
+CREATE PROCEDURE [TheBigBangQuery].[IncrementarIntento]( @usuario nvarchar(255)) AS
+BEGIN
+	DECLARE @intentos INT;
+	SELECT @intentos =  usua_n_intentos
+	FROM [TheBigBangQuery].[Usuario]
+	WHERE usua_usuario = @usuario
+
+	IF @usuario IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario])
+	BEGIN
+		UPDATE [TheBigBangQuery].[Usuario]
+		SET usua_n_intentos = @intentos + 1
+		WHERE usua_usuario = @usuario
+	END
+END
+
+
+
+ 
+
+  
 

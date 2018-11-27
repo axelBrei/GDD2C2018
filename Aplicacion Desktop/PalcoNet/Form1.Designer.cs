@@ -33,6 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.InputUser = new System.Windows.Forms.TextBox();
             this.inputPass = new System.Windows.Forms.TextBox();
+            this.RegistrarseButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LoginButton
@@ -80,9 +81,20 @@
             this.inputPass.UseSystemPasswordChar = true;
             this.inputPass.TextChanged += new System.EventHandler(this.inputPass_TextChanged);
             // 
+            // RegistrarseButton
+            // 
+            this.RegistrarseButton.Location = new System.Drawing.Point(112, 183);
+            this.RegistrarseButton.Name = "RegistrarseButton";
+            this.RegistrarseButton.Size = new System.Drawing.Size(75, 23);
+            this.RegistrarseButton.TabIndex = 5;
+            this.RegistrarseButton.Text = "Registrarse";
+            this.RegistrarseButton.UseVisualStyleBackColor = true;
+            this.RegistrarseButton.Click += new System.EventHandler(this.RegistrarseButton_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(292, 273);
+            this.Controls.Add(this.RegistrarseButton);
             this.Controls.Add(this.inputPass);
             this.Controls.Add(this.InputUser);
             this.Controls.Add(this.label2);
@@ -103,6 +115,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox InputUser;
         private System.Windows.Forms.TextBox inputPass;
+        private System.Windows.Forms.Button RegistrarseButton;
 
     }
 }

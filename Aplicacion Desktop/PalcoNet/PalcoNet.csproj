@@ -104,6 +104,7 @@
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
+    <Compile Include="Dao\TipoDocumentoDao.cs" />
     <Compile Include="Editar Publicacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,12 +153,20 @@
     <Compile Include="MainMenu\SeleccionDeRol.Designer.cs">
       <DependentUpon>SeleccionDeRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Cliente.cs" />
+    <Compile Include="Model\Direccion.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registro de Usuario\AñadirDireccion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro de Usuario\AñadirDireccion.Designer.cs">
+      <DependentUpon>AñadirDireccion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Registro de Usuario\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +201,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registro de Usuario\AñadirDireccion.resx">
+      <DependentUpon>AñadirDireccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro de Usuario\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

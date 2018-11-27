@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PalcoNet.ConectionUtils;
 using PalcoNet.Model;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace PalcoNet.Dao
 {
@@ -54,6 +55,27 @@ namespace PalcoNet.Dao
             // SI EL USUARIO NO ES VALIDO RETORNO NULL
             reader.Close();
             return null;
+        }
+
+        public void incrementarContadorDeIntentos(string usuario) {
+            string query = "EXEC [TheBigBangQuery].IncrementarIntento @usuario = @usuario";
+            SqlCommand command = new SqlCommand(query);
+            SqlParameter param = new SqlParameter("@usuario", SqlDbType.NVarChar);
+            param.Value = usuario;
+            command.Parameters.Add(param);
+            DatabaseConection.executeQuery(command).Close();
+        }
+
+        public bool usuarioValido(string usuario) {
+            string query = "SELECT TheBigBangQuery.ExisteUsuario(@usuario)";
+            SqlCommand command = new SqlCommand(query);
+            SqlParameter parametroUsuario = new SqlParameter("@usuario", SqlDbType.NVarChar);
+            parametroUsuario.Value = usuario;
+            command.Parameters.Add(parametroUsuario);
+            SqlDataReader reader = DatabaseConection.executeQuery(command);
+            bool esValido = ((int)reader.GetSqlInt32(0)) == 1;
+            reader.Close();
+            return esValido;
         }
     }
 }

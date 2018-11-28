@@ -94,6 +94,7 @@ CREATE TABLE [TheBigBangQuery].[Usuario] (
     [usua_usuario] nvarchar(255),
     [usua_password] binary(32),
     [usua_n_intentos] INTEGER DEFAULT 0,
+	[usua_habilitado] int DEFAULT 1
 
     CONSTRAINT [PK_USUA] PRIMARY KEY([usua_id])
 );
@@ -631,6 +632,25 @@ COMMIT
 
 GO
 
+IF OBJECT_ID('[TheBigBangQuery].[UsuarioHabilitado]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[UsuarioHabilitado];
+GO
+
+CREATE FUNCTION [TheBigBangQuery].[UsuarioHabilitado](@usuario nvarchar(255)) 
+RETURNS INT AS BEGIN
+	IF(SELECT usua_id
+	   FROM [TheBigBangQuery].[Usuario]
+	   WHERE usua_usuario = @usuario AND usua_habilitado = 1
+	   ) IS NOT NULL
+	BEGIN
+		-- USUARIO HABILITADO
+		RETURN 1;
+	END 
+	-- USUARIO INHABILITADO
+	RETURN 0;
+END
+
+GO
 
 IF OBJECT_ID('TheBigBangQuery.ExisteUsuario') IS NOT NULL
 	DROP FUNCTION [TheBigBangQuery].[ExisteUsuario];
@@ -639,7 +659,6 @@ GO
 
 CREATE FUNCTION [TheBigBangQuery].[ExisteUsuario]( @usuario nvarchar(255))
 RETURNS INT AS BEGIN
-	
 	IF @usuario IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario])
 	BEGIN
 		RETURN 1;
@@ -692,16 +711,25 @@ IF OBJECT_ID('[TheBigBangQuery].[IncrementarIntento]') IS NOT NULL
 GO
 CREATE PROCEDURE [TheBigBangQuery].[IncrementarIntento]( @usuario nvarchar(255)) AS
 BEGIN
-	DECLARE @intentos INT;
-	SELECT @intentos =  usua_n_intentos
+	DECLARE @intentos INT, @habilitado INT, @id NUMERIC(12,0);
+	SELECT @intentos =  usua_n_intentos, @habilitado = usua_habilitado, @id = usua_id
 	FROM [TheBigBangQuery].[Usuario]
 	WHERE usua_usuario = @usuario
 
 	IF @usuario IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario])
 	BEGIN
-		UPDATE [TheBigBangQuery].[Usuario]
-		SET usua_n_intentos = @intentos + 1
-		WHERE usua_usuario = @usuario
+		IF @habilitado = 0 OR @intentos + 1 = 3
+		BEGIN
+			-- USUARIO DESHABILITADO
+			UPDATE [TheBigBangQuery].[Usuario]
+			SET usua_n_intentos = 3, usua_habilitado = 0
+			WHERE usua_id = @id
+		END ELSE BEGIN
+			-- USUARIO HABILITADO
+			UPDATE [TheBigBangQuery].[Usuario]
+			SET usua_n_intentos = @intentos + 1
+			WHERE usua_id = @id
+		END
 	END
 END
 

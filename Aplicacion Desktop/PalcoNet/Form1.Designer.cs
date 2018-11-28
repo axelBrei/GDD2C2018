@@ -34,6 +34,8 @@
             this.InputUser = new System.Windows.Forms.TextBox();
             this.inputPass = new System.Windows.Forms.TextBox();
             this.RegistrarseButton = new System.Windows.Forms.Button();
+            this.ErrorImage = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorImage)).BeginInit();
             this.SuspendLayout();
             // 
             // LoginButton
@@ -68,15 +70,16 @@
             // 
             this.InputUser.Location = new System.Drawing.Point(79, 59);
             this.InputUser.Name = "InputUser";
-            this.InputUser.Size = new System.Drawing.Size(201, 20);
+            this.InputUser.Size = new System.Drawing.Size(177, 20);
             this.InputUser.TabIndex = 3;
             this.InputUser.TextChanged += new System.EventHandler(this.InputUser_TextChanged);
+            this.InputUser.Leave += new System.EventHandler(this.AfterFocusUserTextBox);
             // 
             // inputPass
             // 
             this.inputPass.Location = new System.Drawing.Point(79, 93);
             this.inputPass.Name = "inputPass";
-            this.inputPass.Size = new System.Drawing.Size(201, 20);
+            this.inputPass.Size = new System.Drawing.Size(177, 20);
             this.inputPass.TabIndex = 4;
             this.inputPass.UseSystemPasswordChar = true;
             this.inputPass.TextChanged += new System.EventHandler(this.inputPass_TextChanged);
@@ -91,9 +94,20 @@
             this.RegistrarseButton.UseVisualStyleBackColor = true;
             this.RegistrarseButton.Click += new System.EventHandler(this.RegistrarseButton_Click);
             // 
+            // ErrorImage
+            // 
+            this.ErrorImage.BackColor = System.Drawing.Color.Transparent;
+            this.ErrorImage.Location = new System.Drawing.Point(262, 62);
+            this.ErrorImage.Name = "ErrorImage";
+            this.ErrorImage.Size = new System.Drawing.Size(15, 15);
+            this.ErrorImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ErrorImage.TabIndex = 6;
+            this.ErrorImage.TabStop = false;
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(292, 273);
+            this.Controls.Add(this.ErrorImage);
             this.Controls.Add(this.RegistrarseButton);
             this.Controls.Add(this.inputPass);
             this.Controls.Add(this.InputUser);
@@ -103,6 +117,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inicio de Sesion";
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -116,6 +131,7 @@
         private System.Windows.Forms.TextBox InputUser;
         private System.Windows.Forms.TextBox inputPass;
         private System.Windows.Forms.Button RegistrarseButton;
+        private System.Windows.Forms.PictureBox ErrorImage;
 
     }
 }

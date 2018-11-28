@@ -42,5 +42,26 @@ namespace PalcoNet.ConectionUtils
             return command.ExecuteReader();
         }
 
+        public static T executeParamFunction<T>(string query) {
+
+            SqlCommand command = new SqlCommand(query, getInstance());
+            return (T)command.ExecuteScalar();
+        }
+
+        public static T executeParamFunction<T>(SqlCommand command)
+        {
+            command.Connection = getInstance();
+            return (T)command.ExecuteScalar();
+        }
+
+        public static void executeNoParamFunction(string query) {
+            SqlCommand command = new SqlCommand(query, getInstance());
+            command.ExecuteNonQuery();
+        }
+        public static void executeNoParamFunction(SqlCommand command)
+        {
+            command.Connection = getInstance();
+            command.ExecuteNonQuery();
+        }
     }
 }

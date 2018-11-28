@@ -17,16 +17,20 @@ namespace PalcoNet
     {
         private string username;
         private string password;
+        private bool usuarioValido = false;
 
         public Form1()
         {
             InitializeComponent();
+            ErrorImage.Image = SystemIcons.Error.ToBitmap();
+            ErrorImage.Visible = false;
         }
 
 
         private void InputUser_TextChanged(object sender, EventArgs e)
         {
             var userInput = sender as TextBox;
+            ErrorImage.Visible = false;
             username = userInput.Text;
         }
 
@@ -39,31 +43,68 @@ namespace PalcoNet
         private void LoginButton_Click(object sender, EventArgs e)
         {
             LoginDao loginDao = new LoginDao();
-            Usuario usuario = loginDao.loginAs(username, password);
-            if (usuario == null)
+            bool usuarioHabilitado = loginDao.usuarioHabilitado(username);
+            if (usuarioValido & usuarioHabilitado)
             {
-                MessageBoxButtons alert = MessageBoxButtons.OK;
-                MessageBox.Show("Contraseña y/o usuario Incorrecto", "Error al ingresar", alert);
+                Usuario usuario = loginDao.loginAs(username, password);
+                if (usuario == null)
+                {
+                    MessageBoxButtons alert = MessageBoxButtons.OK;
+                    MessageBox.Show("Contraseña y/o usuario Incorrecto", "Error al ingresar", alert);
+                    if (usuarioValido)
+                    {
+                        loginDao.incrementarContadorDeIntentos(username);
+                    }
+                }
+                else
+                {
+                    UserData.UserData.setUsuario(usuario);
+                    loginDao.resetearIntentos(usuario);
+                    if (usuario.roles.Count > 1)
+                    {
+                        new PalcoNet.MainMenu.SeleccionDeRol().Show();
+                    }
+                    else
+                    {
+                        UserData.UserData.setRolActivo(usuario.getRol(0));
+                        new PalcoNet.MainMenu.Form1().Show();
+                    }
+                    this.Hide();
+
+                }
             }
             else {
-                UserData.UserData.setUsuario(usuario);
-                if (usuario.roles.Count > 1)
-                {
-                    new PalcoNet.MainMenu.SeleccionDeRol().Show();
-                }
-                else {
-                    UserData.UserData.setRolActivo(usuario.getRol(0));
-                    new PalcoNet.MainMenu.Form1().Show();
-                }
-                this.Hide();
-                
+                MessageBoxButtons alert = MessageBoxButtons.OK;
+                MessageBox.Show("El usuario con el que esta intentando ingresar se encuentra inhabilitado\n\nContactese con algun administrador para revertirlo", "Error al ingresar", alert);
             }
+            
         }
 
         private void RegistrarseButton_Click(object sender, EventArgs e)
         {
             new Registro_de_Usuario.Form1().Show();
             this.Hide();
+        }
+
+        private void AfterFocusUserTextBox(object sender, EventArgs e) { 
+            LoginDao loginDao = new LoginDao();
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(username))
+                {
+                    
+                    usuarioValido = loginDao.usuarioValido(username);
+                    if (usuarioValido == false)
+                    {
+                        // PINTAR DE ROJO EL CAMPO DE USAURIO
+                        ErrorImage.Visible = true;
+                    }
+                    else { ErrorImage.Visible = false; }
+                }
+            }
+            catch (Exception ex) {
+                Console.Write(ex.Message);
+            }
         }
 
     }

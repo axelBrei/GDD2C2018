@@ -62,24 +62,35 @@ namespace PalcoNet.Dao
         }
 
         public void incrementarContadorDeIntentos(string usuario) {
-            string query = "EXEC [TheBigBangQuery].IncrementarIntento @usuario = @usuario";
+            string query = "EXEC [TheBigBangQuery].IncrementarIntento @usuario = @usuarioC";
             SqlCommand command = new SqlCommand(query);
-            SqlParameter param = new SqlParameter("@usuario", SqlDbType.NVarChar);
-            param.Value = usuario;
-            command.Parameters.Add(param);
-            DatabaseConection.executeQuery(command).Close();
+            command.Parameters.AddWithValue("@usuarioC", usuario);
+            DatabaseConection.executeNoParamFunction(command);
         }
 
         public bool usuarioValido(string usuario) {
             string query = "SELECT TheBigBangQuery.ExisteUsuario(@usuario)";
             SqlCommand command = new SqlCommand(query);
-            SqlParameter parametroUsuario = new SqlParameter("@usuario", SqlDbType.NVarChar);
-            parametroUsuario.Value = usuario;
-            command.Parameters.Add(parametroUsuario);
-            SqlDataReader reader = DatabaseConection.executeQuery(command);
-            bool esValido = ((int)reader.GetSqlInt32(0)) == 1;
-            reader.Close();
-            return esValido;
+            command.Parameters.AddWithValue("@usuario", usuario);
+            int existe = DatabaseConection.executeParamFunction<int>(command);
+            return existe == 1;
+        }
+
+        public bool usuarioHabilitado(string usuario) {
+            string query = "SELECT [TheBigBangQuery].[UsuarioHabilitado](@usuario)";
+            SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@usuario", usuario);
+            int habilitado = DatabaseConection.executeParamFunction<int>(command);
+            return habilitado == 1;
+        }
+
+        public void resetearIntentos(Usuario usuario) {
+            string query = "UPDATE [TheBigBangQuery].[Usuario] " +
+                "SET usua_n_intentos = 0 " +
+                "WHERE usua_id = @idUsuario";
+            SqlCommand command = new SqlCommand(query);
+            command.Parameters.AddWithValue("@idUsuario", usuario.id);
+            DatabaseConection.executeNoParamFunction(command);
         }
     }
 }

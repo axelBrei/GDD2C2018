@@ -13,7 +13,7 @@ namespace PalcoNet.Dao
     class LoginDao
     {
 
-        private string getHashPassword(string contraseña) {
+        public static string getHashPassword(string contraseña) {
             return "[TheBigBangQuery].[getHashPassword]('" + contraseña +"')"; 
         }
         

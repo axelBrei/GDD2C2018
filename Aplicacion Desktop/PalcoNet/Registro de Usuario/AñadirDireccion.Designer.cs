@@ -42,6 +42,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.CancelarButton = new System.Windows.Forms.Button();
             this.AceptarButton = new System.Windows.Forms.Button();
+            this.AlturaDireccion = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -72,7 +74,7 @@
             this.DirPiso.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirPiso.Location = new System.Drawing.Point(70, 74);
+            this.DirPiso.Location = new System.Drawing.Point(70, 103);
             this.DirPiso.Name = "DirPiso";
             this.DirPiso.Size = new System.Drawing.Size(193, 20);
             this.DirPiso.TabIndex = 3;
@@ -84,7 +86,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(29, 77);
+            this.label2.Location = new System.Drawing.Point(29, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(27, 13);
             this.label2.TabIndex = 2;
@@ -95,7 +97,7 @@
             this.DirDepto.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirDepto.Location = new System.Drawing.Point(109, 100);
+            this.DirDepto.Location = new System.Drawing.Point(109, 129);
             this.DirDepto.Name = "DirDepto";
             this.DirDepto.Size = new System.Drawing.Size(154, 20);
             this.DirDepto.TabIndex = 5;
@@ -107,7 +109,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(29, 103);
+            this.label3.Location = new System.Drawing.Point(29, 132);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(74, 13);
             this.label3.TabIndex = 4;
@@ -118,7 +120,7 @@
             this.DirLocalidad.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirLocalidad.Location = new System.Drawing.Point(88, 126);
+            this.DirLocalidad.Location = new System.Drawing.Point(88, 155);
             this.DirLocalidad.Name = "DirLocalidad";
             this.DirLocalidad.Size = new System.Drawing.Size(175, 20);
             this.DirLocalidad.TabIndex = 7;
@@ -130,7 +132,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(29, 129);
+            this.label4.Location = new System.Drawing.Point(29, 158);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 13);
             this.label4.TabIndex = 6;
@@ -141,7 +143,7 @@
             this.DirCiudad.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirCiudad.Location = new System.Drawing.Point(75, 178);
+            this.DirCiudad.Location = new System.Drawing.Point(75, 207);
             this.DirCiudad.Name = "DirCiudad";
             this.DirCiudad.Size = new System.Drawing.Size(188, 20);
             this.DirCiudad.TabIndex = 9;
@@ -153,7 +155,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DirCiudadLabel.AutoSize = true;
-            this.DirCiudadLabel.Location = new System.Drawing.Point(29, 181);
+            this.DirCiudadLabel.Location = new System.Drawing.Point(29, 210);
             this.DirCiudadLabel.Name = "DirCiudadLabel";
             this.DirCiudadLabel.Size = new System.Drawing.Size(40, 13);
             this.DirCiudadLabel.TabIndex = 8;
@@ -164,7 +166,7 @@
             this.CodPostalDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.CodPostalDireccion.Location = new System.Drawing.Point(106, 152);
+            this.CodPostalDireccion.Location = new System.Drawing.Point(106, 181);
             this.CodPostalDireccion.Name = "CodPostalDireccion";
             this.CodPostalDireccion.Size = new System.Drawing.Size(157, 20);
             this.CodPostalDireccion.TabIndex = 11;
@@ -176,7 +178,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(29, 155);
+            this.label6.Location = new System.Drawing.Point(29, 184);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(71, 13);
             this.label6.TabIndex = 10;
@@ -204,12 +206,37 @@
             this.AceptarButton.UseVisualStyleBackColor = true;
             this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
+            // AlturaDireccion
+            // 
+            this.AlturaDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlturaDireccion.Location = new System.Drawing.Point(70, 74);
+            this.AlturaDireccion.Name = "AlturaDireccion";
+            this.AlturaDireccion.Size = new System.Drawing.Size(193, 20);
+            this.AlturaDireccion.TabIndex = 15;
+            this.AlturaDireccion.TextChanged += new System.EventHandler(this.AlturaDireccion_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(29, 77);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Altura";
+            // 
             // AñadirDireccion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(318, 315);
+            this.Controls.Add(this.AlturaDireccion);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.CancelarButton);
             this.Controls.Add(this.CodPostalDireccion);
@@ -248,5 +275,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button CancelarButton;
         private System.Windows.Forms.Button AceptarButton;
+        private System.Windows.Forms.TextBox AlturaDireccion;
+        private System.Windows.Forms.Label label5;
     }
 }

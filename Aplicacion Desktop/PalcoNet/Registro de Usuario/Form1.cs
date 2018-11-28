@@ -208,6 +208,9 @@ namespace PalcoNet.Registro_de_Usuario
                 empresa.cuit = cuit;
                 empresa.mailEmpresa = mailEmpresa;
                 empresa.telefonoEmpresa = telefonoEmpresa;
+
+                EmpresasDao empresasDao = new EmpresasDao();
+                empresasDao.insertarEmpresaConUsuario(empresa, usuario, contraseña);
             }
             else if(direccion == null){
                 MessageBoxButtons alert = MessageBoxButtons.OK;

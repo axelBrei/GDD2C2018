@@ -22,6 +22,7 @@ namespace PalcoNet.Registro_de_Usuario
         private string localidad;
         private string codigoPostal;
         private string ciudad;
+        private string altura;
 
         private string tipoDireccion;
 
@@ -99,6 +100,7 @@ namespace PalcoNet.Registro_de_Usuario
                     direccion.localidad = localidad;
                     direccion.codigoPostal = codigoPostal;
                     direccion.ciudad = ciudad;
+                    direccion.numero = altura;
 
                     this.getDireccion(direccion);
                     this.Close();
@@ -114,6 +116,11 @@ namespace PalcoNet.Registro_de_Usuario
         private void CancelarButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void AlturaDireccion_TextChanged(object sender, EventArgs e)
+        {
+            altura = ((TextBox)sender).Text;
         }
     }
 }

@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
     <Compile Include="Dao\ClientesDao.cs" />
+    <Compile Include="Dao\EmpresasDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />

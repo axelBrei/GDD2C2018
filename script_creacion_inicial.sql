@@ -785,17 +785,93 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 					@numeroTarjeta,
 					0
 				);
+				COMMIT;
 	END TRY
 	BEGIN CATCH
 		RAISERROR('No se pudo insertar el cliente con usuario', 16,1);
+		ROLLBACK TRANSACTION;
 	END CATCH
-	COMMIT 
+	
 END
-
-
 GO 
 
- 
+IF OBJECT_ID('[TheBigBangQuery].[InsertarEmpresaConUsuario]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarEmpresaConUsuario];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarEmpresaConUsuario](
+	@usuario nvarchar(255),
+	@contraseña nvarchar(255),
+	@razonSocial nvarchar(255),
+	@cuit nvarchar(255),
+	@mail nvarchar(50),
+	@telefono nvarchar(255),
+	@calle nvarchar(50),
+	@altura nvarchar(255),
+	@piso nvarchar(255),
+	@depto nvarchar(50),
+	@localidad nvarchar(255),
+	@codigoPostal nvarchar(50),
+	@ciudad nvarchar(255),
+	@fechaCreacion nvarchar(255)) 
+AS BEGIN
+	
+	
+	BEGIN TRY
 
-  
+		BEGIN TRANSACTION
+		
+		INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
+		(@usuario, 0, 0, [TheBigBangQuery].[getHashPassword](@contraseña));
+		
+		INSERT INTO [TheBigBangQuery].[Roles_usuario] (rolu_usuario, rolu_rol) 
+		SELECT usua_id, usua_rol
+		FROM [TheBigBangQuery].[Usuario]	
+		WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
 
+
+		INSERT INTO [TheBigBangQuery].[Empresa](
+		empr_usuario,
+		empr_razon_social,
+		empr_cuit,
+		empr_mail,
+		empr_telefono,
+		empr_direccion,
+		empr_numero_calle,
+		empr_piso,
+		empr_dpto,
+		empr_localidad,
+		empr_codigo_postal,
+		empr_ciudad,
+		empr_creacion
+		) VALUES (
+			(
+				SELECT TOP 1  usua_id
+				FROM [TheBigBangQuery].[Usuario]
+				WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña) 
+			),
+			@razonSocial,
+			@cuit,
+			@mail,
+			@telefono,
+			@calle,
+			CONVERT(numeric, @altura),
+			CONVERT(numeric, @piso),
+			@depto,
+			@localidad,
+			@codigoPostal,
+			@ciudad,
+			CONVERT(datetime, @fechaCreacion, 20)
+		);
+
+		COMMIT
+
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0 
+		BEGIN
+			RAISERROR('No se pudo insertar la empresa',16,1);
+			PRINT ERROR_MESSAGE();
+			ROLLBACK TRANSACTION;
+		END
+	END CATCH
+END

@@ -46,8 +46,6 @@ IF object_id('TheBigBangQuery.Empresa') IS NOT NULL
 IF object_id('TheBigBangQuery.Usuario') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Usuario;
 
-
-
 BEGIN TRANSACTION
 
 
@@ -94,7 +92,7 @@ CREATE TABLE [TheBigBangQuery].[Usuario] (
     [usua_id] NUMERIC(12,0) NOT NULL IDENTITY(0,1),
     [usua_rol] NUMERIC(12,0),
     [usua_usuario] nvarchar(255),
-    [usua_password] nvarchar(255),
+    [usua_password] binary(32),
     [usua_n_intentos] INTEGER DEFAULT 0,
 
     CONSTRAINT [PK_USUA] PRIMARY KEY([usua_id])
@@ -326,11 +324,20 @@ CREATE TABLE [TheBigBangQuery].[FormaDePago] (
 
 COMMIT
 
+
+IF OBJECT_ID('[TheBigBangQuery].[getHashPassword]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getHashPassword];
+GO
+
+CREATE FUNCTION [TheBigBangQuery].[getHashPassword] (@contraseña nvarchar(255))
+RETURNS binary(32) AS BEGIN
+	RETURN HASHBYTES('SHA2_256', @contraseña);
+END
+
+
+GO
+
 BEGIN TRANSACTION
-
-
-
-
 -- Inserto los Roles por Default del enunciado
 INSERT INTO [TheBigBangQuery].[Rol](rol_nombre) VALUES ('Empresa');
 INSERT INTO [TheBigBangQuery].[Rol](rol_nombre) VALUES ('Administrativo');
@@ -393,7 +400,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
 
 	-- INSERTO EL USUARIO ADMIN
 INSERT INTO [TheBigBangQuery].[Usuario] (usua_usuario, usua_password, usua_rol) VALUES (
-	'admin', HASHBYTES('SHA2_256', 'admin'),1
+	'admin', [TheBigBangQuery].[getHashPassword]('admin') ,1
 );
 INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1);
 
@@ -625,8 +632,8 @@ COMMIT
 GO
 
 
-IF EXISTS (SELECT * FROM sys.objects WHERE [name] = N'trg' AND [type] = 'FN')
-	DROP TRIGGER [TheBigBangQuery].[ExisteUsuario];
+IF OBJECT_ID('TheBigBangQuery.ExisteUsuario') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[ExisteUsuario];
 
 GO
 
@@ -643,6 +650,46 @@ END
 
 GO
 
+IF OBJECT_ID('TheBigBangQuery.ValidarUsuarioDisponible') IS NOT NULL 
+	DROP TRIGGER [TheBigBangQuery].[ValidarUsuarioDisponible];
+
+GO
+
+CREATE TRIGGER [TheBigBangQuery].[ValidarUsuarioDisponible] ON [TheBigBangQuery].[Usuario] INSTEAD OF INSERT AS BEGIN
+	DECLARE c CURSOR FOR (
+		SELECT usua_usuario, usua_password, usua_rol, usua_n_intentos
+		FROM [inserted]
+	);
+	DECLARE @usuario nvarchar(255);
+	DECLARE @contraseña binary(32);
+	DECLARE @rol NUMERIC(12,0);
+	DECLARE @intentos INT;
+	OPEN c;
+	FETCH c INTO @usuario, @contraseña ,@rol, @intentos;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN 
+		IF(@usuario NOT IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario]))
+		BEGIN
+			INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_password, usua_rol, usua_n_intentos) VALUES (
+				@usuario,
+				@contraseña,
+				@rol,
+				@intentos)
+		END ELSE BEGIN
+			RAISERROR('Ya Existe el usuario en la base de datos, no se pueden ingresar dos usuarios iguales.',16,1);
+			ROLLBACK TRANSACTION;
+		END
+		FETCH c INTO @usuario, @contraseña ,@rol, @intentos;
+	END
+	CLOSE c;
+	DEALLOCATE c;
+END 
+
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[IncrementarIntento]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[IncrementarIntento];
+GO
 CREATE PROCEDURE [TheBigBangQuery].[IncrementarIntento]( @usuario nvarchar(255)) AS
 BEGIN
 	DECLARE @intentos INT;
@@ -658,7 +705,95 @@ BEGIN
 	END
 END
 
+GO 
 
+IF OBJECT_ID('[TheBigBangQuery].[InsertarNuevoClienteConUsuario]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario];
+
+GO
+
+CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
+	@usuario nvarchar(255),
+	@contraseña nvarchar(255),
+	@nombre nvarchar(255),
+	@apellido nvarchar(255),
+	@tipoDoc nvarchar(255),
+	@documento nvarchar(255),
+	@cuil nvarchar(255),
+	@mail nvarchar(255),
+	@telefono nvarchar(255),
+	@calle nvarchar(255),
+	@altura nvarchar(255),
+	@piso nvarchar(255),
+	@depto nvarchar(255),
+	@localidad nvarchar(255),
+	@codigoPostal nvarchar(255),
+	@fechaNacimiento nvarchar(255),
+	@fechaCreacion nvarchar(255),
+	@numeroTarjeta nvarchar(255)
+) AS BEGIN
+	BEGIN TRANSACTION
+	BEGIN TRY
+			INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
+			(@usuario, 2, 0, [TheBigBangQuery].[getHashPassword](@contraseña) );
+
+			INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_rol, rolu_usuario) 
+			SELECT usua_rol, usua_id
+			FROM [TheBigBangQuery].[Usuario]
+			WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
+
+			INSERT INTO [TheBigBangQuery].[Cliente](
+				[clie_usuario],
+				[clie_nombre],
+				[clie_apellido],
+				[clie_tipo_documento],
+				[clie_dni],
+				[clie_cuil],
+				[clie_mail],
+				[clie_telefono],
+				[clie_direccion],
+				[clie_numero_calle],
+				[clie_piso],
+				[clie_departamento],
+				[clie_locacalidad],
+				[clie_codigo_postal],
+				[clie_f_nacimiento],
+				[clie_f_creacion],
+				[clie_n_tarjeta],
+				[clie_puntos]) VALUES (
+					(
+						SELECT TOP 1 usua_id
+						FROM [TheBigBangQuery].[Usuario]
+						WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
+					),
+					
+					@nombre, 
+					@apellido, 
+					(SELECT TOP 1 tipo_id FROM [TheBigBangQuery].[Tipo_Documento] WHERE tipo_descripcion = @tipoDoc),
+					@documento,
+					@cuil,
+					@mail,
+					@telefono,
+					@calle,
+					CONVERT(numeric, @altura),
+					CONVERT(numeric, @piso),
+					@depto,
+					@localidad,
+					@codigoPostal,
+					CONVERT(datetime,@fechaNacimiento,20),
+					CONVERT(datetime,@fechaCreacion,20),
+					@numeroTarjeta,
+					0
+				);
+	END TRY
+	BEGIN CATCH
+		RAISERROR('No se pudo insertar el cliente con usuario', 16,1);
+	END CATCH
+	COMMIT 
+END
+
+
+GO 
 
  
 

@@ -225,6 +225,7 @@
             this.Controls.Add(this.DirCalle);
             this.Controls.Add(this.label1);
             this.Name = "AñadirDireccion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AñadirDireccion";
             this.ResumeLayout(false);
             this.PerformLayout();

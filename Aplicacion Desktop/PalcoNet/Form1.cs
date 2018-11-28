@@ -55,7 +55,7 @@ namespace PalcoNet
                     UserData.UserData.setRolActivo(usuario.getRol(0));
                     new PalcoNet.MainMenu.Form1().Show();
                 }
-                this.Close();
+                this.Hide();
                 
             }
         }

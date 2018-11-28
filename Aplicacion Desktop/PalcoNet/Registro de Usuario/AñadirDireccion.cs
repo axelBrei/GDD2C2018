@@ -38,6 +38,7 @@ namespace PalcoNet.Registro_de_Usuario
 
             if (tipo.Equals(TIPO_CLIENTE)) {
                 DirCiudad.Visible = false;
+                DirCiudadLabel.Visible = false;
             }
 
             

@@ -100,6 +100,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
+    <Compile Include="Dao\ClientesDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
@@ -155,6 +156,7 @@
     </Compile>
     <Compile Include="Model\Cliente.cs" />
     <Compile Include="Model\Direccion.cs" />
+    <Compile Include="Model\Empresa.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\Rol.cs" />

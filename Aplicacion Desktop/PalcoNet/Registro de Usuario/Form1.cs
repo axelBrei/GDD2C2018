@@ -15,6 +15,8 @@ namespace PalcoNet.Registro_de_Usuario
     public partial class Form1 : Form
     {
 
+        private string usuario;
+        private string contraseña;
 
         private Direccion direccion;
         // CLIENTE
@@ -54,7 +56,7 @@ namespace PalcoNet.Registro_de_Usuario
 
         private void numeroTarjetaCliente_TextChanged(object sender, EventArgs e)
         {
-
+            numeroTarjeta = ((TextBox)sender).Text;
         }
 
         private void ClienteRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -132,7 +134,8 @@ namespace PalcoNet.Registro_de_Usuario
 
         private void FechaNacimientoCli_TextChanged(object sender, EventArgs e)
         {
-            fechaNacimiento = DateTime.Parse(((TextBox)sender).Text);
+            try { fechaNacimiento = DateTime.Parse(((TextBox)sender).Text); }
+            catch (Exception ex) { }
         }
 
         private void numeroTarjetaCliente_TextChanged_1(object sender, EventArgs e)
@@ -158,5 +161,73 @@ namespace PalcoNet.Registro_de_Usuario
         {
             cuil = ((TextBox)sender).Text;
         }
+
+        private void AñadirDireccionButton_Click(object sender, EventArgs e)
+        {
+            AñadirDireccion form = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE);
+            form.getDireccion += getDireccionDelCliente;
+            form.ShowDialog();
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            new PalcoNet.Form1().Show();
+            this.Close();
+        }
+
+        private void AceptarButton_Click(object sender, EventArgs e)
+        {
+            if (ClienteRadioButton.Checked & nombre != null & apellido != null & TipoDocumento != null &
+                    dni != null & cuil != null & mail != null & telefono != null & direccion != null & 
+                    fechaNacimiento != null & numeroTarjeta != null)
+            {
+
+                Cliente cliente = new Cliente();
+                cliente.nombre = nombre;
+                cliente.apellido = apellido;
+                cliente.TipoDocumento = TipoDocumento;
+                cliente.documento = dni;
+                cliente.cuil = cuil;
+                cliente.mail = mail;
+                cliente.telefono = telefono;
+                cliente.direccion = direccion;
+                cliente.fechaNacimiento = fechaNacimiento;
+                cliente.fechaCreacion = DateTime.Now;
+                cliente.numeroTarjeta = numeroTarjeta;
+                cliente.usuario = usuario;
+
+                ClientesDao clientesDao = new ClientesDao();
+                clientesDao.insertarCliente(cliente, contraseña);
+            }
+            else if (EmpresaRadioButton.Checked & razonSocial != null & mailEmpresa != null &
+                    telefonoEmpresa != null & cuit != null)
+            {
+                Empresa empresa = new Empresa();
+                empresa.razonSocial = razonSocial;
+                empresa.direccion = direccion;
+                empresa.cuit = cuit;
+                empresa.mailEmpresa = mailEmpresa;
+                empresa.telefonoEmpresa = telefonoEmpresa;
+            }
+            else if(direccion == null){
+                MessageBoxButtons alert = MessageBoxButtons.OK;
+                MessageBox.Show("Debe agregar una direccion para continuar", "Direccion invalido", alert);
+            } else{
+                MessageBoxButtons alert = MessageBoxButtons.OK;
+                MessageBox.Show("Debe completar todos los campos para continuar", "Formulario invalido", alert);
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            usuario = ((TextBox)sender).Text;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            contraseña = ((TextBox)sender).Text;
+        }
+
+        
     }
 }

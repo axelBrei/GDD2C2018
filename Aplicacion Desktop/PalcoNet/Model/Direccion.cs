@@ -10,6 +10,7 @@ namespace PalcoNet.Model
     {
         public string calle { get; set; }
         public string piso { get; set; }
+        public string numero { get; set; }
         public string depto { get; set; }
         public string localidad { get; set; }
         public string codigoPostal { get; set; }

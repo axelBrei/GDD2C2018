@@ -12,6 +12,10 @@ namespace PalcoNet.Dao
 {
     class LoginDao
     {
+
+        private string getHashPassword(string contraseña) {
+            return "[TheBigBangQuery].[getHashPassword]('" + contraseña +"')"; 
+        }
         
         public Usuario loginAs(string usuario, string password) {
 
@@ -21,7 +25,7 @@ namespace PalcoNet.Dao
                 "JOIN TheBigBangQuery.Funcionalidades_rol ON (fpr_rol = rol_cod) " +
                 "JOIN TheBigBangQuery.Funcionalidad ON (func_id = fpr_id)" +
                 "WHERE usua_usuario = '" + usuario + "'" +
-                "AND usua_password=HASHBYTES('SHA2_256', '" + password + "')";
+                "AND usua_password=" + getHashPassword(password);
             SqlDataReader reader = DatabaseConection.executeQuery(query);
             Usuario user = null;
             if(reader.HasRows){

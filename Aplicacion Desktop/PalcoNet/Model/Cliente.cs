@@ -20,5 +20,6 @@ namespace PalcoNet.Model
         public DateTime fechaNacimiento { get; set; }
         public DateTime fechaCreacion { get; set; }
         public string numeroTarjeta { get; set; }
+        public string usuario { get; set; }
     }
 }

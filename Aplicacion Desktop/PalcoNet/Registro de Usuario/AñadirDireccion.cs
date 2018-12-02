@@ -32,6 +32,28 @@ namespace PalcoNet.Registro_de_Usuario
         public static string TIPO_CLIENTE = "CLIENTE";
         public static string TIPO_EMPRESA = "EMPRESA";
 
+        public AñadirDireccion(string tipo, Direccion dir) {
+            InitializeComponent();
+            tipoDireccion = tipo;
+
+            DirCalle.Text = dir.calle;
+            DirPiso.Text = dir.piso;
+            DirDepto.Text = dir.depto;
+            DirLocalidad.Text = dir.localidad;
+            CodPostalDireccion.Text = dir.codigoPostal;
+            AlturaDireccion.Text = dir.numero;
+            if (tipo.Equals(TIPO_EMPRESA)) {
+                DirCiudad.Text = dir.ciudad;
+            }
+
+
+            if (tipo.Equals(TIPO_CLIENTE))
+            {
+                DirCiudad.Visible = false;
+                DirCiudadLabel.Visible = false;
+            }
+        }
+
         public AñadirDireccion(string tipo)
         {
             InitializeComponent();

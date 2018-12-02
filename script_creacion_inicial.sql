@@ -675,7 +675,7 @@ IF OBJECT_ID('TheBigBangQuery.ValidarUsuarioDisponible') IS NOT NULL
 GO
 
 CREATE TRIGGER [TheBigBangQuery].[ValidarUsuarioDisponible] ON [TheBigBangQuery].[Usuario] INSTEAD OF INSERT AS BEGIN
-	DECLARE c CURSOR FOR (
+	DECLARE cu CURSOR FOR (
 		SELECT usua_usuario, usua_password, usua_rol, usua_n_intentos
 		FROM [inserted]
 	);
@@ -683,8 +683,8 @@ CREATE TRIGGER [TheBigBangQuery].[ValidarUsuarioDisponible] ON [TheBigBangQuery]
 	DECLARE @contraseña binary(32);
 	DECLARE @rol NUMERIC(12,0);
 	DECLARE @intentos INT;
-	OPEN c;
-	FETCH c INTO @usuario, @contraseña ,@rol, @intentos;
+	OPEN cu;
+	FETCH cu INTO @usuario, @contraseña ,@rol, @intentos;
 	WHILE @@FETCH_STATUS = 0
 	BEGIN 
 		IF(@usuario NOT IN (SELECT usua_usuario FROM [TheBigBangQuery].[Usuario]))
@@ -698,10 +698,10 @@ CREATE TRIGGER [TheBigBangQuery].[ValidarUsuarioDisponible] ON [TheBigBangQuery]
 			RAISERROR('Ya Existe el usuario en la base de datos, no se pueden ingresar dos usuarios iguales.',16,1);
 			ROLLBACK TRANSACTION;
 		END
-		FETCH c INTO @usuario, @contraseña ,@rol, @intentos;
+		FETCH cu INTO @usuario, @contraseña ,@rol, @intentos;
 	END
-	CLOSE c;
-	DEALLOCATE c;
+	CLOSE cu;
+	DEALLOCATE cu;
 END 
 
 GO
@@ -737,9 +737,7 @@ GO
 
 IF OBJECT_ID('[TheBigBangQuery].[InsertarNuevoClienteConUsuario]') IS NOT NULL
 	DROP PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario];
-
 GO
-
 CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 	@usuario nvarchar(255),
 	@contraseña nvarchar(255),
@@ -813,9 +811,11 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 					@numeroTarjeta,
 					0
 				);
+
 				COMMIT;
 	END TRY
 	BEGIN CATCH
+		PRINT ERROR_MESSAGE();
 		RAISERROR('No se pudo insertar el cliente con usuario', 16,1);
 		ROLLBACK TRANSACTION;
 	END CATCH
@@ -903,3 +903,150 @@ AS BEGIN
 		END
 	END CATCH
 END
+
+GO 
+
+IF OBJECT_ID('[TheBigBangQuery].[VerificarClienteNoRepetido]') IS NOT NULL
+	DROP TRIGGER  [TheBigBangQuery].[VerificarClienteNoRepetido];
+GO
+CREATE TRIGGER [TheBigBangQuery].[VerificarClienteNoRepetido] ON [TheBigBangQuery].[Cliente] INSTEAD OF INSERT
+AS BEGIN 
+
+	DECLARE curs CURSOR FOR (
+		SELECT i.clie_dni, i.clie_tipo_documento,i.clie_id
+		FROM inserted i
+	);
+	BEGIN TRY
+
+		DECLARE @dni nvarchar(255), @tipo numeric(12,0), @id NUMERIC(18,0);
+		OPEN curs;
+
+	
+
+		FETCH curs INTO @dni, @tipo, @id;
+		WHILE @@FETCH_STATUS = 0 BEGIN
+
+			IF (SELECT COUNT(*)
+				FROM [TheBigBangQuery].[Cliente] c
+				WHERE c.clie_dni = @dni AND c.clie_tipo_documento = @tipo) > 0 
+			BEGIN 
+				PRINT @id;
+				PRINT ERROR_MESSAGE();
+				PRINT 'ERROR AL INSERTAR';
+				RAISERROR('Error al insertar cliente, el mismo ya existe',16,1);
+			FETCH curs INTO @dni, @tipo, @id;
+			END
+		END
+		
+		INSERT INTO [TheBigBangQuery].[Cliente](clie_dni,
+			clie_usuario,
+			clie_nombre,
+			clie_apellido, 
+			clie_tipo_documento,
+			clie_cuil,
+			clie_mail, 
+			clie_telefono,
+			clie_direccion,
+			clie_numero_calle,
+			clie_piso,
+			clie_locacalidad, 
+			clie_codigo_postal, 
+			clie_f_nacimiento, 
+			clie_f_creacion, 
+			clie_n_tarjeta,
+			clie_dado_baja, 
+			clie_puntos, 
+			clie_departamento, 
+			clie_prox_vencimiento_puntos)
+		SELECT clie_dni,
+			clie_usuario,
+			clie_nombre,
+			clie_apellido, 
+			clie_tipo_documento,
+			clie_cuil,
+			clie_mail, 
+			clie_telefono,
+			clie_direccion,
+			clie_numero_calle,
+			clie_piso,
+			clie_locacalidad, 
+			clie_codigo_postal, 
+			clie_f_nacimiento, 
+			clie_f_creacion, 
+			clie_n_tarjeta,
+			clie_dado_baja, 
+			clie_puntos, 
+			clie_departamento, 
+			clie_prox_vencimiento_puntos
+		FROM inserted
+
+		CLOSE curs;
+		DEALLOCATE curs;
+
+	END TRY
+	BEGIN CATCH
+		CLOSE curs;
+		DEALLOCATE curs;
+		ROLLBACK TRANSACTION;
+		PRINT 'Error al insertar el cliente';
+	END CATCH
+
+	
+END
+
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[ActualizarCliente]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[ActualizarCliente];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[ActualizarCliente](
+	@id nvarchar(255),
+	@nombre nvarchar(255),
+	@apellido nvarchar(255),
+	@tipoDocumento nvarchar(50),
+	@numeroDocumento nvarchar(255),
+	@cuil nvarchar(255),
+	@mail nvarchar(255),
+	@telefono nvarchar(255),
+	@calle nvarchar(255),
+	@altura nvarchar(255),
+	@piso nvarchar(255),
+	@depto nvarchar(50),
+	@localidad nvarchar(255),
+	@codigoPostal nvarchar(255),
+	@fechaDeNacimiento nvarchar(255),
+	@fechaCreacion nvarchar(255),
+	@numeroTarjeta nvarchar(255)
+) AS BEGIN
+	
+	IF (SELECT COUNT(*)
+		FROM TheBigBangQuery.Cliente JOIN TheBigBangQuery.Tipo_Documento ON (clie_tipo_documento = tipo_id)
+		WHERE clie_dni = CONVERT(numeric(18,0),@numeroDocumento) AND tipo_descripcion = @tipoDocumento
+	) > 1 
+	BEGIN
+		RAISERROR('Error al actualizar cliente, ya existe un cliente con el mismo documento', 16,1);
+	END ELSE BEGIN
+
+		UPDATE [TheBigBangQuery].[Cliente]
+		SET clie_nombre = @nombre ,
+			clie_apellido = @apellido,
+			clie_tipo_documento = (SELECT tipo_id FROM [TheBigBangQuery].[Tipo_Documento] WHERE tipo_descripcion = @tipoDocumento),
+			clie_dni = CONVERT(numeric(18,0),@numeroDocumento),
+			clie_cuil = @cuil,
+			clie_mail = @mail,
+			clie_telefono = @telefono,
+			clie_direccion = @calle,
+			clie_numero_calle = CONVERT(numeric(18,0),@altura),
+			clie_piso = CONVERT(numeric(18,0),@piso),
+			clie_departamento = @depto,
+			clie_locacalidad = @localidad,
+			clie_codigo_postal = @codigoPostal,
+			clie_f_nacimiento = CONVERT(datetime, @fechaDeNacimiento),
+			clie_f_creacion = CONVERT(datetime, @fechaCreacion),
+			clie_n_tarjeta = CONVERT(numeric(18,0), @numeroTarjeta )
+		WHERE clie_id = CONVERT(numeric(18,0), @id)
+
+	END
+END
+
+GO

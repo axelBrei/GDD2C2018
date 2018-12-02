@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Dao;
 using PalcoNet.UserData;
+using PalcoNet.Validators;
 
 namespace PalcoNet
 {
@@ -82,7 +83,7 @@ namespace PalcoNet
 
         private void RegistrarseButton_Click(object sender, EventArgs e)
         {
-            new Registro_de_Usuario.Form1().Show();
+            new Registro_de_Usuario.RegistrarUsuario("").Show();
             this.Hide();
         }
 

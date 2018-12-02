@@ -30,20 +30,21 @@ namespace PalcoNet.MainMenu
         }
 
         private void iniciarBotones() {
-            int distanciaEntreBotones = 30;
             int cantBotones = 0;
             Rol rol = UserData.UserData.getRolActivo();
             foreach (Funcionalidad fun in rol.funcionalidades)
             {
-                cantBotones++;
-                Button button = new Button();
-                button.Text = fun.descripcion;
-                button.Click += (se, ev) => this.getClickHandler(se, ev, fun.id);
-                button.Size = new Size(200,30);
-                button.Location = new Point(0,cantBotones * 35);
-                button.FlatStyle = FlatStyle.Flat;
-                button.FlatAppearance.BorderSize = 0;
-                this.panel1.Controls.Add(button);
+                if (fun.descripcion != "Registro de Usuarios") {
+                    cantBotones++;
+                    Button button = new Button();
+                    button.Text = fun.descripcion;
+                    button.Click += (se, ev) => this.getClickHandler(se, ev, fun.id);
+                    button.Size = new Size(200, 30);
+                    button.Location = new Point(0, cantBotones * 35);
+                    button.FlatStyle = FlatStyle.Flat;
+                    button.FlatAppearance.BorderSize = 0;
+                    this.panel1.Controls.Add(button);
+                }
                 
             }
         }
@@ -59,7 +60,7 @@ namespace PalcoNet.MainMenu
                 case 1:
                 {
                     // ABM ROL
-                    new Abm_Rol.Form1().Show();
+                    new Abm_Rol.Form1().Show(this);
                     break;
                 }
                 case 2:
@@ -70,7 +71,7 @@ namespace PalcoNet.MainMenu
                 case 3:
                 {
                     //ABM CLIENTES
-                    new Abm_Cliente.Form1().Show();
+                    new Abm_Cliente.ListadoClientesForm().ShowDialog(this);
                     break;
                 }
                 case 4:
@@ -134,7 +135,6 @@ namespace PalcoNet.MainMenu
                     break;
                 }
             }
-            this.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)

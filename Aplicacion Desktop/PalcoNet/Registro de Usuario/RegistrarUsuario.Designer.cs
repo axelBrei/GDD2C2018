@@ -1,6 +1,6 @@
 ﻿namespace PalcoNet.Registro_de_Usuario
 {
-    partial class Form1
+    partial class RegistrarUsuario
     {
         /// <summary>
         /// Required designer variable.
@@ -32,9 +32,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.TipoUsuarioLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TipoUsuariogroupBox = new System.Windows.Forms.GroupBox();
             this.EmpresaRadioButton = new System.Windows.Forms.RadioButton();
             this.ClienteRadioButton = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
@@ -72,7 +72,7 @@
             this.nada = new System.Windows.Forms.Label();
             this.panelCliente = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.TipoUsuariogroupBox.SuspendLayout();
             this.PanelEmpresa.SuspendLayout();
             this.panelCliente.SuspendLayout();
             this.SuspendLayout();
@@ -111,22 +111,22 @@
             this.textBox2.TabIndex = 4;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
-            // label3
+            // TipoUsuarioLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 163);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Tipo de usuario";
+            this.TipoUsuarioLabel.AutoSize = true;
+            this.TipoUsuarioLabel.Location = new System.Drawing.Point(20, 163);
+            this.TipoUsuarioLabel.Name = "TipoUsuarioLabel";
+            this.TipoUsuarioLabel.Size = new System.Drawing.Size(80, 13);
+            this.TipoUsuarioLabel.TabIndex = 5;
+            this.TipoUsuarioLabel.Text = "Tipo de usuario";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.TipoUsuariogroupBox);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.TipoUsuarioLabel);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.label2);
@@ -136,15 +136,15 @@
             this.panel1.Size = new System.Drawing.Size(324, 442);
             this.panel1.TabIndex = 6;
             // 
-            // groupBox1
+            // TipoUsuariogroupBox
             // 
-            this.groupBox1.Controls.Add(this.EmpresaRadioButton);
-            this.groupBox1.Controls.Add(this.ClienteRadioButton);
-            this.groupBox1.Location = new System.Drawing.Point(23, 180);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(246, 46);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
+            this.TipoUsuariogroupBox.Controls.Add(this.EmpresaRadioButton);
+            this.TipoUsuariogroupBox.Controls.Add(this.ClienteRadioButton);
+            this.TipoUsuariogroupBox.Location = new System.Drawing.Point(23, 180);
+            this.TipoUsuariogroupBox.Name = "TipoUsuariogroupBox";
+            this.TipoUsuariogroupBox.Size = new System.Drawing.Size(246, 46);
+            this.TipoUsuariogroupBox.TabIndex = 9;
+            this.TipoUsuariogroupBox.TabStop = false;
             // 
             // EmpresaRadioButton
             // 
@@ -523,7 +523,7 @@
             this.panelCliente.Size = new System.Drawing.Size(265, 348);
             this.panelCliente.TabIndex = 31;
             // 
-            // Form1
+            // RegistrarUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -534,13 +534,13 @@
             this.Controls.Add(this.panelCliente);
             this.Controls.Add(this.PanelEmpresa);
             this.Controls.Add(this.panel1);
-            this.Name = "Form1";
+            this.Name = "RegistrarUsuario";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.TipoUsuariogroupBox.ResumeLayout(false);
+            this.TipoUsuariogroupBox.PerformLayout();
             this.PanelEmpresa.ResumeLayout(false);
             this.PanelEmpresa.PerformLayout();
             this.panelCliente.ResumeLayout(false);
@@ -556,7 +556,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label TipoUsuarioLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
@@ -570,7 +570,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox RazonSocialEmpresa;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox TipoUsuariogroupBox;
         private System.Windows.Forms.RadioButton EmpresaRadioButton;
         private System.Windows.Forms.RadioButton ClienteRadioButton;
         private System.Windows.Forms.Button cancelButton;

@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Cliente\Form1.cs">
+    <Compile Include="Abm Cliente\ListadoClientesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Cliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Cliente\ListadoClientesForm.Designer.cs">
+      <DependentUpon>ListadoClientesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Empresa Espectaculo\Form1.cs">
       <SubType>Form</SubType>
@@ -170,13 +170,17 @@
     <Compile Include="Registro de Usuario\AñadirDireccion.Designer.cs">
       <DependentUpon>AñadirDireccion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Registro de Usuario\Form1.cs">
+    <Compile Include="Registro de Usuario\RegistrarUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Registro de Usuario\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Registro de Usuario\RegistrarUsuario.Designer.cs">
+      <DependentUpon>RegistrarUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="UserData\UserData.cs" />
+    <Compile Include="Validators\CuilValidator.cs" />
+    <EmbeddedResource Include="Abm Cliente\ListadoClientesForm.resx">
+      <DependentUpon>ListadoClientesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\EditarRol.resx">
       <DependentUpon>EditarRol.cs</DependentUpon>
     </EmbeddedResource>
@@ -207,8 +211,8 @@
     <EmbeddedResource Include="Registro de Usuario\AñadirDireccion.resx">
       <DependentUpon>AñadirDireccion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Registro de Usuario\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Registro de Usuario\RegistrarUsuario.resx">
+      <DependentUpon>RegistrarUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

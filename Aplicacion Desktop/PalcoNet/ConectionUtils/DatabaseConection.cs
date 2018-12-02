@@ -61,7 +61,13 @@ namespace PalcoNet.ConectionUtils
         public static void executeNoParamFunction(SqlCommand command)
         {
             command.Connection = getInstance();
-            command.ExecuteNonQuery();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException ex) {
+                throw ex;
+            }
         }
     }
 }

@@ -77,7 +77,7 @@ namespace PalcoNet.MainMenu
                 case 4:
                 {
                     // ABM EMPRESAS
-                    new Abm_Empresa_Espectaculo.Form1().Show();
+                    new Abm_Empresa_Espectaculo.ListaEmpresas().Show(this);
                     break;
                 }
                 case 5:

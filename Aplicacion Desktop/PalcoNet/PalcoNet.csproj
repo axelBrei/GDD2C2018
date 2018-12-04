@@ -51,11 +51,11 @@
     <Compile Include="Abm Cliente\ListadoClientesForm.Designer.cs">
       <DependentUpon>ListadoClientesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Empresa Espectaculo\Form1.cs">
+    <Compile Include="Abm Empresa Espectaculo\ListaEmpresas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Empresa Espectaculo\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Empresa Espectaculo\ListaEmpresas.Designer.cs">
+      <DependentUpon>ListaEmpresas.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Grado\Form1.cs">
       <SubType>Form</SubType>
@@ -113,6 +113,7 @@
     <Compile Include="Editar Publicacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\DataNotFoundException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +181,9 @@
     <Compile Include="Validators\CuilValidator.cs" />
     <EmbeddedResource Include="Abm Cliente\ListadoClientesForm.resx">
       <DependentUpon>ListadoClientesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Empresa Espectaculo\ListaEmpresas.resx">
+      <DependentUpon>ListaEmpresas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\EditarRol.resx">
       <DependentUpon>EditarRol.cs</DependentUpon>

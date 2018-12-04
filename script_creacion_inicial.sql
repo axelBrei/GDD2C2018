@@ -1050,3 +1050,47 @@ CREATE PROCEDURE [TheBigBangQuery].[ActualizarCliente](
 END
 
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[ActualizarEmpresa]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[ActualizarEmpresa];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[ActualizarEmpresa] (
+	@id nvarchar(255),
+	@cuit nvarchar(255),
+	@razonSocial nvarchar(255),
+	@mail nvarchar(255),
+	@telefono nvarchar(255),
+	@direccion nvarchar(255),
+	@altura nvarchar(255),
+	@piso nvarchar(50),
+	@depto nvarchar(50),
+	@localidad nvarchar(255),
+	@codigoPostal nvarchar(255),
+	@ciudad nvarchar(255)) 
+AS BEGIN
+
+	IF (
+		SELECT COUNT(*)
+		FROM [TheBigBangQuery].[Empresa]
+		WHERE empr_razon_social = @razonSocial AND empr_cuit = @cuit
+	) > 1
+	BEGIN
+		RAISERROR('Error al actualizar cliente, ya existe una empresa con el mismo cuit', 16,1);
+	END ELSE BEGIN
+		UPDATE [TheBigBangQuery].[Empresa]
+		SET empr_cuit = @cuit,
+			empr_razon_social = @razonSocial,
+			empr_mail = @mail,
+			empr_telefono = @telefono,
+			empr_direccion = @direccion,
+			empr_numero_calle = CONVERT(numeric(18,0),@altura),
+			empr_piso = CONVERT(numeric(18,0),@piso),
+			empr_dpto = @depto,
+			empr_localidad = @localidad,
+			empr_codigo_postal = @codigoPostal,
+			empr_ciudad = @ciudad
+			WHERE empr_id = CONVERT(numeric(18,0), @id)
+	END
+END
+GO
+

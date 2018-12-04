@@ -149,7 +149,7 @@ namespace PalcoNet.Dao
             cliente.fechaNacimiento = (reader.IsDBNull(14) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(14));
             cliente.fechaCreacion = (reader.IsDBNull(15) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(15));
             cliente.numeroTarjeta = (reader.IsDBNull(16) ? null : reader.GetSqlDecimal(16).ToString()); ;
-            cliente.bajaLogica = (Nullable<DateTime>)(reader.IsDBNull(17) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(17));
+            cliente.bajaLogica = (reader.IsDBNull(17) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(17));
             if (reader.IsDBNull(18))
                 cliente.puntos = null;
             else

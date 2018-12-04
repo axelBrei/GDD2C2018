@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.ContraseñaLabel = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.TipoUsuarioLabel = new System.Windows.Forms.Label();
@@ -86,14 +86,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Usuario";
             // 
-            // label2
+            // ContraseñaLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 122);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Contraseña";
+            this.ContraseñaLabel.AutoSize = true;
+            this.ContraseñaLabel.Location = new System.Drawing.Point(20, 122);
+            this.ContraseñaLabel.Name = "ContraseñaLabel";
+            this.ContraseñaLabel.Size = new System.Drawing.Size(61, 13);
+            this.ContraseñaLabel.TabIndex = 1;
+            this.ContraseñaLabel.Text = "Contraseña";
             // 
             // textBox1
             // 
@@ -129,7 +129,7 @@
             this.panel1.Controls.Add(this.TipoUsuarioLabel);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.ContraseñaLabel);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Location = new System.Drawing.Point(0, -1);
             this.panel1.Name = "panel1";
@@ -553,7 +553,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label ContraseñaLabel;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label TipoUsuarioLabel;

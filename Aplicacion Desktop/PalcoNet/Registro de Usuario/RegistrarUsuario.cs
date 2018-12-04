@@ -49,7 +49,7 @@ namespace PalcoNet.Registro_de_Usuario
         public delegate void OnFinishregistration();
         public event OnFinishregistration onFinishregistration;
 
-        public delegate void OnFinishUpdate(int clieId);
+        public delegate void OnFinishUpdate(int id);
         public event OnFinishUpdate onFinisUpdate;
 
         AñadirDireccion direccionForm;
@@ -78,6 +78,8 @@ namespace PalcoNet.Registro_de_Usuario
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE, cliente.direccion);
 
             tipoUsuario = TIPO_EDITAR_CLIENTE;
+            textBox1.Text = cliente.usuario;
+            esconderCamposUsuarioYContraseña();
 
             mostrarControlesCliente();
 
@@ -85,9 +87,20 @@ namespace PalcoNet.Registro_de_Usuario
 
         public RegistrarUsuario(Empresa empresa) {
             InitializeComponent();
+
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_EMPRESA, empresa.direccion);
+
+            id = empresa.id;
+            CuitEmpresa.Text = empresa.cuit;
+            RazonSocialEmpresa.Text = empresa.razonSocial;
+            MailEmpresa1.Text = empresa.mailEmpresa;
+            telefonoEmpresa1.Text = empresa.telefonoEmpresa;
             direccion = empresa.direccion;
+
             tipoUsuario = TIPO_EDITAR_EMPRESA;
+            textBox1.Text = empresa.usuario;
+            esconderCamposUsuarioYContraseña();
+
             mostrarControlesEmpresa();
         }
 
@@ -116,14 +129,23 @@ namespace PalcoNet.Registro_de_Usuario
             }
         }
 
+        private void esconderCamposUsuarioYContraseña() {
+            textBox1.Enabled = false;
+
+            textBox2.Visible = false;
+            ContraseñaLabel.Visible = false;
+        }
+
         private void mostrarControlesCliente() {
             TipoUsuarioLabel.Visible = false;
             TipoUsuariogroupBox.Visible = false;
             panelCliente.Visible = true;
+            PanelEmpresa.Visible = false;
         }
 
         private void mostrarControlesEmpresa() {
             TipoUsuarioLabel.Visible = false;
+            panelCliente.Visible = false;
             PanelEmpresa.Visible = true;
             TipoUsuariogroupBox.Visible = false;
         }
@@ -284,10 +306,23 @@ namespace PalcoNet.Registro_de_Usuario
             return cliente;
         }
 
+        private Empresa getEmpresa() {
+            Empresa empresa = new Empresa();
+            empresa.id = id;
+            empresa.razonSocial = razonSocial;
+            empresa.cuit = cuit;
+            empresa.mailEmpresa = mailEmpresa;
+            empresa.telefonoEmpresa = telefonoEmpresa;
+            empresa.direccion = direccion;
+
+            return empresa;
+        }
+
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
             ClientesDao clientesDao = new ClientesDao();
+            EmpresasDao empresasDao = new EmpresasDao();
             if (nombre != null & apellido != null & TipoDocumento != null &
                     dni != null & cuil != null & mail != null & telefono != null & direccion != null & 
                     fechaNacimiento != null & numeroTarjeta != null)
@@ -298,11 +333,9 @@ namespace PalcoNet.Registro_de_Usuario
                     
                     if (tipoUsuario.Equals(TIPO_EDITAR_CLIENTE))
                     {
-                        // TODO: update del cliente
                         clientesDao.actualizarCliente(getCliente());
                         this.onFinisUpdate(id);
-                    }
-                    else if (ClienteRadioButton.Checked)
+                    } else if (ClienteRadioButton.Checked)
                     {
                         clientesDao.insertarCliente(getCliente(), contraseña);
                     }
@@ -324,10 +357,11 @@ namespace PalcoNet.Registro_de_Usuario
             {
                 if (CuilValidator.validarCuit(cuit))
                 {
-                    if (tipoUsuario.Equals(TIPO_EDITAR_EMPRESA)) { 
-                        // TODO: HACER ABM DE EMPRESAS
+                    if (tipoUsuario.Equals(TIPO_EDITAR_EMPRESA)) {
+                        empresasDao.actualizarEmpresa(getEmpresa());
+                        this.onFinisUpdate(id);
                     }
-                    else if (EmpresaRadioButton.Checked){
+                    else if (EmpresaRadioButton.Checked | tipoUsuario.Equals(TIPO_EMPRESA)){
                         Empresa empresa = new Empresa();
                         empresa.razonSocial = razonSocial;
                         empresa.direccion = direccion;
@@ -335,7 +369,6 @@ namespace PalcoNet.Registro_de_Usuario
                         empresa.mailEmpresa = mailEmpresa;
                         empresa.telefonoEmpresa = telefonoEmpresa;
 
-                        EmpresasDao empresasDao = new EmpresasDao();
                         empresasDao.insertarEmpresaConUsuario(empresa, usuario, contraseña);
                         if (this.onFinishregistration != null)
                         {

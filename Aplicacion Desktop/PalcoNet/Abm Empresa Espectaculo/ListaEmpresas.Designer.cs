@@ -52,6 +52,7 @@
             this.FiltrosTextBox.Name = "FiltrosTextBox";
             this.FiltrosTextBox.Size = new System.Drawing.Size(401, 20);
             this.FiltrosTextBox.TabIndex = 2;
+            this.FiltrosTextBox.TextChanged += new System.EventHandler(this.FiltrosTextBox_TextChanged);
             // 
             // AgregarButton
             // 
@@ -65,6 +66,7 @@
             // 
             // EmpresasListView
             // 
+            this.EmpresasListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.EmpresasListView.Alignment = System.Windows.Forms.ListViewAlignment.Left;
             this.EmpresasListView.FullRowSelect = true;
             this.EmpresasListView.GridLines = true;

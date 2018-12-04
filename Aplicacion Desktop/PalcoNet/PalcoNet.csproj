@@ -81,11 +81,11 @@
     <Compile Include="Abm Rol\NuevRol.Designer.cs">
       <DependentUpon>NuevRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Rubro\Form1.cs">
+    <Compile Include="Abm Rubro\ListadoRubros.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Rubro\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Rubro\ListadoRubros.Designer.cs">
+      <DependentUpon>ListadoRubros.cs</DependentUpon>
     </Compile>
     <Compile Include="Canje Puntos\Form1.cs">
       <SubType>Form</SubType>
@@ -106,6 +106,7 @@
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
+    <Compile Include="Dao\RubrosDao.cs" />
     <Compile Include="Dao\TipoDocumentoDao.cs" />
     <Compile Include="Editar Publicacion\Form1.cs">
       <SubType>Form</SubType>
@@ -114,6 +115,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\DataNotFoundException.cs" />
+    <Compile Include="Exceptions\ObjectParseException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +164,7 @@
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\Rol.cs" />
+    <Compile Include="Model\Rubro.cs" />
     <Compile Include="Model\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -193,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\NuevRol.resx">
       <DependentUpon>NuevRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
+      <DependentUpon>ListadoRubros.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

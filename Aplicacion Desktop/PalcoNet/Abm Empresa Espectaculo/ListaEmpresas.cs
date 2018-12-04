@@ -20,6 +20,8 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
         private Empresa empresaSeleccionada;
         private int indexEmpresaSeleccionada;
 
+        private List<Empresa> empresasList = new List<Empresa>();
+
         public ListaEmpresas()
         {
             InitializeComponent();
@@ -38,6 +40,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
             empresasDa.getEmpresas().ForEach(elem => {
                 EmpresasListView.Items.Add(getItemEmpresa(elem));
+                empresasList.Add(elem);
             });
         }
 
@@ -76,7 +79,9 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 empresasDao.getEmpresasMayoresAId(EmpresasListView.Items.Count - 1).ForEach(elem =>
                 {
                     EmpresasListView.Items.Add(getItemEmpresa(elem));
+                    empresasList.Add(elem);
                 }); 
+                
             }catch(DataNotFoundException ex){
                 MessageBoxButtons alert = MessageBoxButtons.OK;
                 MessageBox.Show("No se ha podido actualizar la lista", "ERROR!", alert);
@@ -116,6 +121,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
             Empresa empresa = new Empresa();
             empresa = empresasDao.getEmpresaPorId(id);
             reemplazarEnLista(empresa);
+            empresasList.Insert(indexEmpresaSeleccionada, empresa);
         }
 
         private void DeshabilitarButton_Click(object sender, EventArgs e)
@@ -134,11 +140,16 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 }
                 empresasDao.habilitarODesahabilitarEmpresa(empresaSeleccionada);
                 reemplazarEnLista(empresaSeleccionada);
+                var empre = empresasList.First(elem => elem.id == empresaSeleccionada.id);
+                if (empre != null) ((Empresa)empre).bajaLogica = (habilitado ? (Nullable<DateTime>)DateTime.Now : null);
             }
             catch (SqlException ex)
             {
                 MessageBoxButtons alert = MessageBoxButtons.OK;
                 MessageBox.Show("No se ha podido deshabilitar la empresa seleccionada", "ERROR!", alert);
+            }
+            catch (Exception ex) 
+            { 
             }
             finally {
                 ((ListViewItem)EmpresasListView.Items[indexEmpresaSeleccionada]).ForeColor = !habilitado ? Color.Black : Color.Gray;
@@ -150,6 +161,25 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 EmpresasListView.Items.RemoveAt(indexEmpresaSeleccionada);
                 EmpresasListView.Items.Insert(indexEmpresaSeleccionada, getItemEmpresa(empresa));
             EmpresasListView.EndUpdate();
+        }
+
+        private void FiltrosTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                TextBox filterInput = (TextBox)sender;
+                List<Empresa> empresas = this.empresasList.FindAll(elem =>
+                        elem.razonSocial.Contains(filterInput.Text) |
+                        elem.mailEmpresa.Contains(filterInput.Text) |
+                        elem.cuit.Equals(filterInput.Text)
+                    );
+
+                this.EmpresasListView.BeginUpdate();
+                    this.EmpresasListView.Items.Clear();
+                    empresas.ForEach(elem => this.EmpresasListView.Items.Add(getItemEmpresa(elem)));
+                this.EmpresasListView.EndUpdate();
+            }
+            catch (Exception ex) { }
         }
     }
 }

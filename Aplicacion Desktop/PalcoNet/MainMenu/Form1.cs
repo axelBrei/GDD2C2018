@@ -83,7 +83,7 @@ namespace PalcoNet.MainMenu
                 case 5:
                 {
                     // ABM CATEGORIAS
-                    
+                    new Abm_Rubro.ListadoRubros().Show(this);
                     break;
                 }
                 case 6:

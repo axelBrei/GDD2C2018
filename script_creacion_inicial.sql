@@ -206,11 +206,12 @@ ALTER TABLE [TheBigBangQuery].[Espectaculo]
 
 
 CREATE TABLE [TheBigBangQuery].[GradoPublicaciones] (
+	[grad_id] NUMERIC(10,0) IDENTITY(1,1),
     [grad_nivel] nvarchar(10) NOT NULL,
     [grad_comision] NUMERIC(10,2),
     [grad_baja] DATETIME
 
-    CONSTRAINT [PK_GRAD] PRIMARY KEY ([grad_nivel])
+    CONSTRAINT [PK_GRAD] PRIMARY KEY ([grad_id])
 );
 
 
@@ -218,7 +219,7 @@ CREATE TABLE [TheBigBangQuery].[GradoPublicaciones] (
 CREATE TABLE [TheBigBangQuery].[Publicacion] (
     [publ_id] NUMERIC(12,0) NOT NULL IDENTITY(0,1),
     [publ_espectaculo] NUMERIC(12,0),
-    [publ_grad_nivel] nvarchar(10),
+    [publ_grad_nivel] NUMERIC(10,0),
     [publ_fecha_publicacion] DATETIME,
     [publ_fecha_hora_espectaculo] DATETIME,
     [publ_estado] nvarchar(50)
@@ -230,7 +231,7 @@ ALTER TABLE [TheBigBangQuery].[Publicacion]
     ADD CONSTRAINT [PK_ESPEC_ESPE] FOREIGN KEY ([publ_espectaculo]) REFERENCES [TheBigBangQuery].[Espectaculo](espe_id);
 
 ALTER TABLE [TheBigBangQuery].[Publicacion]
-    ADD CONSTRAINT [PK_PUBL_GRADO] FOREIGN KEY ([publ_grad_nivel]) REFERENCES [TheBigBangQuery].[GradoPublicaciones](grad_nivel);
+    ADD CONSTRAINT [PK_PUBL_GRADO] FOREIGN KEY ([publ_grad_nivel]) REFERENCES [TheBigBangQuery].[GradoPublicaciones](grad_id);
 
 
 CREATE TABLE [TheBigBangQuery].[TipoUbicacion] (
@@ -509,7 +510,7 @@ BEGIN TRANSACTION
 		publ_fecha_hora_espectaculo,
 		publ_fecha_publicacion,
 		publ_grad_nivel)
-	SELECT DISTINCT e.espe_id, m.Espectaculo_Estado, m.Espectaculo_Fecha, m.Espectaculo_Fecha_Venc, 'MEDIO'
+	SELECT DISTINCT e.espe_id, m.Espectaculo_Estado, m.Espectaculo_Fecha, m.Espectaculo_Fecha_Venc, 1
 	FROM [gd_esquema].[Maestra] m LEFT JOIN [TheBigBangQuery].[Espectaculo] e ON (
 		m.Espectaculo_Cod = e.espe_id AND
 		m.Espectaculo_Descripcion = e.espe_descripcion

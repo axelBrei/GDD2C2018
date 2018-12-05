@@ -59,11 +59,17 @@
     <Compile Include="Abm Empresa Espectaculo\ListaEmpresas.Designer.cs">
       <DependentUpon>ListaEmpresas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Grado\Form1.cs">
+    <Compile Include="Abm Grado\AgregarGradoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Grado\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Grado\AgregarGradoForm.Designer.cs">
+      <DependentUpon>AgregarGradoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Grado\ListaGradosDePublicacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Grado\ListaGradosDePublicacion.Designer.cs">
+      <DependentUpon>ListaGradosDePublicacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Rol\EditarRol.cs">
       <SubType>Form</SubType>
@@ -106,6 +112,7 @@
     <Compile Include="Dao\EmpresasDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
+    <Compile Include="Dao\GradoDePublicacionDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
     <Compile Include="Dao\RubrosDao.cs" />
@@ -185,6 +192,7 @@
     <Compile Include="Model\Empresa.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
+    <Compile Include="Model\GradoPublicacion.cs" />
     <Compile Include="Model\Registrable.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Rubro.cs" />
@@ -212,6 +220,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Empresa Espectaculo\ListaEmpresas.resx">
       <DependentUpon>ListaEmpresas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Grado\AgregarGradoForm.resx">
+      <DependentUpon>AgregarGradoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Grado\ListaGradosDePublicacion.resx">
+      <DependentUpon>ListaGradosDePublicacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\EditarRol.resx">
       <DependentUpon>EditarRol.cs</DependentUpon>

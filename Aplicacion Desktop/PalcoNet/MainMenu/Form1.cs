@@ -87,7 +87,7 @@ namespace PalcoNet.MainMenu
                 case 6:
                     {
                         // ABM GRADO DE PUBLICACION
-                        form = new Abm_Grado.Form1();
+                        form = new Abm_Grado.ListaGradosDePublicacion();
                         break;
                     }
                 case 7:

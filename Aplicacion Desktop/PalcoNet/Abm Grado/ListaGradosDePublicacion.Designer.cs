@@ -33,7 +33,6 @@
             this.AgregarGradoButton = new System.Windows.Forms.Button();
             this.ModificarGradoButton = new System.Windows.Forms.Button();
             this.DeshabilitarGradoButton = new System.Windows.Forms.Button();
-            this.SalirButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GradosListView
@@ -48,7 +47,7 @@
             this.GradosListView.Location = new System.Drawing.Point(12, 75);
             this.GradosListView.MultiSelect = false;
             this.GradosListView.Name = "GradosListView";
-            this.GradosListView.Size = new System.Drawing.Size(454, 395);
+            this.GradosListView.Size = new System.Drawing.Size(576, 518);
             this.GradosListView.TabIndex = 0;
             this.GradosListView.UseCompatibleStateImageBehavior = false;
             this.GradosListView.View = System.Windows.Forms.View.Details;
@@ -66,56 +65,56 @@
             // 
             // AgregarGradoButton
             // 
-            this.AgregarGradoButton.Location = new System.Drawing.Point(482, 75);
+            this.AgregarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AgregarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.AgregarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AgregarGradoButton.Location = new System.Drawing.Point(604, 75);
             this.AgregarGradoButton.Name = "AgregarGradoButton";
             this.AgregarGradoButton.Size = new System.Drawing.Size(93, 23);
             this.AgregarGradoButton.TabIndex = 2;
             this.AgregarGradoButton.Text = "Agregar";
-            this.AgregarGradoButton.UseVisualStyleBackColor = true;
+            this.AgregarGradoButton.UseVisualStyleBackColor = false;
             this.AgregarGradoButton.Click += new System.EventHandler(this.AgregarGradoButton_Click);
             // 
             // ModificarGradoButton
             // 
-            this.ModificarGradoButton.Location = new System.Drawing.Point(482, 113);
+            this.ModificarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModificarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.ModificarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ModificarGradoButton.Location = new System.Drawing.Point(604, 113);
             this.ModificarGradoButton.Name = "ModificarGradoButton";
             this.ModificarGradoButton.Size = new System.Drawing.Size(93, 23);
             this.ModificarGradoButton.TabIndex = 3;
             this.ModificarGradoButton.Text = "Modificar";
-            this.ModificarGradoButton.UseVisualStyleBackColor = true;
+            this.ModificarGradoButton.UseVisualStyleBackColor = false;
             this.ModificarGradoButton.Click += new System.EventHandler(this.ModificarGradoButton_Click);
             // 
             // DeshabilitarGradoButton
             // 
-            this.DeshabilitarGradoButton.Location = new System.Drawing.Point(482, 151);
+            this.DeshabilitarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeshabilitarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.DeshabilitarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DeshabilitarGradoButton.Location = new System.Drawing.Point(604, 151);
             this.DeshabilitarGradoButton.Name = "DeshabilitarGradoButton";
             this.DeshabilitarGradoButton.Size = new System.Drawing.Size(93, 23);
             this.DeshabilitarGradoButton.TabIndex = 4;
             this.DeshabilitarGradoButton.Text = "Deshabilitar";
-            this.DeshabilitarGradoButton.UseVisualStyleBackColor = true;
+            this.DeshabilitarGradoButton.UseVisualStyleBackColor = false;
             this.DeshabilitarGradoButton.Click += new System.EventHandler(this.DeshabilitarGradoButton_Click);
-            // 
-            // SalirButton
-            // 
-            this.SalirButton.Location = new System.Drawing.Point(500, 512);
-            this.SalirButton.Name = "SalirButton";
-            this.SalirButton.Size = new System.Drawing.Size(75, 23);
-            this.SalirButton.TabIndex = 5;
-            this.SalirButton.Text = "Salir";
-            this.SalirButton.UseVisualStyleBackColor = true;
-            this.SalirButton.Click += new System.EventHandler(this.SalirButton_Click);
             // 
             // ListaGradosDePublicacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 547);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClientSize = new System.Drawing.Size(709, 670);
             this.ControlBox = false;
-            this.Controls.Add(this.SalirButton);
             this.Controls.Add(this.DeshabilitarGradoButton);
             this.Controls.Add(this.ModificarGradoButton);
             this.Controls.Add(this.AgregarGradoButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.GradosListView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListaGradosDePublicacion";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -133,6 +132,5 @@
         private System.Windows.Forms.Button AgregarGradoButton;
         private System.Windows.Forms.Button ModificarGradoButton;
         private System.Windows.Forms.Button DeshabilitarGradoButton;
-        private System.Windows.Forms.Button SalirButton;
     }
 }

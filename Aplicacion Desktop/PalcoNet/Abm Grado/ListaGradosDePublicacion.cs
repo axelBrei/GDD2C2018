@@ -85,9 +85,15 @@ namespace PalcoNet.Abm_Grado
 
         private void ModificarGradoButton_Click(object sender, EventArgs e)
         {
-            AgregarGradoForm form = new AgregarGradoForm(gradoSeleccionado, indexSeleccionado);
-            form.onClickAcept += this.onAcceptNewGrade;
-            form.Show(this);
+            if (gradoSeleccionado != null)
+            {
+                AgregarGradoForm form = new AgregarGradoForm(gradoSeleccionado, indexSeleccionado);
+                form.onClickAcept += this.onAcceptNewGrade;
+                form.Show(this);
+            }
+            else
+                MessageBox.Show("Debe seleccionar un grado de publicación para poder modificarlo");
+            
         }
 
         private void GradosListView_SelectedIndexChanged(object sender, EventArgs e)

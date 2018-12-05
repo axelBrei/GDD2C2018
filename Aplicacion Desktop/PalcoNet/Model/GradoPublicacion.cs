@@ -8,8 +8,10 @@ namespace PalcoNet.Model
 {
     public class GradoPublicacion
     {
+        public int id{get; set;}
         public string nivel { get; set; }
         public Nullable<float> comision { get; set; }
+        public Nullable<DateTime> bajaLogica { get; set; }
 
         public override bool Equals(object obj)
         {

@@ -92,6 +92,7 @@
             this.DeshabilitarGradoButton.TabIndex = 4;
             this.DeshabilitarGradoButton.Text = "Deshabilitar";
             this.DeshabilitarGradoButton.UseVisualStyleBackColor = true;
+            this.DeshabilitarGradoButton.Click += new System.EventHandler(this.DeshabilitarGradoButton_Click);
             // 
             // SalirButton
             // 

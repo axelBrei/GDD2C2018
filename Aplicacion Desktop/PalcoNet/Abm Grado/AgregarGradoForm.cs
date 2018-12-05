@@ -54,8 +54,10 @@ namespace PalcoNet.Abm_Grado
                 MessageBox.Show("El campo Comision debe ser mayor a 0.");
             else {
                 GradoPublicacion grado = new GradoPublicacion();
+                if(gradoPublicacion != null)
+                    grado.id = gradoPublicacion.id;
                 grado.comision = comision;
-                grado.nivel = desc;
+                grado.nivel = desc.ToUpper();
                 if (this.onClickAcept != null)
                     this.onClickAcept(grado, index);
                 this.Close();

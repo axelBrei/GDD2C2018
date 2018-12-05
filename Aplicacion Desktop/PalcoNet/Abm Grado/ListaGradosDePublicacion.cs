@@ -18,6 +18,7 @@ namespace PalcoNet.Abm_Grado
     {
         private GradoPublicacion gradoSeleccionado;
         private int indexSeleccionado;
+        private GradoDePublicacionDao dao = new GradoDePublicacionDao();
 
         public ListaGradosDePublicacion()
         {
@@ -26,7 +27,6 @@ namespace PalcoNet.Abm_Grado
             this.GradosListView.Columns.Insert(0, "Nombre", 10 * (int)GradosListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.GradosListView.Columns.Insert(1, "Comision", 60 * (int)GradosListView.Font.SizeInPoints, HorizontalAlignment.Center);
 
-            GradoDePublicacionDao dao = new GradoDePublicacionDao();
             dao.getGradosDePublicacion().ForEach(elem => {
                 GradosListView.Items.Add(getItemFromGrado(elem));
             }); 
@@ -34,8 +34,11 @@ namespace PalcoNet.Abm_Grado
 
         private ListViewItem getItemFromGrado(GradoPublicacion grado) {
             ListViewItem item = new ListViewItem();
+            item.Name = grado.nivel;
             item.Text = grado.nivel;
             item.SubItems.Add(grado.comision.ToString());
+
+            item.ForeColor = grado.bajaLogica != null ? Color.Gray : Color.Black;
 
             item.Tag = grado;
 
@@ -44,14 +47,27 @@ namespace PalcoNet.Abm_Grado
         }
 
         private void onAcceptNewGrade(GradoPublicacion grado, int index) {
-            GradoDePublicacionDao dao = new GradoDePublicacionDao();
+            
 
-            if (index != -1)
-                this.GradosListView.Items.Insert(index, getItemFromGrado(grado));
+            if (index != -1){
+                GradosListView.BeginUpdate();
+                    GradosListView.Items.RemoveAt(index);
+                    this.GradosListView.Items.Insert(index, getItemFromGrado(grado));    
+                GradosListView.EndUpdate();
+
+                dao.actualizarGradoDePublicacion(grado);
+            }
             else{
                 // VERIFICAR Q NO ESTE YA EN LA LISTA
-                this.GradosListView.Items.Add(getItemFromGrado(grado));
-                dao.insertGradoDePublicacion(grado);
+                if (GradosListView.Items.Find(grado.nivel, true).Length == 0)
+                {
+                    this.GradosListView.Items.Add(getItemFromGrado(grado));
+                    dao.insertGradoDePublicacion(grado);
+                }
+                else {
+                    MessageBox.Show("El grado de publicación que quiere agregar ya existe");
+                }
+                
             }
         }
 
@@ -82,8 +98,24 @@ namespace PalcoNet.Abm_Grado
             {
                 gradoSeleccionado = (GradoPublicacion)lista.SelectedItems[0].Tag;
                 indexSeleccionado = lista.SelectedIndices[0];
+                DeshabilitarGradoButton.Text = gradoSeleccionado.bajaLogica == null ? "Deshabilitar" : "Habilitar";
             }
             catch (Exception ex) { }
+        }
+
+        private void DeshabilitarGradoButton_Click(object sender, EventArgs e)
+        {
+            GradosListView.Items[indexSeleccionado].ForeColor = gradoSeleccionado.bajaLogica == null ? Color.Gray : Color.Black;
+            if (gradoSeleccionado.bajaLogica == null)
+                gradoSeleccionado.bajaLogica = DateTime.Now.Date;
+            else
+                gradoSeleccionado.bajaLogica = null;
+            dao.habilitarODeshabilitarGrado(gradoSeleccionado);
+
+            GradosListView.BeginUpdate();
+                GradosListView.Items.RemoveAt(indexSeleccionado);
+                GradosListView.Items.Insert(indexSeleccionado, getItemFromGrado(gradoSeleccionado));
+            GradosListView.EndUpdate();
         }
     }
 }

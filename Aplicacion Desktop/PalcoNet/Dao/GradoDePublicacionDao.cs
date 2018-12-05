@@ -16,7 +16,7 @@ namespace PalcoNet.Dao
 
         public List<GradoPublicacion> getGradosDePublicacion() {
             List<GradoPublicacion> gradosPublicacion = new List<GradoPublicacion>();
-            string query = "SELECT grad_nivel, grad_comision " +
+            string query = "SELECT * " +
                            "FROM TheBigBangQuery.GradoPublicaciones " +
                            "ORDER BY 2 DESC";
             SqlDataReader reader = null;
@@ -50,8 +50,10 @@ namespace PalcoNet.Dao
             GradoPublicacion grado = new GradoPublicacion();
             try
             {
-                grado.nivel = reader.IsDBNull(0) ? null : reader.GetSqlString(0).ToString();
-                grado.comision = reader.IsDBNull(1) ? null : (Nullable<float>)float.Parse(reader["grad_comision"].ToString());
+                grado.id = (int)(reader.IsDBNull(0) ? null : (Nullable<int>)reader.GetSqlDecimal(0));
+                grado.nivel = reader.IsDBNull(1) ? null : reader.GetSqlString(1).ToString();
+                grado.comision = reader.IsDBNull(2) ? null : (Nullable<float>)float.Parse(reader["grad_comision"].ToString());
+                grado.bajaLogica = (Nullable<DateTime>) (reader.IsDBNull(3) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(3));
             }
             catch (Exception e) {
                 throw new ObjectParseException("Error al recuperar los datos de los grados de publicacion");
@@ -77,7 +79,44 @@ namespace PalcoNet.Dao
             {
                 DatabaseConection.executeNoParamFunction(command);
             }
+            catch (Exception e) {
+                Console.Write(e.Message);
+            }
+        }
+
+        public void actualizarGradoDePublicacion(GradoPublicacion grado) {
+            string query = "UPDATE [TheBigBangQuery].[GradoPublicaciones] " +
+                           "SET [grad_nivel] = '" + grado.nivel + 
+                           "', [grad_comision] = " + grado.comision.ToString() +
+                           " WHERE [grad_id] = " + grado.id;
+            SqlCommand command = new SqlCommand(query);
+
+            try
+            {
+                DatabaseConection.executeNoParamFunction(command);
+            }
             catch (Exception e) { }
+        }
+
+        public void habilitarODeshabilitarGrado(GradoPublicacion grado) {
+            string fecha = grado.bajaLogica == null ? "NULL" : "'" + ((DateTime)grado.bajaLogica).Date.ToString("yyyy-dd-MM") + "'";
+            string query = "UPDATE [TheBigBangQuery].[GradoPublicaciones] " +
+                           "SET [grad_baja] = " + fecha + " " +
+                           "WHERE [grad_id] = @id";
+            SqlCommand command = new SqlCommand(query);
+
+            SqlParameter param = new SqlParameter("@id", System.Data.SqlDbType.Decimal);
+            param.Value = grado.id;
+            command.Parameters.Add(param);
+
+            try
+            {
+                DatabaseConection.executeNoParamFunction(command);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
         }
     }
 }

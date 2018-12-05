@@ -10,6 +10,10 @@ namespace PalcoNet.UserData
 {
     class UserData
     {
+
+        public static string TIPO_EMPRESA = "EMPRESA";
+        public static string TIPO_CLIENTE = "CLIENTE";
+
         private static Usuario usuario = null;
         private static Rol activeRol = null;
 
@@ -21,6 +25,27 @@ namespace PalcoNet.UserData
             usuario = user;
         }
         public static void setRolActivo(Rol rol) {
+            try
+            {
+                switch (rol.id)
+                {
+                    case 0:
+                        {
+                            // empresa
+                            EmpresasDao empresaDao = new EmpresasDao();
+                            usuario.usuarioRegistrable = empresaDao.getEmpresaPorUserId(usuario.id);
+                            break;
+                        }
+                    case 2:
+                        {
+                            // CLIENTE
+                            ClientesDao clientesDao = new ClientesDao();
+                            usuario.usuarioRegistrable = clientesDao.getClientePorUserId(usuario.id);
+                            break;
+                        }
+                }
+            }
+            catch (Exception e) { }
             activeRol = rol;
         }
 

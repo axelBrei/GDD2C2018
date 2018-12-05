@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Model
 {
-    class Rubro
+    public class TipoUbicacion
     {
-        public Nullable<int> id { get; set; }
+        public int id { get; set; }
         public string descripcion { get; set; }
 
         public override string ToString()
         {
-            return descripcion;
+            return this.descripcion;
         }
     }
 }

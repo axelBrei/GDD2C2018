@@ -171,6 +171,34 @@ namespace PalcoNet.Dao
             SqlCommand command = new SqlCommand(query);
             DatabaseConection.executeNoParamFunction(command);
         }
+
+        public Cliente getClientePorUserId(int id) {
+            string query = getClientsQuery + " WHERE clie_usuario = @id";
+            SqlCommand command = new SqlCommand(query);
+            SqlParameter param = new SqlParameter("@id", System.Data.SqlDbType.Int);
+            param.Value = id;
+            command.Parameters.Add(param);
+            SqlDataReader reader = null;
+            Cliente cliente = null;
+            try
+            {
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows) {
+                    reader.Read();
+                    cliente = getClienteFromReder(reader);
+                }
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            finally{
+                if(reader != null & !reader.IsClosed){
+                    reader.Close();
+                }
+            }
+
+            return cliente;
+        }
     }
 
     

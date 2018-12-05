@@ -7,7 +7,7 @@ using PalcoNet.Model;
 
 namespace PalcoNet.Model
 {
-    public class Cliente
+    public class Cliente : Registrable
     {
         public int id { get; set; }
         public string nombre { get; set; }
@@ -26,5 +26,21 @@ namespace PalcoNet.Model
         public Nullable<int> puntos;
         public Nullable<DateTime> vencimientoPuntos { get; set; }
 
+
+        public int getId()
+        {
+            return id;
+        }
+
+        public string getNombre()
+        {
+            return nombre + " " + apellido;
+        }
+
+
+        public string getTipo()
+        {
+            return UserData.UserData.TIPO_CLIENTE;
+        }
     }
 }

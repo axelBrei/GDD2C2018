@@ -7,7 +7,7 @@ using PalcoNet.Model;
 
 namespace PalcoNet.Model
 {
-    public class Empresa
+    public class Empresa : Registrable
     {
         public int id {get; set;}
         public string usuario { get; set; }
@@ -18,5 +18,21 @@ namespace PalcoNet.Model
         public Direccion direccion { get; set; }
         public Nullable<DateTime> bajaLogica { get; set; }
         public Nullable<DateTime> creacion { get; set; }
+
+        public int getId()
+        {
+            return id;
+        }
+
+        public string getNombre()
+        {
+            return razonSocial;
+        }
+
+
+        public string getTipo()
+        {
+            return UserData.UserData.TIPO_EMPRESA;
+        }
     }
 }

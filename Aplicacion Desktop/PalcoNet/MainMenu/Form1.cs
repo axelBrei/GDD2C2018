@@ -27,6 +27,7 @@ namespace PalcoNet.MainMenu
             FuncionalidadesDao funcionalidadesDao = new FuncionalidadesDao();
             funcionalidades = funcionalidadesDao.getFuncionalidades();
             this.iniciarBotones();
+            clickHandler(funcionalidades[0].id);
         }
 
         private void iniciarBotones() {
@@ -51,90 +52,103 @@ namespace PalcoNet.MainMenu
 
         protected void getClickHandler(object sender, EventArgs e, int funcionalidadId)
         {
-            switch (funcionalidadId) {
-                case 0: {
-                    // LOGIN Y SEGURIDAD
-                    
-                    break;
-                }
+            clickHandler(funcionalidadId);
+        }
+
+        private void clickHandler(int funcionalidadId) {
+            this.panel2.Controls.Clear();
+            Form form = null;
+            switch (funcionalidadId)
+            {
                 case 1:
-                {
-                    // ABM ROL
-                    new Abm_Rol.Form1().Show(this);
-                    break;
-                }
-                case 2:
-                {
-                    // REGISTRO DE USUARIOS
-                    break;
-                }
+                    {
+                        // ABM ROL
+                        form = new Abm_Rol.Form1();
+                        break;
+                    }
                 case 3:
-                {
-                    //ABM CLIENTES
-                    new Abm_Cliente.ListadoClientesForm().ShowDialog(this);
-                    break;
-                }
+                    {
+                        //ABM CLIENTES
+                        form = new Abm_Cliente.ListadoClientesForm();
+                        break;
+                    }
                 case 4:
-                {
-                    // ABM EMPRESAS
-                    new Abm_Empresa_Espectaculo.ListaEmpresas().Show(this);
-                    break;
-                }
+                    {
+                        // ABM EMPRESAS
+                        form = new Abm_Empresa_Espectaculo.ListaEmpresas();
+                        break;
+                    }
                 case 5:
-                {
-                    // ABM CATEGORIAS
-                    new Abm_Rubro.ListadoRubros().Show(this);
-                    break;
-                }
+                    {
+                        // ABM CATEGORIAS
+                        form = new Abm_Rubro.ListadoRubros();
+                        break;
+                    }
                 case 6:
-                {
-                    // ABM GRADO DE PUBLICACION
-                    new Abm_Grado.ListaGradosDePublicacion().Show(this);
-                    break;
-                }
+                    {
+                        // ABM GRADO DE PUBLICACION
+                        form = new Abm_Grado.Form1();
+                        break;
+                    }
                 case 7:
-                {
-                    // GENERACION DE ESPECTACULOS 
-                    new Generar_Publicacion.Form1().Show();
-                    break;
-                }
+                    {
+                        // GENERACION DE ESPECTACULOS 
+                        form = new Generar_Publicacion.GenerarPublicacionForm();
+                        break;
+                    }
                 case 8:
-                {
-                    // EDITAR PUBLICACIONES
-                    new Editar_Publicacion.Form1().Show();
-                    break;
-                }
+                    {
+                        // EDITAR PUBLICACIONES
+                        form = new Editar_Publicacion.Form1();
+                        form.Show();
+                        break;
+                    }
                 case 9:
-                {
-                    // COMPRAR
-                    new Comprar.Form1().Show();
-                    break;
-                }
+                    {
+                        // COMPRAR
+                        form = new Comprar.Form1();
+                        break;
+                    }
                 case 10:
-                {
-                    // HISTORIAL CLIENTE
-                    new Historial_Cliente.Form1().Show();
-                    break;
-                }
+                    {
+                        // HISTORIAL CLIENTE
+                        form = new Historial_Cliente.Form1();
+                        break;
+                    }
                 case 11:
-                {
-                    // CANJE DE PUNTOS
-                    new Canje_Puntos.Form1().Show();
-                    break;
-                }
+                    {
+                        // CANJE DE PUNTOS
+                        form = new Canje_Puntos.Form1();
+                        break;
+                    }
                 case 12:
-                {
-                    // GENERAR PAGO DE COMISIONES
-                    new Generar_Rendicion_Comisiones.Form1().Show();
-                    break;
-                }
+                    {
+                        // GENERAR PAGO DE COMISIONES
+                        form = new Generar_Rendicion_Comisiones.Form1();
+                        break;
+                    }
                 case 13:
-                {
-                    // LISTADO ESTADISTICO
-                    new Listado_Estadistico.Form1().Show();
+                    {
+                        // LISTADO ESTADISTICO
+                        form = new Listado_Estadistico.Form1();
+                        break;
+                    }
+                default: {
+                    if (funcionalidadId < 12) {
+                        clickHandler(funcionalidadId + 1);
+                    }
                     break;
                 }
             }
+            if (form != null)
+                showNestedForm(form);
+        }
+
+        private void showNestedForm(Form form) {
+            form.TopLevel = false;
+            form.AutoScroll = true;
+            this.panel2.Controls.Add(form);
+            form.Show();
         }
 
         private void button1_Click(object sender, EventArgs e)

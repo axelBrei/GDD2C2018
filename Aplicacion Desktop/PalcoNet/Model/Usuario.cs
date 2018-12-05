@@ -12,6 +12,7 @@ namespace PalcoNet.Model
         public string usuario { get; set; }
         public int intentos { get; set; }
         public List<Rol> roles { get; set; }
+        public Registrable usuarioRegistrable { get; set; }
 
         public Usuario() { 
             roles = new List<Rol>();

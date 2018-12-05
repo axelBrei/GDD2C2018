@@ -16,6 +16,8 @@ namespace PalcoNet.Abm_Grado
 {
     public partial class ListaGradosDePublicacion : Form
     {
+        private GradoPublicacion gradoSeleccionado;
+        private int indexSeleccionado;
 
         public ListaGradosDePublicacion()
         {
@@ -41,9 +43,47 @@ namespace PalcoNet.Abm_Grado
 
         }
 
+        private void onAcceptNewGrade(GradoPublicacion grado, int index) {
+            GradoDePublicacionDao dao = new GradoDePublicacionDao();
+
+            if (index != -1)
+                this.GradosListView.Items.Insert(index, getItemFromGrado(grado));
+            else{
+                // VERIFICAR Q NO ESTE YA EN LA LISTA
+                this.GradosListView.Items.Add(getItemFromGrado(grado));
+                dao.insertGradoDePublicacion(grado);
+            }
+        }
+
         private void SalirButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void AgregarGradoButton_Click(object sender, EventArgs e)
+        {
+            AgregarGradoForm form = new AgregarGradoForm();
+            form.onClickAcept += this.onAcceptNewGrade;
+            form.Show(this);
+        }
+
+        private void ModificarGradoButton_Click(object sender, EventArgs e)
+        {
+            AgregarGradoForm form = new AgregarGradoForm(gradoSeleccionado, indexSeleccionado);
+            form.onClickAcept += this.onAcceptNewGrade;
+            form.Show(this);
+        }
+
+        private void GradosListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var lista = sender as ListView;
+
+            try
+            {
+                gradoSeleccionado = (GradoPublicacion)lista.SelectedItems[0].Tag;
+                indexSeleccionado = lista.SelectedIndices[0];
+            }
+            catch (Exception ex) { }
         }
     }
 }

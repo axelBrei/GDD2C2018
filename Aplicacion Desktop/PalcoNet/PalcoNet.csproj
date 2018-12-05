@@ -57,6 +57,12 @@
     <Compile Include="Abm Empresa Espectaculo\ListaEmpresas.Designer.cs">
       <DependentUpon>ListaEmpresas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Grado\AgregarGradoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Grado\AgregarGradoForm.Designer.cs">
+      <DependentUpon>AgregarGradoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Grado\ListaGradosDePublicacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Empresa Espectaculo\ListaEmpresas.resx">
       <DependentUpon>ListaEmpresas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Grado\AgregarGradoForm.resx">
+      <DependentUpon>AgregarGradoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Grado\ListaGradosDePublicacion.resx">
       <DependentUpon>ListaGradosDePublicacion.cs</DependentUpon>

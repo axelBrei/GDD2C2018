@@ -58,5 +58,26 @@ namespace PalcoNet.Dao
             }
             return grado;
         }
+
+        public void insertGradoDePublicacion(GradoPublicacion grado) {
+            string query = "INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) " +
+                            "VALUES (@descripcion, @comision)";
+            SqlCommand command = new SqlCommand(query);
+
+            SqlParameter descParam = new SqlParameter("@descripcion", System.Data.SqlDbType.NVarChar);
+            descParam.Value = grado.nivel;
+
+            SqlParameter comsionParam = new SqlParameter("@comision", System.Data.SqlDbType.Decimal);
+            comsionParam.Value = (decimal)grado.comision;
+
+            command.Parameters.Add(descParam);
+            command.Parameters.Add(comsionParam);
+
+            try
+            {
+                DatabaseConection.executeNoParamFunction(command);
+            }
+            catch (Exception e) { }
+        }
     }
 }

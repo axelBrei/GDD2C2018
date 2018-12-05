@@ -52,6 +52,7 @@
             this.GradosListView.TabIndex = 0;
             this.GradosListView.UseCompatibleStateImageBehavior = false;
             this.GradosListView.View = System.Windows.Forms.View.Details;
+            this.GradosListView.SelectedIndexChanged += new System.EventHandler(this.GradosListView_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -71,6 +72,7 @@
             this.AgregarGradoButton.TabIndex = 2;
             this.AgregarGradoButton.Text = "Agregar";
             this.AgregarGradoButton.UseVisualStyleBackColor = true;
+            this.AgregarGradoButton.Click += new System.EventHandler(this.AgregarGradoButton_Click);
             // 
             // ModificarGradoButton
             // 
@@ -80,6 +82,7 @@
             this.ModificarGradoButton.TabIndex = 3;
             this.ModificarGradoButton.Text = "Modificar";
             this.ModificarGradoButton.UseVisualStyleBackColor = true;
+            this.ModificarGradoButton.Click += new System.EventHandler(this.ModificarGradoButton_Click);
             // 
             // DeshabilitarGradoButton
             // 

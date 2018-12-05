@@ -158,5 +158,33 @@ namespace PalcoNet.Dao
             reader.Close();
             return empresa;
         }
+
+        public Empresa getEmpresaPorUserId(int userId) {
+            string query = mainEmpresaQuery + " WHERE empr_id = @id";
+            SqlCommand command = new SqlCommand(query);
+            SqlParameter param = new SqlParameter("@id", System.Data.SqlDbType.Int);
+            param.Value = userId;
+            command.Parameters.Add(param);
+            Empresa empre = null;
+            SqlDataReader reader = null;
+            try
+            {
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    empre = getEmpresaFromReader(reader);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally {
+                if (reader != null & !reader.IsClosed)
+                    reader.Close();
+            }
+            return empre;
+        }
     }
 }

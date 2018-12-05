@@ -31,6 +31,8 @@ IF object_id('TheBigBangQuery.Factura') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Factura;
 IF object_id('TheBigBangQuery.Ubicacion') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Ubicacion;
+IF object_id('TheBigBangQuery.TipoUbicacion') IS NOT NULL
+	DROP TABLE TheBigBangQuery.TipoUbicacion;
 IF object_id('TheBigBangQuery.Publicacion') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Publicacion;
 IF object_id('TheBigBangQuery.GradoPublicaciones') IS NOT NULL
@@ -231,18 +233,25 @@ ALTER TABLE [TheBigBangQuery].[Publicacion]
     ADD CONSTRAINT [PK_PUBL_GRADO] FOREIGN KEY ([publ_grad_nivel]) REFERENCES [TheBigBangQuery].[GradoPublicaciones](grad_nivel);
 
 
+CREATE TABLE [TheBigBangQuery].[TipoUbicacion] (
+	[tipu_id] NUMERIC(18,0) NOT NULL,
+	[tipu_descripcion] NVARCHAR(255)
+
+	CONSTRAINT [PK_TIPU] PRIMARY KEY ([tipu_id])
+);
 
 CREATE TABLE [TheBigBangQuery].[Ubicacion] (
     [ubi_id] NUMERIC(12,0) NOT NULL IDENTITY(1,1),
     [ubi_fila] VARCHAR(3),
     [ubi_asiento] NUMERIC(18,0),
     [ubi_sin_enumerar] BIT,
-    [ubi_tipo_codigo] NUMERIC(18,0),
-    [ubi_tipo_descripcion] NVARCHAR(255)
+    [ubi_tipo_codigo] NUMERIC(18,0)
 
     CONSTRAINT [PK_UBI] PRIMARY KEY ([ubi_id])
 );
 
+ALTER TABLE [TheBigBangQuery].[Ubicacion]
+    ADD CONSTRAINT [FK_UBI_TIPO] FOREIGN KEY ([ubi_tipo_codigo]) REFERENCES [TheBigBangQuery].[TipoUbicacion](tipu_id);
 
 CREATE TABLE [TheBigBangQuery].[Ubicaciones_publicacion] (
     [ubpu_id_publicacion] NUMERIC(12,0) NOT NULL,
@@ -507,14 +516,21 @@ BEGIN TRANSACTION
 	) 
 	WHERE m.Espectaculo_Cod IS NOT NULL AND m.Espectaculo_Descripcion IS NOT NULL AND m.Espectaculo_Rubro_Descripcion IS NOT NULL
 
+	-- INSERTO LOS TIPOS 
+	INSERT INTO [TheBigBangQuery].[TipoUbicacion]
+	SELECT Ubicacion_Tipo_Codigo, Ubicacion_Tipo_Descripcion
+	FROM [gd_esquema].[Maestra]
+	WHERE Ubicacion_Tipo_Codigo IS NOT NULL AND Ubicacion_Tipo_Descripcion IS NOT NULL
+	GROUP BY Ubicacion_Tipo_Codigo, Ubicacion_Tipo_Descripcion
+
+
 	-- INSERTO LAS UBICACIONES
 	INSERT INTO [TheBigBangQuery].[Ubicacion](
 		[ubi_asiento],
 		[ubi_fila],
 		[ubi_sin_enumerar],
-		[ubi_tipo_codigo],
-		[ubi_tipo_descripcion])
-	SELECT DISTINCT m.Ubicacion_Asiento, m.Ubicacion_Fila, m.Ubicacion_Sin_numerar, m.Ubicacion_Tipo_Codigo, m.Ubicacion_Tipo_Descripcion
+		[ubi_tipo_codigo])
+	SELECT DISTINCT m.Ubicacion_Asiento, m.Ubicacion_Fila, m.Ubicacion_Sin_numerar, m.Ubicacion_Tipo_Codigo
 	FROM [gd_esquema].[Maestra] m
 	WHERE m.Ubicacion_Asiento IS NOT NULL AND 
 		m.Ubicacion_Fila IS NOT NULL AND 
@@ -533,8 +549,7 @@ BEGIN TRANSACTION
 		m.Ubicacion_Asiento = u.ubi_asiento AND 
 		m.Ubicacion_Fila = u.ubi_fila AND 
 		m.Ubicacion_Sin_numerar = u.ubi_sin_enumerar AND 
-		m.Ubicacion_Tipo_Codigo = u.ubi_tipo_codigo AND
-		m.Ubicacion_Tipo_Descripcion = u.ubi_tipo_descripcion
+		m.Ubicacion_Tipo_Codigo = u.ubi_tipo_codigo
 	) LEFT JOIN [TheBigBangQuery].[Publicacion] p ON (
 		p.publ_espectaculo = m.Espectaculo_Cod AND 
 		p.publ_estado = m.Espectaculo_Estado AND 
@@ -589,8 +604,7 @@ BEGIN TRANSACTION
 		u.ubi_fila = m.Ubicacion_Fila AND 
 		u.ubi_asiento = m.Ubicacion_Asiento AND 
 		u.ubi_sin_enumerar = m.Ubicacion_Sin_numerar AND
-		u.ubi_tipo_codigo = m.Ubicacion_Tipo_Codigo AND 
-		u.ubi_tipo_descripcion = m.Ubicacion_Tipo_Descripcion
+		u.ubi_tipo_codigo = m.Ubicacion_Tipo_Codigo
 	) LEFT JOIN [TheBigBangQuery].[Factura] f ON (
 		f.fact_numero = m.Factura_Nro AND 
 		f.fact_fecha = m.Factura_Fecha AND 
@@ -618,8 +632,7 @@ BEGIN TRANSACTION
 		u.ubi_fila = m.Ubicacion_Fila AND 
 		u.ubi_asiento = m.Ubicacion_Asiento AND 
 		u.ubi_sin_enumerar = m.Ubicacion_Sin_numerar AND
-		u.ubi_tipo_codigo = m.Ubicacion_Tipo_Codigo AND 
-		u.ubi_tipo_descripcion = m.Ubicacion_Tipo_Descripcion
+		u.ubi_tipo_codigo = m.Ubicacion_Tipo_Codigo 
 	)
 	WHERE m.Item_Factura_Cantidad IS NOT NULL AND 
 		m.Item_Factura_Descripcion IS NOT NULL AND 

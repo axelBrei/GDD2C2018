@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
             this.AgregarButton = new System.Windows.Forms.Button();
             this.EditarButton = new System.Windows.Forms.Button();
             this.EliminarButton = new System.Windows.Forms.Button();
@@ -37,21 +36,14 @@
             this.Rol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Desktop;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(920, 150);
-            this.panel1.TabIndex = 0;
-            // 
             // AgregarButton
             // 
+            this.AgregarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.AgregarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.AgregarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.AgregarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AgregarButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AgregarButton.Location = new System.Drawing.Point(811, 180);
+            this.AgregarButton.Location = new System.Drawing.Point(608, 178);
             this.AgregarButton.Name = "AgregarButton";
             this.AgregarButton.Size = new System.Drawing.Size(75, 23);
             this.AgregarButton.TabIndex = 1;
@@ -61,11 +53,12 @@
             // 
             // EditarButton
             // 
+            this.EditarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.EditarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.EditarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.EditarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditarButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.EditarButton.Location = new System.Drawing.Point(811, 227);
+            this.EditarButton.Location = new System.Drawing.Point(608, 225);
             this.EditarButton.Name = "EditarButton";
             this.EditarButton.Size = new System.Drawing.Size(75, 23);
             this.EditarButton.TabIndex = 5;
@@ -75,11 +68,12 @@
             // 
             // EliminarButton
             // 
+            this.EliminarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.EliminarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.EliminarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.EliminarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EliminarButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.EliminarButton.Location = new System.Drawing.Point(811, 273);
+            this.EliminarButton.Location = new System.Drawing.Point(608, 271);
             this.EliminarButton.Name = "EliminarButton";
             this.EliminarButton.Size = new System.Drawing.Size(75, 23);
             this.EliminarButton.TabIndex = 6;
@@ -104,11 +98,14 @@
             // listaRoles
             // 
             this.listaRoles.Alignment = System.Windows.Forms.ListViewAlignment.Left;
+            this.listaRoles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listaRoles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Rol});
-            this.listaRoles.Location = new System.Drawing.Point(12, 180);
+            this.listaRoles.Location = new System.Drawing.Point(12, 70);
             this.listaRoles.Name = "listaRoles";
-            this.listaRoles.Size = new System.Drawing.Size(753, 423);
+            this.listaRoles.Size = new System.Drawing.Size(550, 420);
             this.listaRoles.TabIndex = 8;
             this.listaRoles.UseCompatibleStateImageBehavior = false;
             this.listaRoles.SelectedIndexChanged += new System.EventHandler(this.listaRoles_SelectedIndexChanged);
@@ -120,14 +117,14 @@
             // Form1
             // 
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(912, 692);
+            this.ClientSize = new System.Drawing.Size(709, 689);
             this.ControlBox = false;
             this.Controls.Add(this.listaRoles);
             this.Controls.Add(this.SalirButton);
             this.Controls.Add(this.EliminarButton);
             this.Controls.Add(this.EditarButton);
             this.Controls.Add(this.AgregarButton);
-            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
@@ -136,7 +133,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button AgregarButton;
         private System.Windows.Forms.Button EditarButton;
         private System.Windows.Forms.Button EliminarButton;

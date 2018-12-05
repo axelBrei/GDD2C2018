@@ -57,9 +57,10 @@
             // 
             // AceptarButton
             // 
+            this.AceptarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AceptarButton.BackColor = System.Drawing.Color.Gainsboro;
             this.AceptarButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.AceptarButton.Location = new System.Drawing.Point(452, 522);
+            this.AceptarButton.Location = new System.Drawing.Point(630, 662);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
             this.AceptarButton.TabIndex = 6;
@@ -69,9 +70,10 @@
             // 
             // CancelarButton
             // 
+            this.CancelarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CancelarButton.BackColor = System.Drawing.Color.Gainsboro;
             this.CancelarButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.CancelarButton.Location = new System.Drawing.Point(352, 522);
+            this.CancelarButton.Location = new System.Drawing.Point(530, 662);
             this.CancelarButton.Name = "CancelarButton";
             this.CancelarButton.Size = new System.Drawing.Size(75, 23);
             this.CancelarButton.TabIndex = 7;
@@ -90,11 +92,14 @@
             // 
             // funcionalidadesRol
             // 
+            this.funcionalidadesRol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.funcionalidadesRol.CheckOnClick = true;
             this.funcionalidadesRol.FormattingEnabled = true;
             this.funcionalidadesRol.Location = new System.Drawing.Point(12, 113);
             this.funcionalidadesRol.Name = "funcionalidadesRol";
-            this.funcionalidadesRol.Size = new System.Drawing.Size(395, 319);
+            this.funcionalidadesRol.Size = new System.Drawing.Size(573, 454);
             this.funcionalidadesRol.TabIndex = 10;
             this.funcionalidadesRol.SelectedIndexChanged += new System.EventHandler(this.funcionalidadesRol_SelectedIndexChanged);
             // 
@@ -103,14 +108,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(539, 557);
+            this.ClientSize = new System.Drawing.Size(717, 697);
             this.Controls.Add(this.funcionalidadesRol);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.CancelarButton);
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.RolNombre);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EditarRol";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

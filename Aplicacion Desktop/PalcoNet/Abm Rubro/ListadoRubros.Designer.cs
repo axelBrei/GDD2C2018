@@ -35,11 +35,14 @@
             // RubrosListView
             // 
             this.RubrosListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.RubrosListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RubrosListView.GridLines = true;
             this.RubrosListView.Location = new System.Drawing.Point(12, 74);
             this.RubrosListView.MultiSelect = false;
             this.RubrosListView.Name = "RubrosListView";
-            this.RubrosListView.Size = new System.Drawing.Size(539, 400);
+            this.RubrosListView.Size = new System.Drawing.Size(669, 550);
             this.RubrosListView.TabIndex = 0;
             this.RubrosListView.UseCompatibleStateImageBehavior = false;
             this.RubrosListView.View = System.Windows.Forms.View.Details;
@@ -58,9 +61,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 547);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClientSize = new System.Drawing.Size(717, 697);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.RubrosListView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListadoRubros";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";

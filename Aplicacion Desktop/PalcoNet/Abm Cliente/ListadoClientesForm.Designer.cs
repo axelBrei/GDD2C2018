@@ -43,14 +43,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FiltroClientesTextBox.Location = new System.Drawing.Point(77, 80);
             this.FiltroClientesTextBox.Name = "FiltroClientesTextBox";
-            this.FiltroClientesTextBox.Size = new System.Drawing.Size(405, 20);
+            this.FiltroClientesTextBox.Size = new System.Drawing.Size(527, 20);
             this.FiltroClientesTextBox.TabIndex = 1;
             this.FiltroClientesTextBox.TextChanged += new System.EventHandler(this.FiltroClientesTextBox_TextChanged);
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(500, 512);
+            this.button1.Location = new System.Drawing.Point(622, 635);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -60,7 +60,7 @@
             // agregarClienteButton
             // 
             this.agregarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.agregarClienteButton.Location = new System.Drawing.Point(500, 113);
+            this.agregarClienteButton.Location = new System.Drawing.Point(622, 113);
             this.agregarClienteButton.Name = "agregarClienteButton";
             this.agregarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.agregarClienteButton.TabIndex = 3;
@@ -71,7 +71,7 @@
             // ModificarClienteButton
             // 
             this.ModificarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ModificarClienteButton.Location = new System.Drawing.Point(500, 151);
+            this.ModificarClienteButton.Location = new System.Drawing.Point(622, 151);
             this.ModificarClienteButton.Name = "ModificarClienteButton";
             this.ModificarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.ModificarClienteButton.TabIndex = 4;
@@ -82,7 +82,7 @@
             // DeshabilitarClienteButton
             // 
             this.DeshabilitarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeshabilitarClienteButton.Location = new System.Drawing.Point(500, 191);
+            this.DeshabilitarClienteButton.Location = new System.Drawing.Point(622, 191);
             this.DeshabilitarClienteButton.Name = "DeshabilitarClienteButton";
             this.DeshabilitarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.DeshabilitarClienteButton.TabIndex = 5;
@@ -112,7 +112,7 @@
             this.ListaCliente.GridLines = true;
             this.ListaCliente.Location = new System.Drawing.Point(16, 113);
             this.ListaCliente.Name = "ListaCliente";
-            this.ListaCliente.Size = new System.Drawing.Size(466, 375);
+            this.ListaCliente.Size = new System.Drawing.Size(588, 498);
             this.ListaCliente.TabIndex = 7;
             this.ListaCliente.UseCompatibleStateImageBehavior = false;
             this.ListaCliente.View = System.Windows.Forms.View.Details;
@@ -122,7 +122,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 547);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClientSize = new System.Drawing.Size(709, 670);
             this.Controls.Add(this.ListaCliente);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DeshabilitarClienteButton);
@@ -130,6 +131,7 @@
             this.Controls.Add(this.agregarClienteButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.FiltroClientesTextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListadoClientesForm";
             this.Text = "Listado de clientes";
             this.ResumeLayout(false);

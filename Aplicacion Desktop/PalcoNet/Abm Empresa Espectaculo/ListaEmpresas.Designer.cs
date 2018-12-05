@@ -50,13 +50,14 @@
             // 
             this.FiltrosTextBox.Location = new System.Drawing.Point(77, 76);
             this.FiltrosTextBox.Name = "FiltrosTextBox";
-            this.FiltrosTextBox.Size = new System.Drawing.Size(401, 20);
+            this.FiltrosTextBox.Size = new System.Drawing.Size(523, 20);
             this.FiltrosTextBox.TabIndex = 2;
             this.FiltrosTextBox.TextChanged += new System.EventHandler(this.FiltrosTextBox_TextChanged);
             // 
             // AgregarButton
             // 
-            this.AgregarButton.Location = new System.Drawing.Point(500, 111);
+            this.AgregarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AgregarButton.Location = new System.Drawing.Point(622, 111);
             this.AgregarButton.Name = "AgregarButton";
             this.AgregarButton.Size = new System.Drawing.Size(75, 23);
             this.AgregarButton.TabIndex = 3;
@@ -68,6 +69,9 @@
             // 
             this.EmpresasListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.EmpresasListView.Alignment = System.Windows.Forms.ListViewAlignment.Left;
+            this.EmpresasListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.EmpresasListView.FullRowSelect = true;
             this.EmpresasListView.GridLines = true;
             this.EmpresasListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -75,7 +79,7 @@
             this.EmpresasListView.Location = new System.Drawing.Point(16, 111);
             this.EmpresasListView.MultiSelect = false;
             this.EmpresasListView.Name = "EmpresasListView";
-            this.EmpresasListView.Size = new System.Drawing.Size(462, 364);
+            this.EmpresasListView.Size = new System.Drawing.Size(584, 487);
             this.EmpresasListView.TabIndex = 4;
             this.EmpresasListView.UseCompatibleStateImageBehavior = false;
             this.EmpresasListView.View = System.Windows.Forms.View.Details;
@@ -83,7 +87,8 @@
             // 
             // ModificarButton
             // 
-            this.ModificarButton.Location = new System.Drawing.Point(500, 151);
+            this.ModificarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModificarButton.Location = new System.Drawing.Point(622, 151);
             this.ModificarButton.Name = "ModificarButton";
             this.ModificarButton.Size = new System.Drawing.Size(75, 23);
             this.ModificarButton.TabIndex = 5;
@@ -93,7 +98,8 @@
             // 
             // DeshabilitarButton
             // 
-            this.DeshabilitarButton.Location = new System.Drawing.Point(500, 193);
+            this.DeshabilitarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeshabilitarButton.Location = new System.Drawing.Point(622, 193);
             this.DeshabilitarButton.Name = "DeshabilitarButton";
             this.DeshabilitarButton.Size = new System.Drawing.Size(75, 23);
             this.DeshabilitarButton.TabIndex = 6;
@@ -105,13 +111,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 547);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClientSize = new System.Drawing.Size(709, 670);
             this.Controls.Add(this.DeshabilitarButton);
             this.Controls.Add(this.ModificarButton);
             this.Controls.Add(this.EmpresasListView);
             this.Controls.Add(this.AgregarButton);
             this.Controls.Add(this.FiltrosTextBox);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListaEmpresas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";

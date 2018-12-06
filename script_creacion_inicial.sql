@@ -1108,3 +1108,140 @@ AS BEGIN
 END
 GO
 
+IF OBJECT_ID('[TheBigBangQuery].[getUltimoIdPublicaciones]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getUltimoIdPublicaciones];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getUltimoIdPublicaciones] ()
+RETURNS NUMERIC(12,0) AS BEGIN
+	RETURN (
+		SELECT TOP 1 publ_id
+		FROM TheBigBangQuery.Publicacion
+		ORDER BY 1 DESC
+	);
+END
+
+GO
+IF OBJECT_ID('[TheBigBangQuery].[InsertarEspectaculo]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarEspectaculo];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarEspectaculo](
+	@empresa nvarchar(255),
+	@rubro nvarchar(255),
+	@descripcion nvarchar(255),
+	@direccion nvarchar(255),
+	@newId numeric(12,0) OUTPUT)
+AS BEGIN
+
+INSERT INTO [TheBigBangQuery].[Espectaculo] (
+	[espe_empresa],
+	[espe_rubro],
+	[espe_descripcion],
+	[espe_direccion]
+) VALUES (
+	CONVERT(numeric, @empresa),
+	CONVERT(numeric,@rubro),
+	@descripcion,
+	@direccion
+)
+
+SELECT @newId = SCOPE_IDENTITY()
+
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[InsertarPublicacion]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarPublicacion]
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarPublicacion] (
+	@idEspec nvarchar(255),
+	@gradoPublicacion nvarchar(255),
+	@fechaPublicacion DATETIME,
+	@fechaEvento DATETIME,
+	@estado nvarchar(50),
+	@newId numeric(12,0) OUTPUT) 
+AS BEGIN
+	
+	IF (SELECT COUNT(*)
+		FROM TheBigBangQuery.Publicacion p1
+		WHERE p1.publ_fecha_publicacion = @fechaPublicacion
+			AND p1.publ_espectaculo = @idEspec
+			AND p1.publ_fecha_hora_espectaculo = @fechaEvento) < 1
+	BEGIN
+
+	INSERT INTO [TheBigBangQuery].[Publicacion] (
+		[publ_espectaculo],
+		[publ_grad_nivel],
+		[publ_fecha_publicacion],
+		[publ_fecha_hora_espectaculo],
+		[publ_estado]
+	) VALUES (
+		CONVERT(NUMERIC(12,0),@idEspec),
+		CONVERT(NUMERIC(10,0),@gradoPublicacion),
+		@fechaPublicacion,
+		@fechaEvento,
+		@estado
+	)
+
+	SELECT @newId = SCOPE_IDENTITY()
+
+	END ELSE 
+		RAISERROR('Error al insertar publicacion, la misma esta duplicada',16,1);
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[InsertarUbicacion]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarUbicacion];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarUbicacion] (
+	@fila nvarchar(3),
+	@asiento nvarchar(255),
+	@sinEnumerar nvarchar(3),
+	@tipoUbi nvarchar(255),
+	@newId numeric(12,0) OUTPUT)
+AS BEGIN
+	INSERT INTO [TheBigBangQuery].[Ubicacion] (
+		[ubi_fila],
+		[ubi_asiento],
+		[ubi_sin_enumerar],
+		[ubi_tipo_codigo]
+	) VALUES (
+		@fila,
+		CONVERT(NUMERIC(18,0), @asiento),
+		CONVERT(bit, @sinEnumerar),
+		CONVERT(NUMERIC(18,0),@tipoUbi)
+	);
+
+	SELECT @newId = SCOPE_IDENTITY();
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[InsertarUbicacionPorPublicacion]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarUbicacionPorPublicacion]
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarUbicacionPorPublicacion] (
+	@ubicacion nvarchar(255),
+	@publicacion nvarchar(255),
+	@precio nvarchar(255),
+	@disponible bit)
+AS BEGIN
+	BEGIN TRANSACTION;
+	BEGIN TRY
+		INSERT INTO [TheBigBangQuery].[Ubicaciones_publicacion] (
+			[ubpu_id_ubicacion],
+			[ubpu_id_publicacion],
+			[ubpu_precio],
+			[ubpu_disponible]
+		) VALUES (
+			CONVERT(NUMERIC(12,0),@ubicacion),
+			CONVERT(NUMERIC(12,0),@publicacion),
+			CONVERT(NUMERIC(18,0),@precio),
+			CONVERT(bit,@disponible)
+		)
+		COMMIT;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION;
+		RAISERROR('Error al insertar ubicacione en la publicacion',16,1);
+	END CATCH
+END
+GO

@@ -18,7 +18,7 @@ namespace PalcoNet.Dao
             List<GradoPublicacion> gradosPublicacion = new List<GradoPublicacion>();
             string query = "SELECT * " +
                            "FROM TheBigBangQuery.GradoPublicaciones " +
-                           "ORDER BY 2 DESC";
+                           "ORDER BY 3 DESC";
             SqlDataReader reader = null;
             try
             {

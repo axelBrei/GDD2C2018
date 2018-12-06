@@ -24,11 +24,12 @@ namespace PalcoNet.Generar_Publicacion
          * 
          */
 
-        public delegate void OnFinishNewDates(List<DateTime> fechas);
+        public delegate void OnFinishNewDates(List<DateTime> fechas, bool modificando);
         public event OnFinishNewDates onFinishDateInsertion;
 
         private List<PanelItem> items = new List<PanelItem>();
         private DateTime fechaAnterior;
+        private bool modificando = false;
 
         public AñadirFechasForm(DateTime fechaAnterior)
         {
@@ -37,15 +38,26 @@ namespace PalcoNet.Generar_Publicacion
 
         }
 
-        private void AñadirButton_Click(object sender, EventArgs e)
-        {
-            addDateItem();
+        public AñadirFechasForm(DateTime fechaAnterior , List<DateTime> items){
+
+            InitializeComponent();
+            this.fechaAnterior = fechaAnterior;
+            modificando = true;
+            for (int i = 0; i < items.Count; i++) {
+                DateTime item = items[i];
+                addDateItem(item);
+            }
         }
 
-        private void addDateItem() {
+        private void AñadirButton_Click(object sender, EventArgs e)
+        {
+            addDateItem(fechaAnterior);
+        }
+
+        private void addDateItem(DateTime fecha) {
             int panelItemsCount = FechasPanel.Controls.Count;
 
-            PanelDateItem item = new PanelDateItem(fechaAnterior, panelItemsCount);
+            PanelDateItem item = new PanelDateItem(fecha, panelItemsCount);
             item.TopLevel = false;
             item.AutoScroll = true;
             item.Size = new Size(this.FechasPanel.Size.Width,37);
@@ -55,6 +67,7 @@ namespace PalcoNet.Generar_Publicacion
             FechasPanel.Controls.Add(item);
             item.Show();
             PanelItem panelItem = new PanelItem(FechasPanel.Controls.IndexOf(item), item);
+            panelItem.fecha = fecha;
             items.Add(panelItem);
             
         }
@@ -65,9 +78,6 @@ namespace PalcoNet.Generar_Publicacion
 
         private void onDateChange(DateTime fecha, int index) {
             items[index].fecha = fecha;
-            for (int i = index + 1; i < items.Count; i++) {
-                items[i].item.setFecha(fecha);
-            }
         }
 
         private class PanelItem
@@ -95,10 +105,9 @@ namespace PalcoNet.Generar_Publicacion
             DateTime minDate = fechaAnterior;
             string elementosACorregirFecha = "";
             items.ForEach(elem => {
-                if (fechaAnterior.CompareTo(elem.fecha) > 0)
-                {
-                    if (elem.isChecked)
-                        respuesta.Add(elem.fecha);
+                if(minDate.CompareTo(elem.fecha) < 0 & elem.isChecked ){
+                    minDate = elem.fecha;
+                    respuesta.Add(elem.fecha);
                 }
                 else {
                     elementosACorregirFecha += elem.index + "-";
@@ -108,7 +117,8 @@ namespace PalcoNet.Generar_Publicacion
             if (string.IsNullOrEmpty(elementosACorregirFecha))
             {
                 if (this.onFinishDateInsertion != null)
-                    this.onFinishDateInsertion(respuesta);
+                    this.onFinishDateInsertion(respuesta, modificando);
+                    this.Close();
             }
             else {
                 MessageBox.Show("Corrija las fechas de los items: " + elementosACorregirFecha.Remove(elementosACorregirFecha.Length -1));

@@ -66,6 +66,7 @@ namespace PalcoNet.ConectionUtils
             SqlCommand command = new SqlCommand(query, getInstance());
             command.ExecuteNonQuery();
         }
+
         public static void executeNoParamFunction(SqlCommand command)
         {
             command.Connection = getInstance();

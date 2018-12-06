@@ -13,10 +13,9 @@ namespace PalcoNet.Model
         public Nullable<float> comision { get; set; }
         public Nullable<DateTime> bajaLogica { get; set; }
 
-        public override bool Equals(object obj)
+        public override string ToString()
         {
-            var grado = obj as GradoPublicacion;
-            return this.nivel.ToLower().Equals(grado.nivel.ToLower()) & this.comision.Equals(grado.comision);
+            return this.nivel;
         }
     }
 }

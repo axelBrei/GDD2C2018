@@ -45,6 +45,7 @@
             this.EliminarUbicacionButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.HoraEventoTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.ClearFormButton = new System.Windows.Forms.Button();
             this.UbicacionesPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,6 +122,7 @@
             this.GradoPublicacionComboBox.Name = "GradoPublicacionComboBox";
             this.GradoPublicacionComboBox.Size = new System.Drawing.Size(438, 21);
             this.GradoPublicacionComboBox.TabIndex = 8;
+            this.GradoPublicacionComboBox.SelectedIndexChanged += new System.EventHandler(this.GradoPublicacionComboBox_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -131,7 +133,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(109, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Grade de Publicacion";
+            this.label5.Text = "Grado de Publicacion";
             // 
             // label6
             // 
@@ -198,12 +200,13 @@
             this.AceptarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AceptarButton.BackColor = System.Drawing.SystemColors.Desktop;
             this.AceptarButton.ForeColor = System.Drawing.Color.Snow;
-            this.AceptarButton.Location = new System.Drawing.Point(630, 662);
+            this.AceptarButton.Location = new System.Drawing.Point(630, 617);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
             this.AceptarButton.TabIndex = 15;
             this.AceptarButton.Text = "Aceptar";
             this.AceptarButton.UseVisualStyleBackColor = false;
+            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // EliminarUbicacionButton
             // 
@@ -242,6 +245,19 @@
             this.HoraEventoTimePicker.Value = new System.DateTime(2018, 12, 4, 0, 0, 0, 0);
             this.HoraEventoTimePicker.ValueChanged += new System.EventHandler(this.HoraEventoTimePicker_ValueChanged);
             // 
+            // ClearFormButton
+            // 
+            this.ClearFormButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClearFormButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.ClearFormButton.ForeColor = System.Drawing.Color.Snow;
+            this.ClearFormButton.Location = new System.Drawing.Point(630, 577);
+            this.ClearFormButton.Name = "ClearFormButton";
+            this.ClearFormButton.Size = new System.Drawing.Size(75, 23);
+            this.ClearFormButton.TabIndex = 19;
+            this.ClearFormButton.Text = "Limpiar";
+            this.ClearFormButton.UseVisualStyleBackColor = false;
+            this.ClearFormButton.Click += new System.EventHandler(this.ClearFormButton_Click);
+            // 
             // GenerarPublicacionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,6 +265,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(717, 697);
             this.ControlBox = false;
+            this.Controls.Add(this.ClearFormButton);
             this.Controls.Add(this.HoraEventoTimePicker);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.EliminarUbicacionButton);
@@ -295,5 +312,6 @@
         private System.Windows.Forms.Button EliminarUbicacionButton;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DateTimePicker HoraEventoTimePicker;
+        private System.Windows.Forms.Button ClearFormButton;
     }
 }

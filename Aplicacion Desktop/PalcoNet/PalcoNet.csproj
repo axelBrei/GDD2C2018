@@ -108,17 +108,21 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
+    <Compile Include="Constants\Strings.cs" />
     <Compile Include="Dao\ClientesDao.cs" />
     <Compile Include="Dao\EmpresasDao.cs" />
+    <Compile Include="Dao\EspectaculosDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\GradoDePublicacionDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
+    <Compile Include="Dao\PublicacionesDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
     <Compile Include="Dao\RubrosDao.cs" />
     <Compile Include="Dao\TipoDocumentoDao.cs" />
     <Compile Include="Dao\TipoUbicacionDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
+    <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
     <Compile Include="Editar Publicacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +131,7 @@
     </Compile>
     <Compile Include="Exceptions\DataNotFoundException.cs" />
     <Compile Include="Exceptions\ObjectParseException.cs" />
+    <Compile Include="Exceptions\SqlInsertException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +162,7 @@
     <Compile Include="Generar Publicacion\PanelDateItem.Designer.cs">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Generar Publicacion\PublicacionesController.cs" />
     <Compile Include="Generar Rendicion Comisiones\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,9 +196,11 @@
     <Compile Include="Model\Cliente.cs" />
     <Compile Include="Model\Direccion.cs" />
     <Compile Include="Model\Empresa.cs" />
+    <Compile Include="Model\Espectaculo.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\GradoPublicacion.cs" />
+    <Compile Include="Model\Publicacion.cs" />
     <Compile Include="Model\Registrable.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Rubro.cs" />

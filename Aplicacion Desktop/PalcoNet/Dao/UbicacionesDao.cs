@@ -7,6 +7,7 @@ using PalcoNet.Model;
 using PalcoNet.ConectionUtils;
 using PalcoNet.Exceptions;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace PalcoNet.Dao
 {
@@ -39,6 +40,35 @@ namespace PalcoNet.Dao
                 }
             }
             return ubicaciones;
+        }
+
+        public int insertarUbicacion(Ubicacion ubic, SqlTransaction transaction) {
+            string procedure = "[TheBigBangQuery].[InsertarUbicacion]";
+            try
+            {
+                SqlCommand command = new SqlCommand();
+
+                command.Transaction = transaction != null ? transaction : null;
+                command.CommandText = procedure;
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@fila", ubic.fila);
+                command.Parameters.AddWithValue("@asiento", ubic.asiento.ToString());
+                // TODO CAMBIAR OPCION PARA GENERAR UBICACIONES SIN ENUMERAR
+                command.Parameters.AddWithValue("@sinEnumerar", "1");
+                command.Parameters.AddWithValue("@tipoUbi", ubic.tipoUbicaciones.id.ToString());
+
+                SqlParameter outId = new SqlParameter("@newId", SqlDbType.Decimal) { Direction = ParameterDirection.Output };
+                command.Parameters.Add(outId);
+
+                DatabaseConection.executeNoParamFunction(command);
+
+
+                return int.Parse(outId.Value.ToString());
+            }
+            catch (Exception ex) {
+                return -1;
+            }
         }
     }
 }

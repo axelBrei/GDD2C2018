@@ -11,23 +11,44 @@ using PalcoNet.Model;
 using PalcoNet.Exceptions;
 using PalcoNet.Dao;
 using System.Data;
+using PalcoNet.Constants;
+using PalcoNet.UserData;
+using System.Data.SqlClient;
+using PalcoNet.ConectionUtils;
 
 namespace PalcoNet.Generar_Publicacion
 {
     public partial class GenerarPublicacionForm : Form
     {
+
+        /*
+         *  ESTRAGTEGIA:
+         *  - TODAS LAS PUBLICACIONES QUE SE AGREGAN ENTRAN EN UN ESTADO DE BORRADOR, LUEGO SE PUEDE MODIFICAR DICHO ESTADO
+         *      A FINALIZADA O ACTIVA
+         */ 
+
         private RubrosDao rubrosDao;
+        private GradoDePublicacionDao gradosDao;
+        private PublicacionesDao publicacionesDao;
+        private EspectaculosDao espectaculosDao;
+        private PublicacionesController controller;
 
         private string direccionPublicacion;
         private string descripcionPublicacion;
         private Rubro rubro;
+        private GradoPublicacion gradoPublicacion;
         private List<DateTime> fechasDeLaPublicacion = new List<DateTime>();
         private List<Ubicacion> ubicacionesList = new List<Ubicacion>();
+        private DateTime fechaMinima;
 
         public GenerarPublicacionForm()
         {
             InitializeComponent();
             rubrosDao = new RubrosDao();
+            gradosDao = new GradoDePublicacionDao();
+            publicacionesDao = new PublicacionesDao();
+            espectaculosDao = new EspectaculosDao();
+            controller = new PublicacionesController();
 
             rubrosDao.getRubros().ForEach(
                 elem => RubroComboBox.Items.Add(elem)
@@ -36,17 +57,23 @@ namespace PalcoNet.Generar_Publicacion
             this.FechaEventoTimePicker.ShowUpDown = false;
             this.FechaEventoTimePicker.CustomFormat = "yyyy.MM.dd";
             // Dia Minimo: ayer
-            DateTime fechaMinima = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            fechaMinima = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            fechasDeLaPublicacion.Add(fechaMinima);
             this.FechaEventoTimePicker.MinDate = fechaMinima;
             this.FechaEventoTimePicker.Value = fechaMinima;
 
-
+            
+            gradosDao.getGradosDePublicacion().ForEach(elem => {
+                GradoPublicacionComboBox.Items.Add(elem);
+            });
+            
             
             this.UbicacionesListView.Columns.Insert(0, "Fila", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(1, "Asiento", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(2, "Tipo de Ubicacion", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(3, "Precio", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
         }
+ 
 
         private void SalirButton_Click(object sender, EventArgs e)
         {
@@ -69,7 +96,9 @@ namespace PalcoNet.Generar_Publicacion
             try
             {
                 DateTime time = this.FechaEventoTimePicker.Value;
+                fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, time);
+                fechaMinima = time;
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -155,12 +184,98 @@ namespace PalcoNet.Generar_Publicacion
         private void button2_Click(object sender, EventArgs e)
         {
             AñadirFechasForm form = new AñadirFechasForm(fechasDeLaPublicacion[0]);
+            if (fechasDeLaPublicacion.Count > 1)
+                form = new AñadirFechasForm(fechasDeLaPublicacion[0], fechasDeLaPublicacion.Skip(1).OrderBy( elem => elem).ToList());
             form.onFinishDateInsertion += this.onFinishDateInsertion;
             form.Show(this);
         }
 
-        private void onFinishDateInsertion(List<DateTime> lista) {
-            fechasDeLaPublicacion.AddRange(lista);
+        private void onFinishDateInsertion(List<DateTime> lista, bool modificando) {
+            if (!modificando)
+            {
+                lista.ForEach(elem =>
+                {
+                    fechasDeLaPublicacion.Add(elem);
+                });
+            }
+            else {
+                for (int i = 1; i < lista.Count; i++) {
+                    fechasDeLaPublicacion.RemoveAt(i);
+                    fechasDeLaPublicacion.Insert(i, lista[i]);
+                }
+            }
+            
+        }
+
+        private void GradoPublicacionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                gradoPublicacion = (GradoPublicacion)GradoPublicacionComboBox.SelectedItem;
+            }
+            catch (Exception ex) { } 
+        }
+        private bool espectGenerado = false;
+        private Espectaculo espec;
+
+        private void AceptarButton_Click(object sender, EventArgs e)
+        {
+            if (espectGenerado == false) { 
+                espec = new Espectaculo();
+                espec.descripcion = descripcionPublicacion;
+                espec.direccion = direccionPublicacion;
+                espec.rubro = rubro;
+                espec.id = espectaculosDao.insertarEspectaculo(espec);
+                espectGenerado = true;
+            }
+
+            SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();   
+            try
+            {
+                fechasDeLaPublicacion.ForEach(elem =>
+                {
+                    Publicacion publicacion = new Publicacion();
+                    publicacion.gradoPublicacion = gradoPublicacion;
+                    publicacion.fechaEvento = elem;
+                    publicacion.fechaPublicacion = DateTime.Now.Date;
+                    publicacion.estado = Strings.ESTADO_BORRADOR;
+
+                    publicacion.espectaculo = espec;
+                    publicacion.ubicaciones = ubicacionesList;
+
+                    controller.insertarPublicacionEnDB(publicacion, transaction);
+                });
+                transaction.Commit();
+                MessageBox.Show("Se ha cargado la publicación");
+                borrarFormulario();
+            }
+            catch (SqlInsertException ex) {
+                transaction.Rollback();
+                MessageBox.Show("Ha ocurrido un error al intentar cargar la/s publicacion/es.");
+            }
+        }
+
+        private void borrarFormulario() {
+            this.FechaEventoTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            this.DireccionTextBox.Text = "";
+            this.RubroComboBox.SelectedItem = null;
+            this.GradoPublicacionComboBox.SelectedItem = null;
+            this.UbicacionesListView.Items.Clear();
+            this.textBox1.Text = "";
+
+            this.ubicacionesList.Clear();
+            this.fechasDeLaPublicacion.Clear();
+            this.fechasDeLaPublicacion.Add(DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date);
+            direccionPublicacion = "";
+            rubro = null;
+            gradoPublicacion = null;
+            descripcionPublicacion = "";
+        }
+
+        private void ClearFormButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Se ha limpiado el formulario");
+            borrarFormulario();
         }
     }
 }

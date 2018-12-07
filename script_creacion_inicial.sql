@@ -180,7 +180,7 @@ ALTER TABLE [TheBigBangQuery].[Cliente]
 
 
 CREATE TABLE [TheBigBangQuery].[Rubro] (
-    [rub_id] NUMERIC(12,0) NOT NULL IDENTITY(0,1),
+    [rub_id] NUMERIC(12,0) NOT NULL IDENTITY(1,1),
     [rub_descripcion] nvarchar(255),
     [rub_dado_de_baja] DATETIME
 
@@ -375,7 +375,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Canje y admin
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Generar pago de comisiones');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Listado Estadistico');
 
-INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Drama'), ('StandUp'), ('Comedia'), ('Opera'), ('Infantil');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('-'), ('Drama'), ('StandUp'), ('Comedia'), ('Opera'), ('Infantil'), ('Musical');
 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
@@ -484,7 +484,9 @@ BEGIN TRANSACTION
 		espe_descripcion,
 		espe_rubro,
 		espe_empresa)
-	SELECT DISTINCT m.Espectaculo_Cod, m.Espectaculo_Descripcion, r.rub_id, e.empr_id
+	SELECT DISTINCT m.Espectaculo_Cod, m.Espectaculo_Descripcion,  CASE WHEN m.Espectaculo_Rubro_Descripcion = '' THEN 1 
+																		WHEN m.Espectaculo_Rubro_Descripcion = NULL THEN 1
+																		ELSE r.rub_id END, e.empr_id
 	FROM [gd_esquema].[Maestra] m 
 		LEFT JOIN [TheBigBangQuery].[Empresa] e ON (
 			e.empr_cuit = m.Espec_Empresa_Cuit AND 

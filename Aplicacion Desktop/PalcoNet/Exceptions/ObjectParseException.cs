@@ -14,5 +14,13 @@ namespace PalcoNet.Exceptions
         public ObjectParseException(string descripcion) {
             msgDescription = descripcion;
         }
+
+        public override string Message
+        {
+            get
+            {
+                return this.msgDescription;
+            }
+        }
     }
 }

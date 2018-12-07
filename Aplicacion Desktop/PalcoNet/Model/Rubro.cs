@@ -15,5 +15,18 @@ namespace PalcoNet.Model
         {
             return descripcion;
         }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                Rubro rubro = obj as Rubro;
+                return rubro.id.Equals(this.id);
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
+
     }
 }

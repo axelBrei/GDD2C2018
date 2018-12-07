@@ -99,8 +99,7 @@ namespace PalcoNet.MainMenu
                 case 8:
                     {
                         // EDITAR PUBLICACIONES
-                        form = new Editar_Publicacion.Form1();
-                        form.Show();
+                        form = new Editar_Publicacion.ListaPublicacionesForm();
                         break;
                     }
                 case 9:

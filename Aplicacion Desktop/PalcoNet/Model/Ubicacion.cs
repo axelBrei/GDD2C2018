@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using PalcoNet.Exceptions;
 
 namespace PalcoNet.Model
 {
@@ -25,17 +26,23 @@ namespace PalcoNet.Model
 
         public Ubicacion(SqlDataReader reader) {
 
-            if (reader.HasRows & reader.FieldCount == 6)
+            try
             {
-                this.id = (int)(reader.IsDBNull(0) ? null : (Nullable<int>)reader.GetSqlDecimal(0));
-                this.fila = (reader.IsDBNull(1) ? null : reader.GetSqlString(1).ToString());
-                this.asiento = (int)(reader.IsDBNull(2) ? null : (Nullable<int>) reader.GetSqlDecimal(3));
-                this.sinEnumerar = (int)(reader.IsDBNull(3) ? null : (Nullable<int>)reader.GetSqlDecimal(3));
-                TipoUbicacion tipo = new TipoUbicacion();
-                tipo.id = (int)(reader.IsDBNull(4) ? null : (Nullable<int>)reader.GetSqlDecimal(4));
-                tipo.descripcion = (reader.IsDBNull(5) ? null : reader.GetSqlString(5).ToString());
-                this.precio = (int)(reader.IsDBNull(6) ? null : (Nullable<int>)reader.GetSqlDecimal(6));
-                this.tipoUbicaciones = tipo;
+                if (reader.HasRows & reader.FieldCount == 7)
+                {
+                    this.id = (int)(reader.IsDBNull(0) ? null : (Nullable<int>)reader.GetSqlDecimal(0));
+                    this.fila = (reader.IsDBNull(1) ? null : reader.GetSqlString(1).ToString());
+                    this.asiento = (int)(reader.IsDBNull(2) ? null : (Nullable<int>)reader.GetSqlDecimal(2));
+                    this.sinEnumerar = (int)(reader.IsDBNull(3) ? null : (Nullable<int>)( ( (bool) reader.GetValue(3)) ? 1 : 0 ));
+                    TipoUbicacion tipo = new TipoUbicacion();
+                    tipo.id = (int)(reader.IsDBNull(4) ? null : (Nullable<int>)reader.GetSqlDecimal(4));
+                    tipo.descripcion = (reader.IsDBNull(5) ? null : reader.GetSqlString(5).ToString());
+                    this.precio = (int)(reader.IsDBNull(6) ? null : (Nullable<int>)reader.GetSqlDecimal(6));
+                    this.tipoUbicaciones = tipo;
+                }
+            }
+            catch (Exception e) {
+                throw new ObjectParseException("Error al parsear ubicacion");
             }
         }
 

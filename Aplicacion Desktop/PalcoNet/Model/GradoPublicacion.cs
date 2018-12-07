@@ -17,5 +17,11 @@ namespace PalcoNet.Model
         {
             return this.nivel;
         }
+
+        public override bool Equals(object obj)
+        {
+            GradoPublicacion grado = (GradoPublicacion)obj;
+            return grado.id.Equals(this.id);
+        }
     }
 }

@@ -123,12 +123,13 @@
     <Compile Include="Dao\TipoUbicacionDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
     <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
-    <Compile Include="Editar Publicacion\Form1.cs">
+    <Compile Include="Editar Publicacion\ListaPublicacionesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editar Publicacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Editar Publicacion\ListaPublicacionesForm.Designer.cs">
+      <DependentUpon>ListaPublicacionesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editar Publicacion\PublicacionesController.cs" />
     <Compile Include="Exceptions\DataNotFoundException.cs" />
     <Compile Include="Exceptions\ObjectParseException.cs" />
     <Compile Include="Exceptions\SqlInsertException.cs" />
@@ -246,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editar Publicacion\ListaPublicacionesForm.resx">
+      <DependentUpon>ListaPublicacionesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

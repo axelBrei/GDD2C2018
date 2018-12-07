@@ -8,6 +8,7 @@ using PalcoNet.Model;
 using PalcoNet.ConectionUtils;
 using System.Data.SqlTypes;
 using PalcoNet.Exceptions;
+using System.Data;
 
 namespace PalcoNet.Dao
 {
@@ -118,5 +119,41 @@ namespace PalcoNet.Dao
                 Console.Write(e.Message);
             }
         }
+
+        public GradoPublicacion getGradoPorId(int id) {
+            GradoPublicacion grado;
+            string query = "SELECT * FROM [TheBigBangQuery].[GradoPublicaciones] WHERE grad_id = @id";
+            SqlDataReader reader = null;
+            try
+            {
+                grado = new GradoPublicacion();
+                SqlCommand command = new SqlCommand();
+
+                command.CommandText = query;
+
+                SqlParameter param = new SqlParameter("@id", SqlDbType.Decimal);
+                param.Value = id;
+                command.Parameters.Add(param);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    return getGradoFromReader(reader);
+                }
+                else
+                    throw new DataNotFoundException("Los datos traidos de la base de datos estan vacios.");
+            }
+            catch (Exception ex)
+            {
+                throw new DataNotFoundException("Error al obtener el grado con id " + id);
+            }
+            finally {
+                if (reader != null & !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
+
     }
 }

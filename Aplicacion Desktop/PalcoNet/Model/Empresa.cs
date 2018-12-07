@@ -9,7 +9,7 @@ namespace PalcoNet.Model
 {
     public class Empresa : Registrable
     {
-        public int id {get; set;}
+        public Nullable<int> id {get; set;}
         public string usuario { get; set; }
         public string razonSocial { get; set; }
         public string mailEmpresa { get; set; }
@@ -21,7 +21,7 @@ namespace PalcoNet.Model
 
         public int getId()
         {
-            return id;
+            return (int)id;
         }
 
         public string getNombre()

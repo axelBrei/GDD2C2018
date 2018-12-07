@@ -8,6 +8,7 @@ using PalcoNet.ConectionUtils;
 using PalcoNet.Exceptions;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Data;
 
 namespace PalcoNet.Dao
 {
@@ -50,6 +51,37 @@ namespace PalcoNet.Dao
             }
 
             return rubros;
+        }
+
+        public Rubro getRubroPorId(int id) {
+            Rubro rubro = null;
+            SqlDataReader reader = null;
+            string query = "SELECT * FROM [TheBigBangQuery].[Rubro] WHERE rub_id = @id";
+            try {
+                rubro = new Rubro();
+                SqlCommand command = new SqlCommand();
+
+                command.CommandText = query;
+
+                SqlParameter param = new SqlParameter("@id", SqlDbType.Decimal);
+                param.Value = id;
+                command.Parameters.Add(param);
+
+                reader = DatabaseConection.executeQuery(command);
+                if(reader.HasRows){
+                    reader.Read();
+                    return getRubroFRomReader(reader);
+                }else
+                    throw new Exception();
+            }
+            catch (Exception ex){
+                throw new DataNotFoundException("No se ha podido encontrar el rubro con id {id}".Replace("{id}", id.ToString()));
+            }
+            finally{
+                if(reader != null & !reader.IsClosed){
+                    reader.Close();
+                }
+            }
         }
 
         private Rubro getRubroFRomReader(SqlDataReader reader) {

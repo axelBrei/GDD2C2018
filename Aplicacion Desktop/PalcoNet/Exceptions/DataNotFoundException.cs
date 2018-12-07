@@ -14,5 +14,13 @@ namespace PalcoNet.Exceptions
         public DataNotFoundException(string message){
             msgDescription = message;
         }
+
+        public override string Message
+        {
+            get
+            {
+                return this.msgDescription;
+            }
+        }
     }
 }

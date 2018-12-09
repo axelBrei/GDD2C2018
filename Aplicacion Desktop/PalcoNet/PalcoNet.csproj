@@ -123,6 +123,12 @@
     <Compile Include="Dao\TipoUbicacionDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
     <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
+    <Compile Include="Editar Publicacion\EditarEstadoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editar Publicacion\EditarEstadoForm.Designer.cs">
+      <DependentUpon>EditarEstadoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editar Publicacion\EditarPublicacionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editar Publicacion\EditarEstadoForm.resx">
+      <DependentUpon>EditarEstadoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\EditarPublicacionForm.resx">
       <DependentUpon>EditarPublicacionForm.cs</DependentUpon>

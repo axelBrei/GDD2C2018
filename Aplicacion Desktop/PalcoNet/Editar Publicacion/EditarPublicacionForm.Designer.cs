@@ -32,12 +32,14 @@
             this.button2 = new System.Windows.Forms.Button();
             this.PublicacionesMenuButton = new System.Windows.Forms.Button();
             this.ContentPanel = new System.Windows.Forms.Panel();
+            this.EstadoButton = new System.Windows.Forms.Button();
             this.MenuPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuPanel
             // 
             this.MenuPanel.BackColor = System.Drawing.SystemColors.Desktop;
+            this.MenuPanel.Controls.Add(this.EstadoButton);
             this.MenuPanel.Controls.Add(this.button2);
             this.MenuPanel.Controls.Add(this.PublicacionesMenuButton);
             this.MenuPanel.Location = new System.Drawing.Point(1, 0);
@@ -85,6 +87,20 @@
             this.ContentPanel.Size = new System.Drawing.Size(717, 700);
             this.ContentPanel.TabIndex = 1;
             // 
+            // EstadoButton
+            // 
+            this.EstadoButton.FlatAppearance.BorderSize = 0;
+            this.EstadoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EstadoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EstadoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EstadoButton.Location = new System.Drawing.Point(6, 160);
+            this.EstadoButton.Name = "EstadoButton";
+            this.EstadoButton.Size = new System.Drawing.Size(194, 45);
+            this.EstadoButton.TabIndex = 2;
+            this.EstadoButton.Text = "Estado/Otros";
+            this.EstadoButton.UseVisualStyleBackColor = true;
+            this.EstadoButton.Click += new System.EventHandler(this.EstadoButton_Click);
+            // 
             // EditarPublicacionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -106,5 +122,6 @@
         private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.Button PublicacionesMenuButton;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button EstadoButton;
     }
 }

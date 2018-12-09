@@ -78,7 +78,7 @@ namespace PalcoNet.Editar_Publicacion
             ListView lista = (ListView)sender;
             try
             {
-                publicacionSeleccionada = (Publicacion) lista.SelectedItems[0].Tag;
+                publicacionSeleccionada = (Publicacion)lista.SelectedItems[0].Tag;
                 indexSeleccionado = lista.SelectedIndices[0];
             }
             catch (Exception ex) { }
@@ -89,8 +89,16 @@ namespace PalcoNet.Editar_Publicacion
             
             Publicacion publicacion = publicacionesController.getPublicacionPorId(publicacionSeleccionada.id);
             EditarPublicacionForm form = new EditarPublicacionForm(publicacion);
-           // Generar_Publicacion.GenerarPublicacionForm form = new Generar_Publicacion.GenerarPublicacionForm(publicacion);
+            form.publicacionEditadaHandler += this.publicacionEditadaHandler;
             form.Show(this);
+        }
+
+        private void publicacionEditadaHandler(Publicacion publi) { 
+
+            this.PublicacionesListView.BeginUpdate();
+                this.PublicacionesListView.Items.RemoveAt(indexSeleccionado);
+                this.PublicacionesListView.Items.Insert(indexSeleccionado, getItemFromPublicacion(publi));
+            this.PublicacionesListView.EndUpdate();
         }
     }
 }

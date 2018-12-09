@@ -53,7 +53,7 @@ namespace PalcoNet.Dao
             SqlDataReader reader = null;
             try
             {
-                reader = DatabaseConection.executeQuery(baseQuery);
+                reader = DatabaseConection.executeQuery(baseQuery + "ORDER BY publ_id DESC");
                 if (reader.HasRows)
                 {
                     while (reader.Read())

@@ -25,6 +25,10 @@ namespace PalcoNet.Editar_Publicacion
 
         GenerarPublicacionForm publicacionForm;
         EditarUbicacionesForm ubicacionesForm;
+        EditarEstadoForm estadoForm;
+
+        public delegate void PublicacionEditadaHandler(Publicacion publicacion);
+        public event PublicacionEditadaHandler publicacionEditadaHandler;
 
         public EditarPublicacionForm(Publicacion publi)
         {
@@ -32,6 +36,9 @@ namespace PalcoNet.Editar_Publicacion
             this.publicacionActual = publi;
             ubicacionesForm = new EditarUbicacionesForm(publicacionActual.ubicaciones);
             publicacionForm = new GenerarPublicacionForm(publi);
+            publicacionForm.Size = new Size(this.ContentPanel.Size.Width, this.ContentPanel.Size.Height - 40);
+            estadoForm = new EditarEstadoForm(publi);
+
             publicacionForm.Size = new Size(this.ContentPanel.Size.Width, this.ContentPanel.Size.Height - 40);
 
             botonAceptar = new Button();
@@ -57,15 +64,15 @@ namespace PalcoNet.Editar_Publicacion
         private void PublicacionesMenuButton_Click(object sender, EventArgs e)
         {
             this.ContentPanel.Controls.Clear();
-            publicacionForm = new GenerarPublicacionForm(publicacionActual);
-            publicacionForm.Size = new Size(this.ContentPanel.Size.Width, this.ContentPanel.Size.Height - 40);
+            //publicacionForm = new GenerarPublicacionForm(publicacionActual);
+            //publicacionForm.Size = new Size(this.ContentPanel.Size.Width, this.ContentPanel.Size.Height - 40);
             showHideForm(publicacionForm);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.ContentPanel.Controls.Clear();
-            ubicacionesForm = new EditarUbicacionesForm(publicacionActual.ubicaciones);
+            //ubicacionesForm = new EditarUbicacionesForm(publicacionActual.ubicaciones);
             showHideForm(ubicacionesForm);
         }
 
@@ -75,6 +82,8 @@ namespace PalcoNet.Editar_Publicacion
             List<Ubicacion> eliminadas = ubicacionesForm.getElminadas();
 
             publicacionActual = publicacionForm.publicacionAModificar;
+            publicacionActual.estado = estadoForm.publicacionActual.estado;
+            publicacionActual.fechaPublicacion = estadoForm.publicacionActual.fechaPublicacion;
             if (eliminadas != null) {
                 publicacionActual.ubicaciones.RemoveAll(item => eliminadas.Contains(item));
             }
@@ -88,6 +97,8 @@ namespace PalcoNet.Editar_Publicacion
             {
                 controller.actualizarPublicacion(publicacionActual, transaction, agregadas, eliminadas);
                 transaction.Commit();
+                if (this.publicacionEditadaHandler != null)
+                    this.publicacionEditadaHandler(publicacionActual);
                 this.Close();
             }
             catch (SqlInsertException ex)
@@ -109,6 +120,13 @@ namespace PalcoNet.Editar_Publicacion
                 MessageBox.Show("Ha ocurrido un error inesperado al intentar actualizar la publicacion");
                 transaction.Rollback();
             }
+        }
+
+        private void EstadoButton_Click(object sender, EventArgs e)
+        {
+            this.ContentPanel.Controls.Clear();
+            //estadoForm = new EditarEstadoForm(publicacionActual);
+            showHideForm(estadoForm);
         }
     }
 }

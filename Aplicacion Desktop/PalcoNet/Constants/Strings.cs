@@ -8,8 +8,8 @@ namespace PalcoNet.Constants
 {
     class Strings
     {
-        public static string ESTADO_BORRADOR = "BORRADOR";
-        public static string ESTADO_ACTIVA = "ACTIVA";
-        public static string ESTADO_FINALIZADA = "FINALIZADA";
+        public static string ESTADO_BORRADOR = "Borrador";
+        public static string ESTADO_ACTIVA = "Publicada";
+        public static string ESTADO_FINALIZADA = "Finalizada";
     }
 }

@@ -146,6 +146,40 @@ namespace PalcoNet.Dao
             }
         }
 
+
+        public void actualizarPublicacion(Publicacion publicacion, SqlTransaction transaction) {
+            string procedure = "[TheBigBangQuery].[ActualizarPublicacion]";
+            try
+            {
+                SqlCommand command = new SqlCommand(procedure);
+                command.CommandText = procedure;
+                command.Transaction = transaction;
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@publId", publicacion.id.ToString());
+                command.Parameters.AddWithValue("@espeId", publicacion.espectaculo.id.ToString());
+                command.Parameters.AddWithValue("@rubroEspe", publicacion.espectaculo.rubro.id.ToString());
+                command.Parameters.AddWithValue("@descipcion", publicacion.espectaculo.descripcion.ToString());
+                command.Parameters.AddWithValue("@direccion", publicacion.espectaculo.direccion.ToString());
+                command.Parameters.AddWithValue("@idGradoPublicacion", publicacion.gradoPublicacion.id.ToString());
+
+                SqlParameter fechaPubliParam = new SqlParameter("@fechaPublicacion", SqlDbType.DateTime);
+                fechaPubliParam.Value = publicacion.fechaPublicacion;
+
+                SqlParameter fechaEventoParam = new SqlParameter("@fechaEvento", SqlDbType.DateTime);
+                fechaEventoParam.Value = publicacion.fechaEvento;
+
+                command.Parameters.Add(fechaPubliParam);
+                command.Parameters.Add(fechaEventoParam);
+                command.Parameters.AddWithValue("@estado", publicacion.estado);
+
+                DatabaseConection.executeNoParamFunction(command);
+            }
+            catch (Exception e) {
+                throw new SqlInsertException("No se ha podido actualizar la publicacion.", SqlInsertException.CODIGO_PUBLICACION);
+            }
+        }
+
         private class ParserPublicaciones
         {
 

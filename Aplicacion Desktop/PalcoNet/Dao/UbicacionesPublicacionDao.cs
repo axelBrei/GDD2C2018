@@ -15,6 +15,19 @@ namespace PalcoNet.Dao
     class UbicacionesPublicacionDao
     {
 
+        public decimal gerIdUbiPubi(int ubiId, int publiId) {
+            string function = "SELECT [TheBigBangQuery].[getIdPubluUbi]('" + ubiId + "', '" + publiId + "')";
+            try
+            {
+                SqlCommand command = new SqlCommand(function);
+                command.CommandText = function;
+
+                return DatabaseConection.executeParamFunction<decimal>(command);
+            }
+            catch (Exception e) {
+                throw new DataNotFoundException("No se ha encontrado una ubicacion para esta publicacion");
+            }
+        }
 
         public int insertarUbicacionPorPublicacion(Ubicacion ubi, Publicacion pub, SqlTransaction transaction) {
             // REVISAR PORQ NO INSERTA LAS UBICACIONES DE LA PUBLICACION QUE LE ESTOY PASANDO
@@ -40,6 +53,26 @@ namespace PalcoNet.Dao
             }
 
             return 1;
+        }
+
+        public void eliminarUbicacionPorPublicacion(Ubicacion ubi, Publicacion publi, 
+                                                        SqlTransaction transaction) 
+        {
+            string query = "DELETE FROM [TheBigBangQuery].[Ubicaciones_publicacion] " +
+                "WHERE [ubpu_id_ubicacion] = '" + ubi.id.ToString() + "' AND [ubpu_id_publicacion] = '" + publi.id.ToString() + "'";
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+
+                command.Transaction = transaction;
+                command.CommandText = query;
+
+                DatabaseConection.executeQuery(command).Close();
+            }
+            catch (Exception ex) {
+                throw new SqlDeleteException("Error al borrar ubicacion", SqlDeleteException.CODE_UBICACION);
+            }
         }
 
     }

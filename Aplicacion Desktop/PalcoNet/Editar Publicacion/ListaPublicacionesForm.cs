@@ -86,8 +86,10 @@ namespace PalcoNet.Editar_Publicacion
 
         private void EditarButton_Click(object sender, EventArgs e)
         {
+            
             Publicacion publicacion = publicacionesController.getPublicacionPorId(publicacionSeleccionada.id);
-            Generar_Publicacion.GenerarPublicacionForm form = new Generar_Publicacion.GenerarPublicacionForm(publicacion);
+            EditarPublicacionForm form = new EditarPublicacionForm(publicacion);
+           // Generar_Publicacion.GenerarPublicacionForm form = new Generar_Publicacion.GenerarPublicacionForm(publicacion);
             form.Show(this);
         }
     }

@@ -49,7 +49,7 @@ namespace PalcoNet.Model
         public override bool Equals(object obj)
         {
             var ubic = obj as Ubicacion;
-            return this.fila.Equals(ubic.fila) & this.asiento.Equals(ubic.asiento);
+            return this.fila.ToUpper().Equals(ubic.fila.ToUpper()) & this.asiento.Equals(ubic.asiento);
         }
     }
 }

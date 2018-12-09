@@ -34,6 +34,30 @@ namespace PalcoNet.Editar_Publicacion
             empresasDao = new EmpresasDao();
         }
 
+        public int insertarPublicacionEnDB(Publicacion publi, SqlTransaction transaction)
+        {
+            try
+            {
+                publi.id = publicacionesDao.insertarPublicacion(publi, transaction);
+                if (publi.id != -1)
+                {
+                    publi.ubicaciones.ForEach(elem =>
+                    {
+                        elem.id = ubicacionesDao.insertarUbicacion(elem, transaction);
+                        if (elem.id != -1)
+                            ubicacionesPorPublicacionDao.insertarUbicacionPorPublicacion(elem, publi, transaction);
+                    });
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                throw new SqlInsertException();
+            }
+
+
+        }
+
         public Publicacion getPublicacionPorId(int id) {
             try
             {
@@ -50,6 +74,38 @@ namespace PalcoNet.Editar_Publicacion
             }
             catch (Exception e) {
                 throw e;
+            }
+        }
+
+        public void actualizarPublicacion(Publicacion publicacion, SqlTransaction transaction,
+                                             List<Ubicacion> agregados = null, List<Ubicacion>eliminados = null) {
+            try
+            {
+                publicacionesDao.actualizarPublicacion(publicacion,transaction);
+                if(agregados != null){
+                    agregados.ForEach(elem => {
+                        elem.id = ubicacionesDao.insertarUbicacion(elem,transaction);
+                        if (elem.id != -1)
+                            ubicacionesPorPublicacionDao.insertarUbicacionPorPublicacion(elem, publicacion, transaction);
+                    });
+                }
+                if(eliminados != null){
+
+                    eliminados.ForEach(elem => {
+                        ubicacionesPorPublicacionDao.eliminarUbicacionPorPublicacion(elem, publicacion, transaction);
+                        //ubicacionesDao.eliminarUbicacion(elem, transaction);
+                    });
+                }
+            }
+            catch (Exception ex) {
+                if(ex.GetType() == typeof(SqlInsertException)){
+                    throw ex;
+                }else if(ex.GetType() == typeof(SqlException)){
+                    throw ex;
+                }else{
+                    throw new GenericException("Ha ocurrido un error inesperado");
+                }
+                
             }
         }
     }

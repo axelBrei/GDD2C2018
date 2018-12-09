@@ -6,21 +6,14 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Exceptions
 {
-    public class SqlInsertException : Exception
+    public class GenericException : Exception
     {
-
-        public static int CODIGO_PUBLICACION = 1;
-        public static int CODIGO_UBICACION = 2;
-
         public int msgCode { get; set; }
         public string msgDescription { get; set; }
 
-
-        public SqlInsertException() { }
-
-        public SqlInsertException(string descripcion, int code) {
-            msgDescription = descripcion;
-            msgCode = code;
+        public GenericException( string desc, int code = 0) {
+            this.msgCode = code;
+            this.msgDescription = desc;
         }
 
         public override string Message

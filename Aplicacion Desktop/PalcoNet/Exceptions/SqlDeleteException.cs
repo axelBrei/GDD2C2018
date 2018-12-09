@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Exceptions
 {
-    public class SqlInsertException : Exception
+    public class SqlDeleteException : Exception
     {
-
-        public static int CODIGO_PUBLICACION = 1;
-        public static int CODIGO_UBICACION = 2;
+        public static int CODE_UBICACION = 1;
 
         public int msgCode { get; set; }
         public string msgDescription { get; set; }
 
-
-        public SqlInsertException() { }
-
-        public SqlInsertException(string descripcion, int code) {
-            msgDescription = descripcion;
-            msgCode = code;
+        public SqlDeleteException(string descripcion, int code = 0) {
+            this.msgCode = code;
+            this.msgDescription = descripcion;
         }
 
         public override string Message

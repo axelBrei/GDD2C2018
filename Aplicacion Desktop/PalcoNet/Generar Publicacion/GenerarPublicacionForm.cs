@@ -15,6 +15,7 @@ using PalcoNet.Constants;
 using PalcoNet.UserData;
 using System.Data.SqlClient;
 using PalcoNet.ConectionUtils;
+using PalcoNet.Editar_Publicacion;
 
 namespace PalcoNet.Generar_Publicacion
 {
@@ -43,6 +44,7 @@ namespace PalcoNet.Generar_Publicacion
         private DateTime fechaMinima;
 
         private bool modificandoPublicacion = false;
+        public Publicacion publicacionAModificar { get; set; }
 
 
         public GenerarPublicacionForm()
@@ -59,6 +61,7 @@ namespace PalcoNet.Generar_Publicacion
 
         public GenerarPublicacionForm(Publicacion publicacion) {
             modificandoPublicacion = true;
+            publicacionAModificar = publicacion;
             InitializeComponent();
             // INICIALIZO DATOS COMUNES
             initContent();
@@ -84,11 +87,13 @@ namespace PalcoNet.Generar_Publicacion
                 this.UbicacionesListView.Items.Add(getItemDeUbicacion(elem));
             });
 
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.ControlBox = true;
-
             this.button2.Visible = false;
             this.ClearFormButton.Visible = false;
+
+            this.button1.Visible = false;
+            this.EliminarUbicacionButton.Visible = false;
+            this.UbicacionesPanel.Visible = false;
+            this.AceptarButton.Visible = false;
 
             
         }
@@ -126,12 +131,18 @@ namespace PalcoNet.Generar_Publicacion
 
         private void DireccionTextBox_TextChanged(object sender, EventArgs e)
         {
-            direccionPublicacion = ((TextBox)sender).Text; 
+            direccionPublicacion = ((TextBox)sender).Text;
+            if (modificandoPublicacion) {
+                publicacionAModificar.espectaculo.direccion = ((TextBox)sender).Text;
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             descripcionPublicacion = ((TextBox)sender).Text;
+            if (modificandoPublicacion) {
+                publicacionAModificar.espectaculo.descripcion = ((TextBox)sender).Text;
+            }
         }
 
         private void FechaEventoTimePicker_ValueChanged(object sender, EventArgs e)
@@ -143,6 +154,9 @@ namespace PalcoNet.Generar_Publicacion
                 fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, time);
                 fechaMinima = time;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.fechaEvento = time;
+                }
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -161,6 +175,9 @@ namespace PalcoNet.Generar_Publicacion
 
                 fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, fecha);
+                if (modificandoPublicacion) {
+                    publicacionAModificar.fechaEvento = fecha;
+                }
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -173,6 +190,9 @@ namespace PalcoNet.Generar_Publicacion
             try
             {
                 rubro = (Rubro)lista.SelectedItem;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.espectaculo.rubro = rubro;
+                }
             }
             catch (Exception ex) { 
                 MessageBox.Show(ex.Message);
@@ -259,6 +279,9 @@ namespace PalcoNet.Generar_Publicacion
             try
             {
                 gradoPublicacion = (GradoPublicacion)GradoPublicacionComboBox.SelectedItem;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.gradoPublicacion = gradoPublicacion;
+                }
             }
             catch (Exception ex) { } 
         }
@@ -284,7 +307,16 @@ namespace PalcoNet.Generar_Publicacion
                     insertarPublicacionEnDB();
                 }
                 else { 
-                    // TODO: METODO PARA UPDATEAR LA PUBLICACION EN LA BASE DE DATOS 
+                    /*
+                     * ESTRATEGIA MODIFICACION:
+                     *  - UNA PUBLICACION SIEMRPE TENDRA EL MISMO ESPCTACULO-
+                     *  - UNA UBICACION QUE NO ESTA DISPONIBLE NO SE PUEDE HABILITAR, TAMPOCO AL REVEZ
+                     *  - 
+                    */
+
+
+                    // TODO: METODO PARA UPDATEAR LA PUBLICACION EN LA BASE DE DATOS
+                    // PONER UN EVENT HANDLER PARA AVISARLE AL PADRE QUE SE ACTUALIZA LA PUBLICACION
                 }
             }
         }

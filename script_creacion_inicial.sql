@@ -255,6 +255,7 @@ ALTER TABLE [TheBigBangQuery].[Ubicacion]
     ADD CONSTRAINT [FK_UBI_TIPO] FOREIGN KEY ([ubi_tipo_codigo]) REFERENCES [TheBigBangQuery].[TipoUbicacion](tipu_id);
 
 CREATE TABLE [TheBigBangQuery].[Ubicaciones_publicacion] (
+	[ubpu_id] NUMERIC(12,0) IDENTITY(1,1),
     [ubpu_id_publicacion] NUMERIC(12,0) NOT NULL,
     [ubpu_id_ubicacion] NUMERIC(12,0) NOT NULL,
     [ubpu_precio] NUMERIC(18,0),
@@ -1247,3 +1248,70 @@ AS BEGIN
 	END CATCH
 END
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[ActualizarPublicacion]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[ActualizarPublicacion]
+GO
+CREATE PROCEDURE [TheBigBangQuery].[ActualizarPublicacion](
+	@publId nvarchar(255),
+	@espeId nvarchar(255),
+	@rubroEspe nvarchar(255),
+	@descipcion nvarchar(255),
+	@direccion nvarchar(255),
+	@idGradoPublicacion nvarchar(255),
+	@fechaPublicacion DATETIME,
+	@fechaEvento DATETIME,
+	@estado nvarchar(255))
+AS BEGIN
+	
+	BEGIN TRANSACTION
+	IF (
+		SELECT COUNT(*)
+		FROM TheBigBangQuery.Publicacion
+		WHERE publ_fecha_hora_espectaculo = @fechaEvento
+			AND publ_id = CONVERT(NUMERIC,@publId)
+	) <= 1 
+	BEGIN
+		BEGIN TRY
+			-- SE PUEDE ACTUALIZAR
+			UPDATE [TheBigBangQuery].[Espectaculo]
+			SET [espe_rubro] = CONVERT(NUMERIC,@rubroEspe),
+				[espe_descripcion] = @descipcion,
+				[espe_direccion] = @direccion
+			WHERE [espe_id] = CONVERT(NUMERIC, @publId)
+
+			UPDATE [TheBigBangQuery].[Publicacion]
+			SET [publ_grad_nivel] = CONVERT(NUMERIC,@idGradoPublicacion),
+				[publ_fecha_publicacion] = @fechaPublicacion,
+				[publ_fecha_hora_espectaculo] = @fechaEvento,
+				[publ_estado] = @estado
+
+		END TRY
+		BEGIN CATCH
+			RAISERROR( 'No se ha podido actualizar la publicacion' ,16,1);
+			ROLLBACK TRANSACTION;
+		END CATCH
+
+		COMMIT;
+
+	END ELSE BEGIN
+		-- NO SE PUEDE ACTUALIZAR
+		RAISERROR( 'Ya existe una publicacion para este espectaculo con la misma fecha' ,16,1);
+		ROLLBACK TRANSACTION;
+	END
+
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getIdPubluUbi]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getIdPubluUbi];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getIdPubluUbi] (@ubiId nvarchar(255), @publiId nvarchar(255))
+RETURNS NUMERIC(12,0) AS BEGIN
+	RETURN (
+		SELECT TOP 1 ubpu_id
+		FROM [TheBigBangQuery].[Ubicaciones_publicacion]
+		WHERE ubpu_id_publicacion = CONVERT(NUMERIC(12,0),@publiId)
+			AND ubpu_id_ubicacion = CONVERT(NUMERIC(12,0),@ubiId)
+	)
+END

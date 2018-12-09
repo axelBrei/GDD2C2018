@@ -69,7 +69,7 @@ namespace PalcoNet.Dao
                 return int.Parse(outId.Value.ToString());
             }
             catch (Exception ex) {
-                return -1;
+                throw new SqlInsertException("Error al insertar ubicaciones",SqlInsertException.CODIGO_UBICACION);
             }
         }
 
@@ -100,7 +100,8 @@ namespace PalcoNet.Dao
                     return ubicaciones;
                 }
                 else
-                    throw new Exception();
+                    ubicaciones = new List<Ubicacion>();
+                    return ubicaciones;
             }
             catch (Exception e)
             {
@@ -112,6 +113,24 @@ namespace PalcoNet.Dao
             finally {
                 if (reader != null & !reader.IsClosed)
                     reader.Close();
+            }
+        }
+
+        public void eliminarUbicacion(Ubicacion ubicacion, SqlTransaction transaction) {
+            string query = "DELETE FROM [TheBigBangQuery].[Ubicacion] WHERE [ubi_id] = @id";
+            try
+            {
+                SqlCommand command = new SqlCommand();
+
+                command.CommandText = query;
+                command.Transaction = transaction;
+
+                command.Parameters.AddWithValue("@id", ubicacion.id.ToString());
+
+                DatabaseConection.executeQuery(command);
+            }
+            catch (Exception ex) {
+                throw new SqlDeleteException("Error al intentar borrar la ubicacion", SqlDeleteException.CODE_UBICACION);
             }
         }
     }

@@ -26,6 +26,7 @@ namespace PalcoNet.MainMenu
 
             FuncionalidadesDao funcionalidadesDao = new FuncionalidadesDao();
             funcionalidades = funcionalidadesDao.getFuncionalidades();
+            this.panel2.Parent = this;
             this.iniciarBotones();
             clickHandler(funcionalidades[0].id);
         }
@@ -99,8 +100,7 @@ namespace PalcoNet.MainMenu
                 case 8:
                     {
                         // EDITAR PUBLICACIONES
-                        form = new Editar_Publicacion.Form1();
-                        form.Show();
+                        form = new Editar_Publicacion.ListaPublicacionesForm();
                         break;
                     }
                 case 9:
@@ -147,6 +147,7 @@ namespace PalcoNet.MainMenu
         private void showNestedForm(Form form) {
             form.TopLevel = false;
             form.AutoScroll = true;
+            form.Parent = this.Parent;
             this.panel2.Controls.Add(form);
             form.Show();
         }

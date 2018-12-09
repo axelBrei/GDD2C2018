@@ -123,14 +123,29 @@
     <Compile Include="Dao\TipoUbicacionDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
     <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
-    <Compile Include="Editar Publicacion\Form1.cs">
+    <Compile Include="Editar Publicacion\EditarPublicacionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editar Publicacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Editar Publicacion\EditarPublicacionForm.Designer.cs">
+      <DependentUpon>EditarPublicacionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editar Publicacion\EditarUbicacionesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editar Publicacion\EditarUbicacionesForm.Designer.cs">
+      <DependentUpon>EditarUbicacionesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editar Publicacion\ListaPublicacionesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editar Publicacion\ListaPublicacionesForm.Designer.cs">
+      <DependentUpon>ListaPublicacionesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editar Publicacion\PublicacionesController.cs" />
     <Compile Include="Exceptions\DataNotFoundException.cs" />
+    <Compile Include="Exceptions\GenericException.cs" />
     <Compile Include="Exceptions\ObjectParseException.cs" />
+    <Compile Include="Exceptions\SqlDeleteException.cs" />
     <Compile Include="Exceptions\SqlInsertException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -162,7 +177,6 @@
     <Compile Include="Generar Publicacion\PanelDateItem.Designer.cs">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Generar Publicacion\PublicacionesController.cs" />
     <Compile Include="Generar Rendicion Comisiones\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +260,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editar Publicacion\EditarPublicacionForm.resx">
+      <DependentUpon>EditarPublicacionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editar Publicacion\EditarUbicacionesForm.resx">
+      <DependentUpon>EditarUbicacionesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editar Publicacion\ListaPublicacionesForm.resx">
+      <DependentUpon>ListaPublicacionesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

@@ -8,7 +8,7 @@ namespace PalcoNet.Model
 {
     public class Espectaculo
     {
-        public int id{get; set;}
+        public Nullable<int> id{get; set;}
         public Rubro rubro { get; set; }
         public Empresa empresa { get; set; }
         public string descripcion { get; set; }

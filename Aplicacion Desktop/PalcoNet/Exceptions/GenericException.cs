@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Exceptions
 {
-    class DataNotFoundException : Exception
+    public class GenericException : Exception
     {
-        public string msgCode {get; set;}
-        public string msgDescription{get; set;}
+        public int msgCode { get; set; }
+        public string msgDescription { get; set; }
 
-        public DataNotFoundException(string message){
-            msgDescription = message;
+        public GenericException( string desc, int code = 0) {
+            this.msgCode = code;
+            this.msgDescription = desc;
         }
 
         public override string Message

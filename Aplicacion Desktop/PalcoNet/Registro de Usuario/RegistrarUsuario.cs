@@ -90,7 +90,7 @@ namespace PalcoNet.Registro_de_Usuario
 
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_EMPRESA, empresa.direccion);
 
-            id = empresa.id;
+            id = (int) empresa.id;
             CuitEmpresa.Text = empresa.cuit;
             RazonSocialEmpresa.Text = empresa.razonSocial;
             MailEmpresa1.Text = empresa.mailEmpresa;

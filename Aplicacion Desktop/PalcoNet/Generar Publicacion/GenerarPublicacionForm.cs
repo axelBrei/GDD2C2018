@@ -15,6 +15,7 @@ using PalcoNet.Constants;
 using PalcoNet.UserData;
 using System.Data.SqlClient;
 using PalcoNet.ConectionUtils;
+using PalcoNet.Editar_Publicacion;
 
 namespace PalcoNet.Generar_Publicacion
 {
@@ -25,6 +26,7 @@ namespace PalcoNet.Generar_Publicacion
          *  ESTRAGTEGIA:
          *  - TODAS LAS PUBLICACIONES QUE SE AGREGAN ENTRAN EN UN ESTADO DE BORRADOR, LUEGO SE PUEDE MODIFICAR DICHO ESTADO
          *      A FINALIZADA O ACTIVA
+         *  - TODA PUBLICACION DEBE TENER UNA CATEOGIRA(RUBRO) DISTINTO DEL DEFAUL "-"
          */ 
 
         private RubrosDao rubrosDao;
@@ -41,9 +43,62 @@ namespace PalcoNet.Generar_Publicacion
         private List<Ubicacion> ubicacionesList = new List<Ubicacion>();
         private DateTime fechaMinima;
 
+        private bool modificandoPublicacion = false;
+        public Publicacion publicacionAModificar { get; set; }
+
+
         public GenerarPublicacionForm()
         {
             InitializeComponent();
+            // Dia Minimo: ayer
+            fechaMinima = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            fechasDeLaPublicacion.Add(fechaMinima);
+            this.FechaEventoTimePicker.MinDate = fechaMinima;
+            this.FechaEventoTimePicker.Value = fechaMinima;
+
+            initContent();
+        }
+
+        public GenerarPublicacionForm(Publicacion publicacion) {
+            modificandoPublicacion = true;
+            publicacionAModificar = publicacion;
+            InitializeComponent();
+            // INICIALIZO DATOS COMUNES
+            initContent();
+            // CARGO LOS DATOS DE LAS FECHAS
+            fechaMinima = ( (DateTime)publicacion.fechaEvento).Date;
+            this.FechaEventoTimePicker.MinDate = fechaMinima.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            //this.FechaEventoTimePicker.Value = fechaMinima.Date;
+            // CARGO LOS DATOS DE LA DIRECCION
+            direccionPublicacion = publicacion.espectaculo.direccion;
+            this.DireccionTextBox.Text = publicacion.espectaculo.direccion;
+            // CARGO LOS DATOS DE LA DESCRIPCION
+            descripcionPublicacion = publicacion.espectaculo.descripcion;
+            this.textBox1.Text = publicacion.espectaculo.descripcion;
+            // CARGO LOS DATOS DEL RUBRO
+            rubro = publicacion.espectaculo.rubro;
+            this.RubroComboBox.SelectedItem = publicacion.espectaculo.rubro;
+            // CARGO EL GRADO DE PUBLICACION
+            gradoPublicacion = publicacion.gradoPublicacion;
+            this.GradoPublicacionComboBox.SelectedItem = publicacion.gradoPublicacion;
+            // CARGO LAS UBICACIONES DE LA PUBLICACION
+            ubicacionesList = publicacion.ubicaciones;
+            publicacion.ubicaciones.ForEach(elem => {
+                this.UbicacionesListView.Items.Add(getItemDeUbicacion(elem));
+            });
+
+            this.button2.Visible = false;
+            this.ClearFormButton.Visible = false;
+
+            this.button1.Visible = false;
+            this.EliminarUbicacionButton.Visible = false;
+            this.UbicacionesPanel.Visible = false;
+            this.AceptarButton.Visible = false;
+
+            
+        }
+
+        private void initContent() {
             rubrosDao = new RubrosDao();
             gradosDao = new GradoDePublicacionDao();
             publicacionesDao = new PublicacionesDao();
@@ -56,18 +111,12 @@ namespace PalcoNet.Generar_Publicacion
 
             this.FechaEventoTimePicker.ShowUpDown = false;
             this.FechaEventoTimePicker.CustomFormat = "yyyy.MM.dd";
-            // Dia Minimo: ayer
-            fechaMinima = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
-            fechasDeLaPublicacion.Add(fechaMinima);
-            this.FechaEventoTimePicker.MinDate = fechaMinima;
-            this.FechaEventoTimePicker.Value = fechaMinima;
 
-            
-            gradosDao.getGradosDePublicacion().ForEach(elem => {
+            gradosDao.getGradosDePublicacion().ForEach(elem =>
+            {
                 GradoPublicacionComboBox.Items.Add(elem);
             });
-            
-            
+            GradoPublicacionComboBox.Items.RemoveAt(GradoPublicacionComboBox.Items.Count - 1);
             this.UbicacionesListView.Columns.Insert(0, "Fila", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(1, "Asiento", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(2, "Tipo de Ubicacion", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
@@ -82,12 +131,18 @@ namespace PalcoNet.Generar_Publicacion
 
         private void DireccionTextBox_TextChanged(object sender, EventArgs e)
         {
-            direccionPublicacion = ((TextBox)sender).Text; 
+            direccionPublicacion = ((TextBox)sender).Text;
+            if (modificandoPublicacion) {
+                publicacionAModificar.espectaculo.direccion = ((TextBox)sender).Text;
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             descripcionPublicacion = ((TextBox)sender).Text;
+            if (modificandoPublicacion) {
+                publicacionAModificar.espectaculo.descripcion = ((TextBox)sender).Text;
+            }
         }
 
         private void FechaEventoTimePicker_ValueChanged(object sender, EventArgs e)
@@ -99,6 +154,9 @@ namespace PalcoNet.Generar_Publicacion
                 fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, time);
                 fechaMinima = time;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.fechaEvento = time;
+                }
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -117,6 +175,9 @@ namespace PalcoNet.Generar_Publicacion
 
                 fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, fecha);
+                if (modificandoPublicacion) {
+                    publicacionAModificar.fechaEvento = fecha;
+                }
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -129,6 +190,9 @@ namespace PalcoNet.Generar_Publicacion
             try
             {
                 rubro = (Rubro)lista.SelectedItem;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.espectaculo.rubro = rubro;
+                }
             }
             catch (Exception ex) { 
                 MessageBox.Show(ex.Message);
@@ -143,6 +207,17 @@ namespace PalcoNet.Generar_Publicacion
             form.Show(this);
         }
 
+        private ListViewItem getItemDeUbicacion(Ubicacion elem) {
+            ListViewItem item = new ListViewItem();
+            item.Text = elem.fila.ToUpper();
+            item.SubItems.Add(elem.asiento.ToString());
+            item.SubItems.Add(elem.tipoUbicaciones.descripcion);
+            item.SubItems.Add("$" + elem.precio.ToString());
+
+            item.Tag = elem;
+
+            return item;
+        }
 
         private void onFinishLocationInsertions(List<Ubicacion> ubicaciones) {
             string filasDuplicadas = "";
@@ -150,18 +225,10 @@ namespace PalcoNet.Generar_Publicacion
                 if (ubicacionesList.Contains(elem))
                 {
                     if (!filasDuplicadas.Contains(elem.fila))
-                        filasDuplicadas += elem.fila + "-";
+                        filasDuplicadas += elem.fila + "-" + elem.asiento + ", ";
                     continue;
                 }
-                ListViewItem item = new ListViewItem();
-                item.Text = elem.fila.ToUpper();
-                item.SubItems.Add(elem.asiento.ToString());
-                item.SubItems.Add(elem.tipoUbicaciones.descripcion);
-                item.SubItems.Add("$" + elem.precio.ToString());
-
-                item.Tag = elem;
-
-                UbicacionesListView.Items.Add(item);
+                UbicacionesListView.Items.Add(getItemDeUbicacion(elem));
             }
             if (!string.IsNullOrEmpty(filasDuplicadas)) {
                 if (filasDuplicadas.Length % 2 == 0)
@@ -212,6 +279,9 @@ namespace PalcoNet.Generar_Publicacion
             try
             {
                 gradoPublicacion = (GradoPublicacion)GradoPublicacionComboBox.SelectedItem;
+                if (modificandoPublicacion) {
+                    publicacionAModificar.gradoPublicacion = gradoPublicacion;
+                }
             }
             catch (Exception ex) { } 
         }
@@ -220,7 +290,7 @@ namespace PalcoNet.Generar_Publicacion
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-            if (espectGenerado == false) { 
+             if (espectGenerado == false) { 
                 espec = new Espectaculo();
                 espec.descripcion = descripcionPublicacion;
                 espec.direccion = direccionPublicacion;
@@ -229,7 +299,30 @@ namespace PalcoNet.Generar_Publicacion
                 espectGenerado = true;
             }
 
-            SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();   
+            if(rubro.descripcion.Equals("-")){
+                    MessageBox.Show("Debe seleccionar una categoria para el espectaculo");
+            }else{
+                if (!modificandoPublicacion)
+                {
+                    insertarPublicacionEnDB();
+                }
+                else { 
+                    /*
+                     * ESTRATEGIA MODIFICACION:
+                     *  - UNA PUBLICACION SIEMRPE TENDRA EL MISMO ESPCTACULO-
+                     *  - UNA UBICACION QUE NO ESTA DISPONIBLE NO SE PUEDE HABILITAR, TAMPOCO AL REVEZ
+                     *  - 
+                    */
+
+
+                    // TODO: METODO PARA UPDATEAR LA PUBLICACION EN LA BASE DE DATOS
+                    // PONER UN EVENT HANDLER PARA AVISARLE AL PADRE QUE SE ACTUALIZA LA PUBLICACION
+                }
+            }
+        }
+
+        private void insertarPublicacionEnDB() {
+            SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();
             try
             {
                 fechasDeLaPublicacion.ForEach(elem =>
@@ -249,7 +342,8 @@ namespace PalcoNet.Generar_Publicacion
                 MessageBox.Show("Se ha cargado la publicación");
                 borrarFormulario();
             }
-            catch (SqlInsertException ex) {
+            catch (SqlInsertException ex)
+            {
                 transaction.Rollback();
                 MessageBox.Show("Ha ocurrido un error al intentar cargar la/s publicacion/es.");
             }

@@ -376,6 +376,8 @@ INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Canje y admin
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Generar pago de comisiones');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Listado Estadistico');
 
+
+
 INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('-'), ('Drama'), ('StandUp'), ('Comedia'), ('Opera'), ('Infantil'), ('Musical');
 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
@@ -425,7 +427,12 @@ INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1
      INSERT INTO [TheBigBangQuery].Factura VALUES ('efectivo',0,GETDATE(),00001)
 
 	 -- AGREGO LOS GRADOS DE PUBLICACION CON SU RESPECTIVA COMISION
-	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('ALTO', 15), ('MEDIO', 10), ('BAJO', 5);
+	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('ALTO', 15);
+	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('MEDIO', 10);
+	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('BAJO', 5);
+
+	 -- INSERTO EMPRESA DEFAULT PARA CUANDO UN ADMIN CARGA UNA PUBLICACION
+		INSERT INTO [TheBigBangQuery].[Empresa](empr_usuario, empr_cuit, empr_razon_social) VALUES (0, '3623613623', 'RazonSocial123');
 
 COMMIT
 
@@ -513,7 +520,7 @@ BEGIN TRANSACTION
 		publ_fecha_hora_espectaculo,
 		publ_fecha_publicacion,
 		publ_grad_nivel)
-	SELECT DISTINCT e.espe_id, m.Espectaculo_Estado, m.Espectaculo_Fecha, m.Espectaculo_Fecha_Venc, 1
+	SELECT DISTINCT e.espe_id, m.Espectaculo_Estado, m.Espectaculo_Fecha, m.Espectaculo_Fecha_Venc, 2
 	FROM [gd_esquema].[Maestra] m LEFT JOIN [TheBigBangQuery].[Espectaculo] e ON (
 		m.Espectaculo_Cod = e.espe_id AND
 		m.Espectaculo_Descripcion = e.espe_descripcion
@@ -1129,7 +1136,7 @@ IF OBJECT_ID('[TheBigBangQuery].[InsertarEspectaculo]') IS NOT NULL
 GO
 CREATE PROCEDURE [TheBigBangQuery].[InsertarEspectaculo](
 	@empresa nvarchar(255),
-	@rubro nvarchar(255),
+	@rubro NUMERIC(12,0),
 	@descripcion nvarchar(255),
 	@direccion nvarchar(255),
 	@newId numeric(12,0) OUTPUT)
@@ -1141,7 +1148,9 @@ INSERT INTO [TheBigBangQuery].[Espectaculo] (
 	[espe_descripcion],
 	[espe_direccion]
 ) VALUES (
-	CONVERT(numeric, @empresa),
+	CASE WHEN @empresa = 'NULL' THEN NULL
+		 WHEN @empresa IS NULL THEN NULL
+		ELSE CONVERT(numeric, @empresa) END,
 	CONVERT(numeric,@rubro),
 	@descripcion,
 	@direccion
@@ -1285,6 +1294,7 @@ AS BEGIN
 				[publ_fecha_publicacion] = @fechaPublicacion,
 				[publ_fecha_hora_espectaculo] = @fechaEvento,
 				[publ_estado] = @estado
+			WHERE [publ_id] = CONVERT(NUMERIC, @publId)
 
 		END TRY
 		BEGIN CATCH
@@ -1315,3 +1325,219 @@ RETURNS NUMERIC(12,0) AS BEGIN
 			AND ubpu_id_ubicacion = CONVERT(NUMERIC(12,0),@ubiId)
 	)
 END
+
+GO 
+
+
+IF OBJECT_ID('[TheBigBangQuery].[getPublicacionesPorPagina]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getPublicacionesPorPagina];
+GO
+IF TYPE_ID('[TheBigBangQuery].[InfoBasicaPublicacion]') IS NOT NULL
+	DROP TYPE [TheBigBangQuery].[InfoBasicaPublicacion];
+GO
+CREATE TYPE [TheBigBangQuery].[InfoBasicaPublicacion] AS TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+)
+GO
+CREATE FUNCTION [TheBigBangQuery].[getPublicacionesPorPagina] (
+	@numeroPagina int,
+	@tablaAPAginar [TheBigBangQuery].[InfoBasicaPublicacion] READONLY
+)
+RETURNS @temp  TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+) AS BEGIN
+
+	DECLARE @ordenada TABLE (
+		fila bigInt,
+		publ_id NUMERIC(12,0),
+		publ_espectaculo NUMERIC(12,0),
+		publ_grad_nivel NUMERIC(12,0),
+		publ_fecha_publicacion DATETIME,
+		publ_fecha_hora_espectaculo DATETIME,
+		publ_estado NVARCHAR(50),
+		espe_descripcion nvarchar(255),
+		espe_direccion nvarchar(255),
+		grad_nivel nvarchar(255)
+	);
+
+	SET @numeroPagina = @numeroPagina - 1;
+
+	INSERT INTO @ordenada 
+	SELECT ROW_NUMBER() OVER( ORDER BY publ_grad_nivel ASC) AS RowNum, *
+	FROM @tablaAPAginar
+	WHERE publ_estado != 'Finalizada'
+
+
+	-- PAGINAS DE 40 ELEMENTOS 
+
+	INSERT INTO @temp
+	SELECT publ_id, 
+		publ_espectaculo, 
+		publ_grad_nivel, 
+		publ_fecha_publicacion, 
+		publ_fecha_hora_espectaculo,
+		publ_estado, 
+		e.espe_descripcion, 
+		e.espe_direccion , 
+		r.rub_descripcion
+	FROM @ordenada JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+	WHERE fila >= 40 * @numeroPagina AND fila < (20 * @numeroPagina) + 41
+
+	RETURN;
+	
+END
+
+GO 
+
+IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pagina int, @desc varchar(255))
+RETURNS @temp  TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+) AS BEGIN
+	DECLARE @t [TheBigBangQuery].[InfoBasicaPublicacion];
+
+	INSERT INTO @t
+	SELECT publ_id, 
+		publ_espectaculo, 
+		publ_grad_nivel, 
+		publ_fecha_publicacion, 
+		publ_fecha_hora_espectaculo,
+		publ_estado, 
+		e.espe_descripcion, 
+		e.espe_direccion , 
+		r.rub_descripcion
+	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+	WHERE e.espe_descripcion LIKE '%'+@desc+'%'
+	ORDER BY publ_grad_nivel ASC
+
+	INSERT INTO @temp 
+	SELECT *
+	FROM [TheBigBangQuery].[getPublicacionesPorPagina](@pagina, @t)
+
+	RETURN;
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroFecha]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroFecha];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroFecha](
+	@pagina int,
+	@fechaInicio DATETIME,
+	@fechaFin DATETIME)
+RETURNS @temp  TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+) AS BEGIN
+	DECLARE @t [TheBigBangQuery].[InfoBasicaPublicacion];
+
+	INSERT INTO @t
+	SELECT publ_id, 
+		publ_espectaculo, 
+		publ_grad_nivel, 
+		publ_fecha_publicacion, 
+		publ_fecha_hora_espectaculo,
+		publ_estado, 
+		e.espe_descripcion, 
+		e.espe_direccion , 
+		r.rub_descripcion
+	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+	WHERE publ_fecha_hora_espectaculo >= @fechaInicio AND publ_fecha_hora_espectaculo <= @fechaFin
+
+	INSERT INTO @temp 
+	SELECT *
+	FROM [TheBigBangQuery].[getPublicacionesPorPagina](@pagina, @t)
+
+	RETURN;
+END
+GO
+
+
+
+IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros]') IS NOT NULL 
+	DROP FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros];
+GO
+IF TYPE_ID('[TheBigBangQuery].[RubrosList]') IS NOT NULL
+	DROP TYPE [TheBigBangQuery].[RubrosList];
+GO
+CREATE TYPE [TheBigBangQuery].[RubrosList] AS TABLE (
+	[rub_id] NUMERIC(12,0)
+)
+GO
+CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros]
+(
+	@pagina int,
+	@rubros [TheBigBangQuery].[RubrosList] READONLY
+)
+RETURNS @temp  TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+) AS BEGIN
+	DECLARE @t [TheBigBangQuery].[InfoBasicaPublicacion];
+
+	INSERT INTO @t
+	SELECT publ_id, 
+		publ_espectaculo, 
+		publ_grad_nivel, 
+		publ_fecha_publicacion, 
+		publ_fecha_hora_espectaculo,
+		publ_estado, 
+		e.espe_descripcion, 
+		e.espe_direccion , 
+		r.rub_descripcion
+	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+	WHERE e.espe_rubro IN (SELECT *
+							FROM @rubros)
+
+
+	INSERT INTO @temp 
+	SELECT *
+	FROM [TheBigBangQuery].[getPublicacionesPorPagina](@pagina, @t)
+
+	RETURN;
+END
+GO

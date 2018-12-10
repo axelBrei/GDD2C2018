@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PalcoNet.Historial_Cliente
+namespace PalcoNet.Comprar
 {
-    public partial class Form1 : Form
+    public partial class FiltrosForm : Form
     {
-        public Form1()
+        public FiltrosForm()
         {
             InitializeComponent();
         }

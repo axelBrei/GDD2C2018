@@ -70,7 +70,7 @@ namespace PalcoNet.Editar_Publicacion
                 accionNuevoEstado();
                 return null;
             }else{
-                return estado;
+                return nuevoEstado;
             }
         }
 

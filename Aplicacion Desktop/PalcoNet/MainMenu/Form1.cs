@@ -106,13 +106,13 @@ namespace PalcoNet.MainMenu
                 case 9:
                     {
                         // COMPRAR
-                        form = new Comprar.Form1();
+                        form = new Comprar.ListadoPublicacionesComprasForm();
                         break;
                     }
                 case 10:
                     {
                         // HISTORIAL CLIENTE
-                        form = new Historial_Cliente.Form1();
+                        form = new Historial_Cliente.HistorialCliente();
                         break;
                     }
                 case 11:

@@ -290,15 +290,6 @@ namespace PalcoNet.Generar_Publicacion
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-             if (espectGenerado == false) { 
-                espec = new Espectaculo();
-                espec.descripcion = descripcionPublicacion;
-                espec.direccion = direccionPublicacion;
-                espec.rubro = rubro;
-                espec.id = espectaculosDao.insertarEspectaculo(espec);
-                espectGenerado = true;
-            }
-
             if(rubro.descripcion.Equals("-")){
                     MessageBox.Show("Debe seleccionar una categoria para el espectaculo");
             }else{
@@ -323,6 +314,15 @@ namespace PalcoNet.Generar_Publicacion
 
         private void insertarPublicacionEnDB() {
             SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();
+            if (espectGenerado == false)
+            {
+                espec = new Espectaculo();
+                espec.descripcion = descripcionPublicacion;
+                espec.direccion = direccionPublicacion;
+                espec.rubro = rubro;
+                espec.id = espectaculosDao.insertarEspectaculo(espec,transaction);
+                espectGenerado = true;
+            }
             try
             {
                 fechasDeLaPublicacion.ForEach(elem =>

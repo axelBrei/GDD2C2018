@@ -15,7 +15,7 @@ namespace PalcoNet.Dao
     class EspectaculosDao
     {
 
-        public int insertarEspectaculo(Espectaculo espec) {
+        public int insertarEspectaculo(Espectaculo espec, SqlTransaction trans) {
             string query = "[TheBigBangQuery].[InsertarEspectaculo]";
             try
             {
@@ -23,11 +23,12 @@ namespace PalcoNet.Dao
 
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.CommandText = query;
+                command.Transaction = trans;
 
                 SqlParameter outId = new SqlParameter("@newId", SqlDbType.Decimal) { Direction = ParameterDirection.Output };
 
-                command.Parameters.AddWithValue("@empresa", espec.empresa == null ? "NULL" : espec.empresa.id.ToString());
-                command.Parameters.AddWithValue("@rubro", espec.rubro.id.ToString());
+                command.Parameters.AddWithValue("@empresa", espec.empresa == null ?  "0" : espec.empresa.id.ToString());
+                command.Parameters.AddWithValue("@rubro", espec.rubro.id);
                 command.Parameters.AddWithValue("@descripcion", espec.descripcion);
                 command.Parameters.AddWithValue("@direccion", espec.direccion);
                 command.Parameters.Add(outId);

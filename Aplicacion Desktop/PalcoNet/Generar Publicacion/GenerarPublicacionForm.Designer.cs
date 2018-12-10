@@ -46,6 +46,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.HoraEventoTimePicker = new System.Windows.Forms.DateTimePicker();
             this.ClearFormButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.UbicacionesPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -258,6 +259,16 @@
             this.ClearFormButton.UseVisualStyleBackColor = false;
             this.ClearFormButton.Click += new System.EventHandler(this.ClearFormButton_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(226, 25);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Generar Publicación";
+            // 
             // GenerarPublicacionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -265,6 +276,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(717, 697);
             this.ControlBox = false;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ClearFormButton);
             this.Controls.Add(this.HoraEventoTimePicker);
             this.Controls.Add(this.button2);
@@ -313,5 +325,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DateTimePicker HoraEventoTimePicker;
         private System.Windows.Forms.Button ClearFormButton;
+        private System.Windows.Forms.Label label1;
     }
 }

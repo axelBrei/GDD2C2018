@@ -38,17 +38,25 @@ namespace PalcoNet.Editar_Publicacion
         {
             try
             {
-                publi.id = publicacionesDao.insertarPublicacion(publi, transaction);
-                if (publi.id != -1)
+                //publi.espectaculo.id = espectaculosDao.insertarEspectaculo(publi.espectaculo, transaction);
+                if (publi.espectaculo.id != -1)
                 {
-                    publi.ubicaciones.ForEach(elem =>
+                    publi.id = publicacionesDao.insertarPublicacion(publi, transaction);
+                    if (publi.id != -1)
                     {
-                        elem.id = ubicacionesDao.insertarUbicacion(elem, transaction);
-                        if (elem.id != -1)
-                            ubicacionesPorPublicacionDao.insertarUbicacionPorPublicacion(elem, publi, transaction);
-                    });
+                        publi.ubicaciones.ForEach(elem =>
+                        {
+                            elem.id = ubicacionesDao.insertarUbicacion(elem, transaction);
+                            if (elem.id != -1)
+                                ubicacionesPorPublicacionDao.insertarUbicacionPorPublicacion(elem, publi, transaction);
+                        });
+                    }
+                    return 1;
                 }
-                return 1;
+                else
+                    throw new Exception();
+                
+                
             }
             catch (Exception ex)
             {

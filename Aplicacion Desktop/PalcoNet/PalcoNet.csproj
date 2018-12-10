@@ -101,11 +101,17 @@
     <Compile Include="Canje Puntos\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Comprar\Form1.cs">
+    <Compile Include="Comprar\FiltrosForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Comprar\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Comprar\FiltrosForm.Designer.cs">
+      <DependentUpon>FiltrosForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\ListadoPublicacionesComprasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\ListadoPublicacionesComprasForm.Designer.cs">
+      <DependentUpon>ListadoPublicacionesComprasForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
     <Compile Include="Constants\Strings.cs" />
@@ -189,11 +195,11 @@
     <Compile Include="Generar Rendicion Comisiones\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Historial Cliente\Form1.cs">
+    <Compile Include="Historial Cliente\HistorialCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Historial Cliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Historial Cliente\HistorialCliente.Designer.cs">
+      <DependentUpon>HistorialCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -267,6 +273,12 @@
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\FiltrosForm.resx">
+      <DependentUpon>FiltrosForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\ListadoPublicacionesComprasForm.resx">
+      <DependentUpon>ListadoPublicacionesComprasForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\EditarEstadoForm.resx">
       <DependentUpon>EditarEstadoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -293,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicacion\PanelDateItem.resx">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Historial Cliente\HistorialCliente.resx">
+      <DependentUpon>HistorialCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

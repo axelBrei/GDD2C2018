@@ -160,7 +160,7 @@ namespace PalcoNet.Dao
                 command.Parameters.AddWithValue("@espeId", publicacion.espectaculo.id.ToString());
                 command.Parameters.AddWithValue("@rubroEspe", publicacion.espectaculo.rubro.id.ToString());
                 command.Parameters.AddWithValue("@descipcion", publicacion.espectaculo.descripcion.ToString());
-                command.Parameters.AddWithValue("@direccion", publicacion.espectaculo.direccion.ToString());
+                command.Parameters.AddWithValue("@direccion",  publicacion.espectaculo.direccion.ToString());
                 command.Parameters.AddWithValue("@idGradoPublicacion", publicacion.gradoPublicacion.id.ToString());
 
                 SqlParameter fechaPubliParam = new SqlParameter("@fechaPublicacion", SqlDbType.DateTime);
@@ -179,6 +179,166 @@ namespace PalcoNet.Dao
                 throw new SqlInsertException("No se ha podido actualizar la publicacion.", SqlInsertException.CODIGO_PUBLICACION);
             }
         }
+
+        public List<Publicacion> getInfoBasicaPublicacionPorPagina(int pagina) {
+            List<Publicacion> publicaciones = new List<Publicacion>();
+            string query = "SELECT * FROM [TheBigBangQuery].[getPublicacionesPorPagina](@numPagina, @tabla) ";
+            SqlDataReader reader = null;
+
+            try
+            {
+                SqlCommand command = new SqlCommand(query);
+                command.CommandText = query;
+
+                command.Parameters.AddWithValue("@numPagina", pagina);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Publicacion publi = ParserPublicaciones.parsearPublicacionDelReader(reader);
+                        publi.espectaculo.descripcion = reader.IsDBNull(6) ? null : reader.GetSqlString(6).ToString();
+                        publi.espectaculo.direccion = reader.IsDBNull(7) ? null : reader.GetSqlString(7).ToString();
+                        publi.gradoPublicacion.nivel = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
+                        publicaciones.Add(publi);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new DataNotFoundException("No se han encontrado publicaciones para la pagina " + pagina);
+            }
+            finally {
+                if (reader != null & !reader.IsClosed) 
+                    reader.Close();
+            }
+
+            return publicaciones;
+        }
+
+        private List<Publicacion> filtrarPaginasPorRubro(int pagina, List<Rubro> rubros) {
+            string funcion = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros](@pagina, @table)";
+            List<Publicacion> publis = new List<Publicacion>();
+            SqlDataReader reader = null;
+            try
+            {
+                SqlCommand command = new SqlCommand(funcion);
+                command.CommandText = funcion;
+
+                DataTable table = new DataTable();
+                table.Columns.Add("rub_id", typeof(decimal));
+
+                foreach (Rubro r in rubros)
+                {
+                    table.Rows.Add("rub_id", r.id);
+                }
+
+                SqlParameter param = new SqlParameter("@table", SqlDbType.Structured);
+                param.TypeName = "[TheBigBangQuery].[RubrosList]";
+                param.Value = table;
+
+                command.Parameters.AddWithValue("@pagina", pagina);
+                command.Parameters.Add(param);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        publis.Add(ParserPublicaciones.parsearPublicacionDelReader(reader));
+                    }
+                }
+
+
+                return publis;
+            }
+            catch (Exception e)
+            {
+                throw new DataNotFoundException("No se han encontrado publicaciones pertenecientes a los rubros seleccionados");
+            }
+            finally {
+                if (reader != null & !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
+        public List<Publicacion> filtrarPaginasPorDescripcion(int pagina, string descripcion) {
+            List<Publicacion> publis;
+            SqlDataReader reader = null;
+            string function = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pag, @desc)";
+            try
+            {
+                publis = new List<Publicacion>();
+                SqlCommand command = new SqlCommand(function);
+                command.CommandText = function;
+
+                command.Parameters.AddWithValue("@pag", pagina);
+                command.Parameters.AddWithValue("@desc", descripcion);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Publicacion publi = ParserPublicaciones.parsearPublicacionDelReader(reader);
+                        publi.espectaculo.descripcion = reader.IsDBNull(6) ? null : reader.GetSqlString(6).ToString();
+                        publi.espectaculo.direccion = reader.IsDBNull(7) ? null : reader.GetSqlString(7).ToString();
+                        publi.gradoPublicacion.nivel = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
+                        publis.Add(publi);
+
+                    }
+                }
+                return publis;
+            }
+            catch (Exception e)
+            {
+                throw new DataNotFoundException("No se han encontrado publicaciones coincidentes con la descripcion ingresada");
+            }
+            finally {
+                if (reader != null & !reader.IsClosed) {
+                    reader.Close();
+                }
+            }
+        }
+
+        public List<Publicacion> filtrarPaginasPorFechas(int pagina, DateTime fechaInicio, DateTime fechaFin) {
+            string function = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroFecha](@pag, @fechaI, @fechaF)";
+            SqlDataReader reader = null;
+            List<Publicacion> publis;
+            try
+            {
+                publis = new List<Publicacion>();
+                SqlCommand command = new SqlCommand(function);
+                command.CommandText = function;
+
+                command.Parameters.AddWithValue("@pag", pagina);
+                command.Parameters.AddWithValue("@fechaI", fechaInicio);
+                command.Parameters.AddWithValue("@fechaF", fechaFin);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        publis.Add(ParserPublicaciones.parsearPublicacionDelReader(reader));
+                    }
+                }
+                return publis;
+            }
+            catch (Exception e)
+            {
+                throw new DataNotFoundException("No se han encontrado publicaciones entre las fechas ingresadas");
+            }
+            finally {
+                if (reader != null & !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
+
+
+        // -------------------------PARSER-------------------------------------------
 
         private class ParserPublicaciones
         {

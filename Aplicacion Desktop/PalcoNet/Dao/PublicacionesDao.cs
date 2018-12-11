@@ -217,7 +217,7 @@ namespace PalcoNet.Dao
             return publicaciones;
         }
 
-        private List<Publicacion> filtrarPaginasPorRubro(int pagina, List<Rubro> rubros) {
+        public List<Publicacion> filtrarPaginasPorRubro(int pagina, List<Rubro> rubros) {
             string funcion = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros](@pagina, @table)";
             List<Publicacion> publis = new List<Publicacion>();
             SqlDataReader reader = null;
@@ -231,7 +231,7 @@ namespace PalcoNet.Dao
 
                 foreach (Rubro r in rubros)
                 {
-                    table.Rows.Add("rub_id", r.id);
+                    table.Rows.Add(r.id);
                 }
 
                 SqlParameter param = new SqlParameter("@table", SqlDbType.Structured);
@@ -246,7 +246,11 @@ namespace PalcoNet.Dao
                 {
                     while (reader.Read())
                     {
-                        publis.Add(ParserPublicaciones.parsearPublicacionDelReader(reader));
+                        Publicacion publi = ParserPublicaciones.parsearPublicacionDelReader(reader);
+                        publi.espectaculo.descripcion = reader.IsDBNull(6) ? null : reader.GetSqlString(6).ToString();
+                        publi.espectaculo.direccion = reader.IsDBNull(7) ? null : reader.GetSqlString(7).ToString();
+                        publi.gradoPublicacion.nivel = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
+                        publis.Add(publi);
                     }
                 }
 
@@ -321,7 +325,11 @@ namespace PalcoNet.Dao
                 {
                     while (reader.Read())
                     {
-                        publis.Add(ParserPublicaciones.parsearPublicacionDelReader(reader));
+                        Publicacion publi = ParserPublicaciones.parsearPublicacionDelReader(reader);
+                        publi.espectaculo.descripcion = reader.IsDBNull(6) ? null : reader.GetSqlString(6).ToString();
+                        publi.espectaculo.direccion = reader.IsDBNull(7) ? null : reader.GetSqlString(7).ToString();
+                        publi.gradoPublicacion.nivel = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
+                        publis.Add(publi);
                     }
                 }
                 return publis;
@@ -336,6 +344,64 @@ namespace PalcoNet.Dao
             }
         }
 
+
+        public int getUltimaPaginaDesc(string desc) {
+            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc)";
+            try
+            {
+                SqlCommand com = new SqlCommand(query);
+                com.Parameters.AddWithValue("@desc", desc);
+                return DatabaseConection.executeParamFunction<int>(com);
+            }
+            catch (Exception e) {
+                throw e;
+            }
+        }
+
+        public int getUltimaPaginaFecha(DateTime fechaI, DateTime fechaF) {
+            string query = "SELECT [TheBigBangQuery].[getUltimaPagFiltroFecha](@fechaI, @fechaF)";
+            try
+            {
+                SqlCommand com = new SqlCommand(query);
+
+                com.Parameters.AddWithValue("@fechaI", fechaI);
+                com.Parameters.AddWithValue("@fechaF", fechaF);
+
+                return DatabaseConection.executeParamFunction<int>(com);
+            }
+            catch (Exception e) {
+                throw e;
+            }
+        }
+
+        public int getUltimaPaginaRubros(List<Rubro> rubros)
+        {
+            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroRubro](@table)";
+            try
+            {
+                SqlCommand com = new SqlCommand(query);
+
+                DataTable table = new DataTable();
+                table.Columns.Add("rub_id", typeof(decimal));
+
+                foreach (Rubro r in rubros)
+                {
+                    table.Rows.Add(r.id);
+                }
+
+                SqlParameter param = new SqlParameter("@table", SqlDbType.Structured);
+                param.TypeName = "[TheBigBangQuery].[RubrosList]";
+                param.Value = table;
+
+                com.Parameters.Add(param);
+
+                return DatabaseConection.executeParamFunction<int>(com);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
 
         // -------------------------PARSER-------------------------------------------

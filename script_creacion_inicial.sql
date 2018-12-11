@@ -1373,7 +1373,7 @@ RETURNS @temp  TABLE (
 		publ_estado NVARCHAR(50),
 		espe_descripcion nvarchar(255),
 		espe_direccion nvarchar(255),
-		grad_nivel nvarchar(255)
+		rub_descripcion nvarchar(255)
 	);
 
 	SET @numeroPagina = @numeroPagina - 1;
@@ -1393,12 +1393,11 @@ RETURNS @temp  TABLE (
 		publ_fecha_publicacion, 
 		publ_fecha_hora_espectaculo,
 		publ_estado, 
-		e.espe_descripcion, 
-		e.espe_direccion , 
-		r.rub_descripcion
-	FROM @ordenada JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
-		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-	WHERE fila >= 40 * @numeroPagina AND fila < (20 * @numeroPagina) + 41
+		espe_descripcion, 
+		espe_direccion , 
+		rub_descripcion
+	FROM @ordenada
+	WHERE fila >= 40 * @numeroPagina AND fila < (40 * @numeroPagina) + 41
 
 	RETURN;
 	
@@ -1435,8 +1434,7 @@ RETURNS @temp  TABLE (
 		r.rub_descripcion
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-	WHERE e.espe_descripcion LIKE '%'+@desc+'%'
-	ORDER BY publ_grad_nivel ASC
+	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%'
 
 	INSERT INTO @temp 
 	SELECT *
@@ -1541,3 +1539,51 @@ RETURNS @temp  TABLE (
 	RETURN;
 END
 GO
+IF OBJECT_ID('[TheBigBangQuery].[getUltimaLineaFiltroDesc]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroDesc];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc nvarchar(255))
+RETURNS INT AS BEGIN
+	DECLARE @temp TABLE ([cant] int, [grad] NUMERIC(12,0));
+
+	
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
+			ELSE COUNT(*)/40 END   
+		FROM [TheBigBangQuery].[Publicacion]
+			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+		WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%'
+	)
+END
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getUltimaLineaFiltroRubro]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro](@rubros [theBigBangQuery].[RubrosList] READONLY)
+RETURNS INT AS BEGIN
+
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
+			ELSE COUNT(*)/40 END 
+		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+		WHERE e.espe_rubro IN (SELECT *
+								FROM @rubros)
+	)
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getUltimaPagFiltroFecha]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getUltimaPagFiltroFecha];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getUltimaPagFiltroFecha](@fechaI DATETIME, @fechaF DATETIME)
+RETURNS INT AS BEGIN
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
+			ELSE COUNT(*)/40 END 
+		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+		WHERE publ_fecha_hora_espectaculo >= @fechaI AND publ_fecha_hora_espectaculo <= @fechaF
+	)
+END
+

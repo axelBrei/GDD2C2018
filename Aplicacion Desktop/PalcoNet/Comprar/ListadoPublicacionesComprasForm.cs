@@ -17,9 +17,11 @@ namespace PalcoNet.Comprar
     public partial class ListadoPublicacionesComprasForm : Form
     {
         private PublicacionesDao publiDao;
-        FiltrosForm filtrosForm;
+        private FiltrosForm filtrosForm;
         private int paginaActual;
         private Filtros filtroActual;
+        private Publicacion publiActual;
+        private int indexActual;
 
         public ListadoPublicacionesComprasForm()
         {
@@ -42,6 +44,7 @@ namespace PalcoNet.Comprar
 
             filtrosForm = new FiltrosForm();
             filtrosForm.onFilterSelected += this.onSelectFilter;
+
 
             
             
@@ -211,6 +214,23 @@ namespace PalcoNet.Comprar
             filtro.tipo = -1;
             filtroActual = filtro;
             actualizarPagina(1);
+        }
+
+        private void DetallesButton_Click(object sender, EventArgs e)
+        {
+            ComprarForm form = new ComprarForm(publiActual);
+            form.Show(this);
+        }
+
+        private void PublicacionesListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListView list = sender as ListView;
+            try
+            {
+                publiActual = (Publicacion)list.SelectedItems[0].Tag;
+                indexActual = list.SelectedIndices[0];
+            }
+            catch (Exception ex) { }
         }
     }
 }

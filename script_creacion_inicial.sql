@@ -9,10 +9,14 @@ IF object_id('TheBigBangQuery.Premio') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Premio;
 IF object_id('TheBigBangQuery.FormaDePago') IS NOT NULL
 	DROP TABLE TheBigBangQuery.FormaDePago;
+IF OBJECT_ID('[TheBigBangQuery].[Ubicaciones_Compra]') IS NOT NULL
+	DROP TABLE [TheBigBangQuery].[Ubicaciones_Compra];
 IF object_id('TheBigBangQuery.Ubicaciones_publicacion') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Ubicaciones_publicacion;
 IF object_id('TheBigBangQuery.Compras') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Compras;
+IF OBJECT_ID('[TheBigBangQuery].[Tarjetas]') IS NOT NULL
+	DROP TABLE [TheBigBangQuery].[Tarjetas];
 IF object_id('TheBigBangQuery.Cliente') IS NOT NULL
 	DROP TABLE TheBigBangQuery.Cliente;
 IF object_id('TheBigBangQuery.Tipo_Documento') IS NOT NULL
@@ -163,7 +167,6 @@ CREATE TABLE [TheBigBangQuery].[Cliente] (
     [clie_codigo_postal] nvarchar(255),
     [clie_f_nacimiento] DATETIME,
     [clie_f_creacion] DATETIME,
-    [clie_n_tarjeta] NUMERIC(18,0),
     [clie_dado_baja] DATETIME,
     [clie_puntos] NUMERIC(18,0),
 	[clie_departamento] nvarchar(255),
@@ -177,6 +180,15 @@ ALTER TABLE [TheBigBangQuery].[Cliente]
 
 ALTER TABLE [TheBigBangQuery].[Cliente] 
     ADD CONSTRAINT [FK_CLI_TIPO] FOREIGN KEY ([clie_tipo_documento]) REFERENCES [TheBigBangQuery].[Tipo_Documento](tipo_id);
+
+CREATE TABLE [TheBigBangQuery].[Tarjetas] (
+	[tarj_id] NUMERIC(12,0) IDENTITY(1,1) PRIMARY KEY,
+	[tarj_cliente] NUMERIC(18,0) FOREIGN KEY REFERENCES [TheBigBangQuery].[Cliente]([clie_id]),
+	[tarj_titular] NVARCHAR(255),
+	[tarj_numero] NVARCHAR(255),
+	[tarj_caducidad] NVARCHAR(25),
+	[tarj_cvv] nvarchar(4)
+)
 
 
 CREATE TABLE [TheBigBangQuery].[Rubro] (
@@ -254,6 +266,7 @@ CREATE TABLE [TheBigBangQuery].[Ubicacion] (
 ALTER TABLE [TheBigBangQuery].[Ubicacion]
     ADD CONSTRAINT [FK_UBI_TIPO] FOREIGN KEY ([ubi_tipo_codigo]) REFERENCES [TheBigBangQuery].[TipoUbicacion](tipu_id);
 
+-- BIT EN 1 = COMPRADA
 CREATE TABLE [TheBigBangQuery].[Ubicaciones_publicacion] (
 	[ubpu_id] NUMERIC(12,0) IDENTITY(1,1),
     [ubpu_id_publicacion] NUMERIC(12,0) NOT NULL,
@@ -289,7 +302,8 @@ CREATE TABLE [TheBigBangQuery].[Factura] (
     [fact_forma_de_pago] NVARCHAR(255),
     [fact_total] NUMERIC(18,2),
     [fact_fecha] DATETIME,
-    [fact_empresa] NUMERIC(12,0)
+    [fact_empresa] NUMERIC(12,0),
+	[fact_comision_hecha] BIT
 
     CONSTRAINT [PK_FACT] PRIMARY KEY (fact_numero)
 );
@@ -306,12 +320,12 @@ ALTER TABLE [TheBigBangQuery].[Item_Factura]
 
 CREATE TABLE [TheBigBangQuery].[Compras] (
     [comp_id] NUMERIC(12,0) NOT NULL IDENTITY(0,1),
-    [comp_cliente] NUMERIC(18,0),
-    [comp_ubicacion] NUMERIC(12,0), 
+    [comp_cliente] NUMERIC(18,0), 
     [comp_n_factura] NUMERIC(18,0),
     [comp_fecha_y_hora] DATETIME,
     [comp_medio_de_pago] nvarchar(255),
-    [comp_cantidad] NUMERIC(12,0)
+    [comp_cantidad] NUMERIC(12,0),
+	[comp_total] NUMERIC(18,2)
 
     CONSTRAINT [PK_COMP] PRIMARY KEY ([comp_id])
 );
@@ -319,8 +333,6 @@ CREATE TABLE [TheBigBangQuery].[Compras] (
 ALTER TABLE [TheBigBangQuery].[Compras] 
     ADD CONSTRAINT [FK_COMP_CLI] FOREIGN KEY ([comp_cliente]) REFERENCES [TheBigBangQuery].[Cliente](clie_id);
 
-ALTER TABLE [TheBigBangQuery].[Compras] 
-    ADD CONSTRAINT [FK_COMP_UBI] FOREIGN KEY (comp_ubicacion) REFERENCES [TheBigBangQuery].[Ubicacion](ubi_id);
 
 ALTER TABLE [TheBigBangQuery].[Compras] 
     ADD CONSTRAINT [FK_COMP_FACT] FOREIGN KEY (comp_n_factura) REFERENCES [TheBigBangQuery].[Factura](fact_numero);
@@ -331,6 +343,19 @@ CREATE TABLE [TheBigBangQuery].[FormaDePago] (
 
 	CONSTRAINT [PK_FORMA_PAGO] PRIMARY KEY ([form_id])
 );
+
+CREATE TABLE [TheBigBangQuery].[Ubicaciones_Compra](
+	[ubco_id] NUMERIC(12,0) IDENTITY(1,1),
+	[ubco_compra] NUMERIC(12,0),
+	[ubco_ubicacion] NUMERIC(12,0)
+
+	CONSTRAINT [PK_UBCO] PRIMARY KEY ([ubco_id])
+);
+
+ALTER TABLE [TheBigBangQuery].[Ubicaciones_Compra]
+	ADD CONSTRAINT [FK_UBCO_COM] FOREIGN KEY (ubco_compra) REFERENCES [TheBigBangQuery].[Compras](comp_id);
+ALTER TABLE [TheBigBangQuery].[Ubicaciones_Compra]
+	ADD CONSTRAINT [FK_UBCO_UB] FOREIGN KEY (ubco_ubicacion) REFERENCES [TheBigBangQuery].[Ubicacion](ubi_id);
 
 
 
@@ -420,11 +445,11 @@ INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1
 
     -- inserto premios en Tabla de Premios
     INSERT INTO [TheBigBangQuery].[Premio] VALUES (1000,'Bebida a Eleccion', '20200101 12:00:00 PM');
-    INSERT INTO [TheBigBangQuery].[Premio] VALUES (10000, 'Entradas a eleccion para proximo espectaculo', '20200101 12:00:00 PM');
+    INSERT INTO [TheBigBangQuery].[Premio] VALUES (3000, 'Entradas a eleccion para proximo espectaculo', '20200101 12:00:00 PM');
     INSERT INTO [TheBigBangQuery].[Premio] VALUES (1500, 'Mochila BigBangQuery','20181220 12:00:00 AM');
 
     -- CREO FACTURA QUE CONTEMPLA TODAS LAS COMISIONES POR VENTAS ANTERIORES
-     INSERT INTO [TheBigBangQuery].Factura VALUES ('efectivo',0,GETDATE(),00001)
+     INSERT INTO [TheBigBangQuery].Factura VALUES ('efectivo',0,GETDATE(),00001,1)
 
 	 -- AGREGO LOS GRADOS DE PUBLICACION CON SU RESPECTIVA COMISION
 	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('ALTO', 15);
@@ -575,8 +600,9 @@ BEGIN TRANSACTION
 		fact_fecha,
 		fact_forma_de_pago,
 		fact_total,
-		fact_empresa)
-	SELECT DISTINCT Factura_Nro, Factura_Fecha, f.form_nombre, Factura_Total, e.empr_id
+		fact_empresa, 
+		fact_comision_hecha)
+	SELECT DISTINCT Factura_Nro, Factura_Fecha, f.form_nombre, Factura_Total, e.empr_id, 0
 	FROM [gd_esquema].[Maestra] m LEFT JOIN [TheBigBangQuery].[Empresa] e ON (
 			e.empr_razon_social = m.Espec_Empresa_Razon_Social AND 
 			e.empr_cuit = m.Espec_Empresa_Cuit AND 
@@ -595,11 +621,12 @@ BEGIN TRANSACTION
 	-- INSERTO LAS COMPRAS
 	INSERT INTO [TheBigBangQuery].[Compras](
 		[comp_cliente],
-		[comp_ubicacion],
 		[comp_n_factura],
 		[comp_fecha_y_hora],
-		[comp_cantidad])
-	SELECT c.clie_id,  u.ubi_id, f.fact_numero,m.Compra_Fecha, m.Compra_Cantidad
+		[comp_cantidad],
+		[comp_medio_de_pago],
+		[comp_total])
+	SELECT c.clie_id, f.fact_numero,m.Compra_Fecha, m.Compra_Cantidad, 'Efectivo', f.fact_total
 	FROM [gd_esquema].[Maestra] m LEFT JOIN [TheBigBangQuery].[Cliente] c ON (
 		c.clie_dni = m.Cli_Dni AND 
 		c.clie_apellido = m.Cli_Apeliido AND
@@ -611,17 +638,40 @@ BEGIN TRANSACTION
 		c.clie_piso = m.Cli_Piso AND 
 		c.clie_departamento = m.Cli_Depto AND 
 		c.clie_codigo_postal = m.Cli_Cod_Postal
-	) LEFT JOIN [TheBigBangQuery].[Ubicacion] u ON (
-		u.ubi_fila = m.Ubicacion_Fila AND 
-		u.ubi_asiento = m.Ubicacion_Asiento AND 
-		u.ubi_sin_enumerar = m.Ubicacion_Sin_numerar AND
-		u.ubi_tipo_codigo = m.Ubicacion_Tipo_Codigo
 	) LEFT JOIN [TheBigBangQuery].[Factura] f ON (
 		f.fact_numero = m.Factura_Nro AND 
 		f.fact_fecha = m.Factura_Fecha AND 
 		f.fact_total = m.Factura_Total
 	)
-	WHERE c.clie_id IS NOT NULL AND u.ubi_id IS NOT NULL AND f.fact_numero IS NOT NULL
+	WHERE c.clie_id IS NOT NULL  AND f.fact_numero IS NOT NULL
+
+	-- INSERTO LAS UBICACIONES DE CADA COMPRA
+	INSERT INTO [TheBigBangQuery].[Ubicaciones_Compra](
+		[ubco_compra],[ubco_ubicacion]
+	)
+	SELECT DISTINCT c.clie_id, u.ubi_id
+	FROM [gd_esquema].[Maestra] m 
+	LEFT JOIN [TheBigBangQuery].[Cliente] c ON (
+		c.clie_dni = m.Cli_Dni AND 
+		c.clie_apellido = m.Cli_Apeliido AND
+		c.clie_nombre = m.Cli_Nombre AND 
+		c.clie_f_nacimiento = m.Cli_Fecha_Nac AND 
+		c.clie_mail = m.Cli_Mail AND
+		c.clie_direccion = m.Cli_Dom_Calle AND
+		c.clie_numero_calle = m.Cli_Nro_Calle AND 
+		c.clie_piso = m.Cli_Piso AND 
+		c.clie_departamento = m.Cli_Depto AND 
+		c.clie_codigo_postal = m.Cli_Cod_Postal
+	) 
+	LEFT JOIN [TheBigBangQuery].[Compras] co ON (co.comp_cliente = c.clie_id)
+	LEFT JOIN [TheBigBangQuery].[Ubicacion] u ON (
+		m.Ubicacion_Asiento = u.ubi_asiento AND 
+		m.Ubicacion_Fila = u.ubi_fila AND 
+		m.Ubicacion_Sin_numerar = u.ubi_sin_enumerar AND
+		m.Ubicacion_Tipo_Codigo = u.ubi_tipo_codigo
+	)
+	WHERE m.Compra_Cantidad IS NOT NULL AND m.Compra_Fecha IS NOT NULL
+
 
 	INSERT INTO [TheBigBangQuery].[Item_Factura](
 		[item_monto],
@@ -778,70 +828,81 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 	@depto nvarchar(255),
 	@localidad nvarchar(255),
 	@codigoPostal nvarchar(255),
-	@fechaNacimiento nvarchar(255),
-	@fechaCreacion nvarchar(255),
-	@numeroTarjeta nvarchar(255)
+	@fechaNacimiento DATETIME,
+	@fechaCreacion DATETIME
 ) AS BEGIN
-	BEGIN TRANSACTION
+	
 	BEGIN TRY
-			INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
-			(@usuario, 2, 0, [TheBigBangQuery].[getHashPassword](@contraseña) );
 
-			INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_rol, rolu_usuario) 
-			SELECT usua_rol, usua_id
-			FROM [TheBigBangQuery].[Usuario]
-			WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
+		BEGIN TRANSACTION
 
-			INSERT INTO [TheBigBangQuery].[Cliente](
-				[clie_usuario],
-				[clie_nombre],
-				[clie_apellido],
-				[clie_tipo_documento],
-				[clie_dni],
-				[clie_cuil],
-				[clie_mail],
-				[clie_telefono],
-				[clie_direccion],
-				[clie_numero_calle],
-				[clie_piso],
-				[clie_departamento],
-				[clie_locacalidad],
-				[clie_codigo_postal],
-				[clie_f_nacimiento],
-				[clie_f_creacion],
-				[clie_n_tarjeta],
-				[clie_puntos]) VALUES (
-					(
+		IF (SELECT COUNT(*)
+				FROM [TheBigBangQuery].[Cliente] c
+				WHERE c.clie_dni = CONVERT(NUMERIC,@documento) AND c.clie_tipo_documento = @tipoDoc) < 1 
+		BEGIN
+
+		INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
+		(@usuario, 2, 0, [TheBigBangQuery].[getHashPassword](@contraseña) );
+
+		INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_rol, rolu_usuario) 
+		SELECT usua_rol, usua_id
+		FROM [TheBigBangQuery].[Usuario]
+		WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
+
+		INSERT INTO [TheBigBangQuery].[Cliente](
+			[clie_usuario],
+			[clie_nombre],
+			[clie_apellido],
+			[clie_tipo_documento],
+			[clie_dni],
+			[clie_cuil],
+			[clie_mail],
+			[clie_telefono],
+			[clie_direccion],
+			[clie_numero_calle],
+			[clie_piso],
+			[clie_departamento],
+			[clie_locacalidad],
+			[clie_codigo_postal],
+			[clie_f_nacimiento],
+			[clie_f_creacion],
+			[clie_puntos]) VALUES (
+				(
 						SELECT TOP 1 usua_id
 						FROM [TheBigBangQuery].[Usuario]
 						WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
-					),
-					
-					@nombre, 
-					@apellido, 
-					(SELECT TOP 1 tipo_id FROM [TheBigBangQuery].[Tipo_Documento] WHERE tipo_descripcion = @tipoDoc),
-					@documento,
-					@cuil,
-					@mail,
-					@telefono,
-					@calle,
-					CONVERT(numeric, @altura),
-					CONVERT(numeric, @piso),
-					@depto,
-					@localidad,
-					@codigoPostal,
-					CONVERT(datetime,@fechaNacimiento,20),
-					CONVERT(datetime,@fechaCreacion,20),
-					@numeroTarjeta,
-					0
-				);
+				),
+				@nombre, 
+				@apellido, 
+				(SELECT TOP 1 tipo_id FROM [TheBigBangQuery].[Tipo_Documento] WHERE tipo_descripcion = @tipoDoc),
+				@documento,
+				@cuil,
+				@mail,
+				@telefono,
+				@calle,
+				CONVERT(numeric, @altura),
+				CONVERT(numeric, @piso),
+				@depto,
+				@localidad,
+				@codigoPostal,
+				@fechaNacimiento,
+				@fechaCreacion,
+				0
+			);
+			END ELSE BEGIN
+				RAISERROR('Ya existe el cliente',16,1);
+				ROLLBACK TRANSACTION;
+			END
 
-				COMMIT;
+			COMMIT 
 	END TRY
 	BEGIN CATCH
-		PRINT ERROR_MESSAGE();
-		RAISERROR('No se pudo insertar el cliente con usuario', 16,1);
-		ROLLBACK TRANSACTION;
+		IF @@TRANCOUNT > 0 
+		BEGIN
+			RAISERROR('No se pudo insertar el cliente',16,1);
+			PRINT ERROR_MESSAGE();
+			ROLLBACK TRANSACTION;
+		END
 	END CATCH
 	
 END
@@ -930,96 +991,6 @@ END
 
 GO 
 
-IF OBJECT_ID('[TheBigBangQuery].[VerificarClienteNoRepetido]') IS NOT NULL
-	DROP TRIGGER  [TheBigBangQuery].[VerificarClienteNoRepetido];
-GO
-CREATE TRIGGER [TheBigBangQuery].[VerificarClienteNoRepetido] ON [TheBigBangQuery].[Cliente] INSTEAD OF INSERT
-AS BEGIN 
-
-	DECLARE curs CURSOR FOR (
-		SELECT i.clie_dni, i.clie_tipo_documento,i.clie_id
-		FROM inserted i
-	);
-	BEGIN TRY
-
-		DECLARE @dni nvarchar(255), @tipo numeric(12,0), @id NUMERIC(18,0);
-		OPEN curs;
-
-	
-
-		FETCH curs INTO @dni, @tipo, @id;
-		WHILE @@FETCH_STATUS = 0 BEGIN
-
-			IF (SELECT COUNT(*)
-				FROM [TheBigBangQuery].[Cliente] c
-				WHERE c.clie_dni = @dni AND c.clie_tipo_documento = @tipo) > 0 
-			BEGIN 
-				PRINT @id;
-				PRINT ERROR_MESSAGE();
-				PRINT 'ERROR AL INSERTAR';
-				RAISERROR('Error al insertar cliente, el mismo ya existe',16,1);
-			FETCH curs INTO @dni, @tipo, @id;
-			END
-		END
-		
-		INSERT INTO [TheBigBangQuery].[Cliente](clie_dni,
-			clie_usuario,
-			clie_nombre,
-			clie_apellido, 
-			clie_tipo_documento,
-			clie_cuil,
-			clie_mail, 
-			clie_telefono,
-			clie_direccion,
-			clie_numero_calle,
-			clie_piso,
-			clie_locacalidad, 
-			clie_codigo_postal, 
-			clie_f_nacimiento, 
-			clie_f_creacion, 
-			clie_n_tarjeta,
-			clie_dado_baja, 
-			clie_puntos, 
-			clie_departamento, 
-			clie_prox_vencimiento_puntos)
-		SELECT clie_dni,
-			clie_usuario,
-			clie_nombre,
-			clie_apellido, 
-			clie_tipo_documento,
-			clie_cuil,
-			clie_mail, 
-			clie_telefono,
-			clie_direccion,
-			clie_numero_calle,
-			clie_piso,
-			clie_locacalidad, 
-			clie_codigo_postal, 
-			clie_f_nacimiento, 
-			clie_f_creacion, 
-			clie_n_tarjeta,
-			clie_dado_baja, 
-			clie_puntos, 
-			clie_departamento, 
-			clie_prox_vencimiento_puntos
-		FROM inserted
-
-		CLOSE curs;
-		DEALLOCATE curs;
-
-	END TRY
-	BEGIN CATCH
-		CLOSE curs;
-		DEALLOCATE curs;
-		ROLLBACK TRANSACTION;
-		PRINT 'Error al insertar el cliente';
-	END CATCH
-
-	
-END
-
-GO
-
 IF OBJECT_ID('[TheBigBangQuery].[ActualizarCliente]') IS NOT NULL
 	DROP PROCEDURE [TheBigBangQuery].[ActualizarCliente];
 GO
@@ -1039,8 +1010,7 @@ CREATE PROCEDURE [TheBigBangQuery].[ActualizarCliente](
 	@localidad nvarchar(255),
 	@codigoPostal nvarchar(255),
 	@fechaDeNacimiento nvarchar(255),
-	@fechaCreacion nvarchar(255),
-	@numeroTarjeta nvarchar(255)
+	@fechaCreacion nvarchar(255)
 ) AS BEGIN
 	
 	IF (SELECT COUNT(*)
@@ -1066,8 +1036,7 @@ CREATE PROCEDURE [TheBigBangQuery].[ActualizarCliente](
 			clie_locacalidad = @localidad,
 			clie_codigo_postal = @codigoPostal,
 			clie_f_nacimiento = CONVERT(datetime, @fechaDeNacimiento),
-			clie_f_creacion = CONVERT(datetime, @fechaCreacion),
-			clie_n_tarjeta = CONVERT(numeric(18,0), @numeroTarjeta )
+			clie_f_creacion = CONVERT(datetime, @fechaCreacion)
 		WHERE clie_id = CONVERT(numeric(18,0), @id)
 
 	END
@@ -1491,13 +1460,35 @@ GO
 IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros]') IS NOT NULL 
 	DROP FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros];
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getUltimaLineaFiltroRubro]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro];
+GO
+
 IF TYPE_ID('[TheBigBangQuery].[RubrosList]') IS NOT NULL
 	DROP TYPE [TheBigBangQuery].[RubrosList];
 GO
+
 CREATE TYPE [TheBigBangQuery].[RubrosList] AS TABLE (
 	[rub_id] NUMERIC(12,0)
 )
 GO
+
+CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro](@rubros [theBigBangQuery].[RubrosList] READONLY)
+RETURNS INT AS BEGIN
+
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
+			ELSE COUNT(*)/40 END 
+		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
+			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+		WHERE e.espe_rubro IN (SELECT *
+								FROM @rubros)
+	)
+END
+GO
+
+
 CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros]
 (
 	@pagina int,
@@ -1556,22 +1547,7 @@ RETURNS INT AS BEGIN
 	)
 END
 GO
-IF OBJECT_ID('[TheBigBangQuery].[getUltimaLineaFiltroRubro]') IS NOT NULL
-	DROP FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro];
-GO
-CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro](@rubros [theBigBangQuery].[RubrosList] READONLY)
-RETURNS INT AS BEGIN
 
-	RETURN (
-		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
-			ELSE COUNT(*)/40 END 
-		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
-			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-		WHERE e.espe_rubro IN (SELECT *
-								FROM @rubros)
-	)
-END
-GO
 
 IF OBJECT_ID('[TheBigBangQuery].[getUltimaPagFiltroFecha]') IS NOT NULL
 	DROP FUNCTION [TheBigBangQuery].[getUltimaPagFiltroFecha];
@@ -1584,6 +1560,126 @@ RETURNS INT AS BEGIN
 		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
 		WHERE publ_fecha_hora_espectaculo >= @fechaI AND publ_fecha_hora_espectaculo <= @fechaF
+	)
+END
+GO
+-- TRIGGER PARA ACTUALIZAR FACTURA CUANDO SE INSERTA UN ITEM
+IF OBJECT_ID('[TheBigBangQuery].[ActualizarfacturaTrigger]') IS NOT NULL	
+	DROP TRIGGER [TheBigBangQuery].[ActualizarfacturaTrigger];
+GO
+CREATE TRIGGER [TheBigBangQuery].[ActualizarfacturaTrigger] ON [TheBigBangQuery].[Item_Factura] AFTER INSERT 
+AS BEGIN
+	-- CURSOR PARA SUMAR CADA ITEM A SU CORRESPONDIENTE FACTURA
+	DECLARE @monto NUMERIC(18,2);
+	DECLARE @factNum NUMERIC(12,0);
+	DECLARE c CURSOR FOR (
+		SELECT item_monto, item_n_factura
+		FROM inserted
+	);
+	OPEN c;
+	FETCH c INTO @monto, @factNum;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE [TheBigBangQuery].[Factura]
+		SET [fact_total] = [fact_total] + @monto
+		WHERE fact_numero = @factNum
+
+		FETCH c INTO @monto, @factNum;
+	END
+
+	CLOSE c;
+	DEALLOCATE c;
+
+END
+
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[InsertarCompra]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarCompra];
+GO
+IF TYPE_ID('[TheBigBangQuery].[UbicacionesList]') IS NOT NULL 
+	DROP TYPE [TheBigBangQuery].[UbicacionesList];
+GO
+CREATE TYPE [TheBigBangQuery].[UbicacionesList] AS TABLE (
+	[ubli_ubicacion] NUMERIC(12,0)
+)
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarCompra] (
+	@publicacion NUMERIC(12,0),
+	@cliente NUMERIC(12,0),
+	@fechaCompra DATETIME,
+	@medioPago NVARCHAR(255),
+	@cantidad NUMERIC(12,0),
+	@total NUMERIC(18,2),
+	@ubicaciones [TheBigBangQuery].[UbicacionesList] READONLY
+) AS BEGIN
+	
+	INSERT INTO [TheBigBangQuery].[Compras] (
+		[comp_cliente],
+		[comp_fecha_y_hora],
+		[comp_medio_de_pago],
+		[comp_cantidad],
+		[comp_total]
+	) VALUES (
+		@cliente,
+		@fechaCompra,
+		@medioPago,
+		@cantidad,
+		@total
+	);
+
+	INSERT INTO [TheBigBangQuery].[Ubicaciones_Compra] (ubco_ubicacion, ubco_compra)
+	SELECT ubli_ubicacion, SCOPE_IDENTITY()
+	FROM @ubicaciones
+
+	UPDATE [TheBigBangQuery].[Ubicaciones_publicacion]
+	SET [ubpu_disponible] = 1
+	WHERE [ubpu_id_publicacion] = @publicacion AND 
+		[ubpu_id_ubicacion] IN (SELECT ubli_ubicacion FROM @ubicaciones)
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[ActualizarPuntosDelCliente]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[ActualizarPuntosDelCliente];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[ActualizarPuntosDelCliente] (
+	@idCliente NUMERIC (18,0),
+	@montoCompra NUMERIC(18,2),
+	@fechaCompra DATETIME)
+AS BEGIN
+
+	UPDATE [TheBigBangQuery].[Cliente]
+	SET [clie_puntos] = @montoCompra * 0.05, [clie_prox_vencimiento_puntos] = DATEADD(MM,2,@fechaCompra)
+	WHERE @idCliente = [clie_id]
+
+END
+
+GO
+IF OBJECT_ID('[TheBigBangQuery].[InsertarItemFactura]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarItemFactura];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarItemFactura] (
+		@numFact NUMERIC(12,0),
+		@idUbi NUMERIC(12,0),
+		@idPubli NUMERIC(12,0),
+		@monto NUMERIC(18,2),
+		@cantidad NUMERIC(12,0),
+		@desc VARCHAR(255))
+AS BEGIN 
+	INSERT INTO [TheBigBangQuery].[Item_Factura](
+		[item_n_factura],
+		[item_ubicacion],
+		[item_publicacion],
+		[item_monto],
+		[item_cantidad],
+		[item_descripcion]
+	) VALUES (
+		@numFact,
+		@idUbi,
+		@idPubli,
+		@monto,
+		@cantidad,
+		@desc
 	)
 END
 

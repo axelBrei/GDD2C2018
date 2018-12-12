@@ -8,12 +8,15 @@ namespace PalcoNet.Model
 {
     class Factura
     {
-        private int numero { get; set; }
-        private string formaDePago { get; set; }
-        private float total { get; set; }
-        private DateTime fecha { get; set; }
-        private int IdEmpresa { get; set; }
+        public int numero { get; set; }
+        public string formaDePago { get; set; }
+        public float total { get; set; }
+        public DateTime fecha { get; set; }
+        public int IdEmpresa { get; set; }
+        public List<ItemFactura> items{get; set;}
 
-        
+        public Factura() {
+            items = new List<ItemFactura>();
+        }
     }
 }

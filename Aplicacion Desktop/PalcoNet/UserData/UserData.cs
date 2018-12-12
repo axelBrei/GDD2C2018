@@ -13,6 +13,7 @@ namespace PalcoNet.UserData
 
         public static string TIPO_EMPRESA = "EMPRESA";
         public static string TIPO_CLIENTE = "CLIENTE";
+        public static string TIPO_ADMIN = "ADMIN";
 
         private static Usuario usuario = null;
         private static Rol activeRol = null;
@@ -43,6 +44,10 @@ namespace PalcoNet.UserData
                             usuario.usuarioRegistrable = clientesDao.getClientePorUserId(usuario.id);
                             break;
                         }
+                    case 1: {
+                        usuario.usuarioRegistrable = new Administrador();
+                        break;
+                    }
                 }
             }
             catch (Exception e) { }

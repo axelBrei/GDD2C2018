@@ -8,7 +8,7 @@ using PalcoNet.ConectionUtils;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Data;
-
+using PalcoNet.Exceptions;
 
 namespace PalcoNet.Dao
 {
@@ -17,48 +17,71 @@ namespace PalcoNet.Dao
 
         private string getClientsQuery = "SELECT clie_id, clie_dni, usua_usuario, clie_nombre, clie_apellido, tipo_descripcion, clie_cuil, clie_mail, " +
                                             "clie_telefono, clie_direccion, clie_numero_calle, clie_piso, clie_locacalidad,clie_codigo_postal,clie_f_nacimiento, " +
-                                            "clie_f_creacion, clie_n_tarjeta, clie_dado_baja, clie_puntos, clie_departamento, clie_prox_vencimiento_puntos " +
+                                            "clie_f_creacion, clie_dado_baja, clie_puntos, clie_departamento, clie_prox_vencimiento_puntos " +
                                         "FROM [TheBigBangQuery].[Cliente] LEFT JOIN [TheBigBangQuery].[Tipo_Documento] ON (clie_tipo_documento = tipo_id)" +
                                             "LEFT JOIN [TheBigBangQuery].[Usuario] ON (clie_usuario = usua_id)";
 
         public List<Cliente> getClientes() {
-            SqlDataReader reader = DatabaseConection.executeQuery(getClientsQuery + 
+            SqlDataReader reader = null;
+            try
+            {
+                List<Cliente> clientes = new List<Cliente>();
+                reader = DatabaseConection.executeQuery(getClientsQuery +
                 " ORDER BY clie_id ASC");
-            List<Cliente> clientes = new List<Cliente>();
-            if (reader.HasRows) {
-                while (reader.Read()) {
-                    
-                    clientes.Add(getClienteFromReder(reader));
+                
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+
+                        clientes.Add(getClienteFromReder(reader));
+
+                    }
 
                 }
-
+                return clientes;
             }
-            reader.Close();
-            return clientes;
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close();
+            }
         }
 
         public void insertarCliente(Cliente cliente, string contraseña) {
-            string query = "EXEC [TheBigBangQuery].[InsertarNuevoClienteConUsuario] " + 
-                "@usuario = '"+ cliente.usuario.Trim() +"',"+
-                "@contraseña = '" + contraseña.Trim() + "'," +
-                " @nombre= '" + cliente.nombre.Trim() + "', " +
-                " @apellido= '" + cliente.apellido.Trim() + "', " +
-                "@tipoDoc= '" + cliente.TipoDocumento.Trim() + "', " +
-                "@documento= '" + cliente.documento.Trim() + "', " +
-                " @cuil= '" + cliente.cuil.Trim() + "', " +
-                " @mail = '" + cliente.mail.Trim() + "', " +
-                "@telefono = '" + cliente.telefono.Trim() + "'," +
-                "@calle = '" + cliente.direccion.calle.Trim() + "', " +
-                "@altura = '" + cliente.direccion.numero.Trim() + "', " +
-                "@piso = '" + cliente.direccion.piso.Trim() + "', " +
-                "@depto= '" + cliente.direccion.depto.Trim() + "', " +
-                "@localidad= '" + cliente.direccion.localidad.Trim() + "', " +
-                "@codigoPostal= '" + cliente.direccion.codigoPostal.Trim() + "', " +
-                "@fechaNacimiento = '" + ((DateTime)cliente.fechaNacimiento).ToString("yyyy-MM-dd HH:mm:ss").Trim() + "'," +
-                "@fechaCreacion = '" + ((DateTime)cliente.fechaCreacion).ToString("yyyy-MM-dd HH:mm:ss").Trim() + "', " +
-                "@numeroTarjeta= '" + cliente.numeroTarjeta.Trim() + "'";
+            string query = "[TheBigBangQuery].[InsertarNuevoClienteConUsuario]";
+            SqlDataReader reader = null;
+            try {
+                SqlCommand command = new SqlCommand(query);
+                command.CommandText = query;
+                command.CommandType = CommandType.StoredProcedure;
 
-            DatabaseConection.executeQuery(query).Close();
+                command.Parameters.AddWithValue("@usuario", cliente.usuario.Trim());
+                command.Parameters.AddWithValue("@contraseña", contraseña.Trim());
+                command.Parameters.AddWithValue("@nombre", cliente.nombre.Trim());
+                command.Parameters.AddWithValue("@apellido",cliente.apellido);
+                command.Parameters.AddWithValue("@tipoDoc",cliente.TipoDocumento.Trim());
+                command.Parameters.AddWithValue("@documento",cliente.documento.Trim());
+                command.Parameters.AddWithValue("@cuil",cliente.cuil.Trim());
+                command.Parameters.AddWithValue("@mail",cliente.mail.Trim());
+                command.Parameters.AddWithValue("@telefono",cliente.telefono.Trim());
+                command.Parameters.AddWithValue("@calle", cliente.direccion.calle.Trim());
+                command.Parameters.AddWithValue("@altura", cliente.direccion.numero.Trim());
+                command.Parameters.AddWithValue("@piso", cliente.direccion.piso.Trim());
+                command.Parameters.AddWithValue("@depto", cliente.direccion.depto.Trim());
+                command.Parameters.AddWithValue("@localidad", cliente.direccion.localidad.Trim());
+                command.Parameters.AddWithValue("@codigoPostal", cliente.direccion.codigoPostal.Trim());
+                command.Parameters.AddWithValue("@fechaNacimiento", ((DateTime)cliente.fechaNacimiento));
+                command.Parameters.AddWithValue("@fechaCreacion", ((DateTime)cliente.fechaCreacion));
+
+                DatabaseConection.executeNoParamFunction(command);
+            }
+            catch(Exception e){
+                throw new SqlInsertException("No se ha podido procesar el alta del cliente",0);
+            }
         }
 
         public List<Cliente> getClientesMayoresAId(int id) {
@@ -92,25 +115,24 @@ namespace PalcoNet.Dao
             return cliente;
         }
 
-        public void actualizarCliente(Cliente cliente) { 
+        public void actualizarCliente(Cliente cliente) {
             string query = "EXEC [TheBigBangQuery].[ActualizarCliente] " +
                 "@id = '" + cliente.id.ToString().Trim() + "', " +
-	            "@nombre = '" + cliente.nombre.Trim() +"', " +
-	            "@apellido = '"+cliente.apellido.Trim()+"'," +
-                "@tipoDocumento = '"+cliente.TipoDocumento.Trim()+"', " +
-	            "@numeroDocumento = '"+ cliente.documento.Trim()+"', " +
-	            "@cuil = '"+cliente.cuil.Trim()+"', " +
-	            "@mail = '"+cliente.mail.Trim()+"', " +
-	            "@telefono = '"+cliente.telefono.Trim()+"'," +
-	            "@calle = '"+cliente.direccion.calle.Trim()+"', " + 
-	            "@altura = '"+cliente.direccion.numero.Trim()+"'," +
-	            "@piso = '"+cliente.direccion.piso.Trim()+"'," +
-	            "@depto = '"+cliente.direccion.depto.Trim()+"'," +
-	            "@localidad = '"+cliente.direccion.localidad.Trim()+"'," +
-	            "@codigoPostal = '"+cliente.direccion.codigoPostal.Trim()+"'," +
+                "@nombre = '" + cliente.nombre.Trim() + "', " +
+                "@apellido = '" + cliente.apellido.Trim() + "'," +
+                "@tipoDocumento = '" + cliente.TipoDocumento.Trim() + "', " +
+                "@numeroDocumento = '" + cliente.documento.Trim() + "', " +
+                "@cuil = '" + cliente.cuil.Trim() + "', " +
+                "@mail = '" + cliente.mail.Trim() + "', " +
+                "@telefono = '" + cliente.telefono.Trim() + "'," +
+                "@calle = '" + cliente.direccion.calle.Trim() + "', " +
+                "@altura = '" + cliente.direccion.numero.Trim() + "'," +
+                "@piso = '" + cliente.direccion.piso.Trim() + "'," +
+                "@depto = '" + cliente.direccion.depto.Trim() + "'," +
+                "@localidad = '" + cliente.direccion.localidad.Trim() + "'," +
+                "@codigoPostal = '" + cliente.direccion.codigoPostal.Trim() + "'," +
                 "@fechaDeNacimiento = '" + ((DateTime)cliente.fechaNacimiento).ToString("yyyy-dd-MM").Trim() + "'," +
-                "@fechaCreacion = '" + ((DateTime)cliente.fechaCreacion).ToString("yyyy-dd-MM").Trim() + "'," +
-	            "@numeroTarjeta = '"+cliente.numeroTarjeta.Trim()+"'";
+                "@fechaCreacion = '" + ((DateTime)cliente.fechaCreacion).ToString("yyyy-dd-MM").Trim() + "'";
             try
             {
                 DatabaseConection.executeNoParamFunction(query);
@@ -148,17 +170,16 @@ namespace PalcoNet.Dao
 
             cliente.fechaNacimiento = (reader.IsDBNull(14) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(14));
             cliente.fechaCreacion = (reader.IsDBNull(15) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(15));
-            cliente.numeroTarjeta = (reader.IsDBNull(16) ? null : reader.GetSqlDecimal(16).ToString()); ;
-            cliente.bajaLogica = (reader.IsDBNull(17) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(17));
+            cliente.bajaLogica = (reader.IsDBNull(16) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(16));
             if (reader.IsDBNull(18))
                 cliente.puntos = null;
             else
-                cliente.puntos = (int)reader.GetSqlDecimal(18);
-            dir.depto = (string)(reader.IsDBNull(19) ? null : reader.GetSqlString(19).ToString());
+                cliente.puntos = (int)reader.GetSqlDecimal(17);
+            dir.depto = (string)(reader.IsDBNull(18) ? null : reader.GetSqlString(18).ToString());
 
             cliente.direccion = dir;
 
-            cliente.vencimientoPuntos = (Nullable<DateTime>)(reader.IsDBNull(20) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(20));
+            cliente.vencimientoPuntos = (Nullable<DateTime>)(reader.IsDBNull(19) ? null : (Nullable<DateTime>)reader.GetSqlDateTime(19));
             return cliente;
 
         }

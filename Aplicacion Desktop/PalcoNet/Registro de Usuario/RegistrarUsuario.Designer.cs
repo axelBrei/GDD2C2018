@@ -65,8 +65,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.FechaNacimientoCli = new System.Windows.Forms.TextBox();
             this.AñadirDireccionButton = new System.Windows.Forms.Button();
-            this.numeroTarjetaCliente = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.CuilCliente = new System.Windows.Forms.TextBox();
             this.nada = new System.Windows.Forms.Label();
@@ -449,24 +447,6 @@
             this.AñadirDireccionButton.UseVisualStyleBackColor = true;
             this.AñadirDireccionButton.Click += new System.EventHandler(this.AñadirDireccionButton_Click);
             // 
-            // numeroTarjetaCliente
-            // 
-            this.numeroTarjetaCliente.Location = new System.Drawing.Point(112, 256);
-            this.numeroTarjetaCliente.Name = "numeroTarjetaCliente";
-            this.numeroTarjetaCliente.Size = new System.Drawing.Size(150, 20);
-            this.numeroTarjetaCliente.TabIndex = 29;
-            this.numeroTarjetaCliente.TextChanged += new System.EventHandler(this.numeroTarjetaCliente_TextChanged);
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label20.Location = new System.Drawing.Point(26, 259);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(80, 13);
-            this.label20.TabIndex = 30;
-            this.label20.Text = "Numero Tarjeta";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -479,7 +459,7 @@
             // 
             // CuilCliente
             // 
-            this.CuilCliente.Location = new System.Drawing.Point(63, 289);
+            this.CuilCliente.Location = new System.Drawing.Point(63, 257);
             this.CuilCliente.Name = "CuilCliente";
             this.CuilCliente.Size = new System.Drawing.Size(199, 20);
             this.CuilCliente.TabIndex = 32;
@@ -489,7 +469,7 @@
             // 
             this.nada.AutoSize = true;
             this.nada.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.nada.Location = new System.Drawing.Point(26, 292);
+            this.nada.Location = new System.Drawing.Point(26, 260);
             this.nada.Name = "nada";
             this.nada.Size = new System.Drawing.Size(31, 13);
             this.nada.TabIndex = 33;
@@ -502,8 +482,6 @@
             this.panelCliente.Controls.Add(this.nada);
             this.panelCliente.Controls.Add(this.CuilCliente);
             this.panelCliente.Controls.Add(this.label13);
-            this.panelCliente.Controls.Add(this.label20);
-            this.panelCliente.Controls.Add(this.numeroTarjetaCliente);
             this.panelCliente.Controls.Add(this.AñadirDireccionButton);
             this.panelCliente.Controls.Add(this.FechaNacimientoCli);
             this.panelCliente.Controls.Add(this.label12);
@@ -589,8 +567,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox FechaNacimientoCli;
         private System.Windows.Forms.Button AñadirDireccionButton;
-        private System.Windows.Forms.TextBox numeroTarjetaCliente;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox CuilCliente;
         private System.Windows.Forms.Label nada;

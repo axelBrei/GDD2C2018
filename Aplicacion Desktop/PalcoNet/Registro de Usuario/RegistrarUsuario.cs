@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Dao;
 using PalcoNet.Validators;
+using PalcoNet.Exceptions;
 
 namespace PalcoNet.Registro_de_Usuario
 {
@@ -30,7 +31,6 @@ namespace PalcoNet.Registro_de_Usuario
         private string mail;
         private string telefono;
         private DateTime fechaNacimiento;
-        private string numeroTarjeta;
 
         // EMPRESA
         private string razonSocial;
@@ -73,7 +73,6 @@ namespace PalcoNet.Registro_de_Usuario
             MailCliente.Text = cliente.mail;
             TelefonoCliente.Text = cliente.telefono;
             FechaNacimientoCli.Text = ((DateTime)cliente.fechaNacimiento).ToString("yyyy/MM/dd");
-            numeroTarjetaCliente.Text = cliente.numeroTarjeta;
 
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE, cliente.direccion);
 
@@ -156,7 +155,6 @@ namespace PalcoNet.Registro_de_Usuario
 
         private void numeroTarjetaCliente_TextChanged(object sender, EventArgs e)
         {
-            numeroTarjeta = ((TextBox)sender).Text;
         }
 
         private void ClienteRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -242,7 +240,6 @@ namespace PalcoNet.Registro_de_Usuario
 
         private void numeroTarjetaCliente_TextChanged_1(object sender, EventArgs e)
         {
-            numeroTarjeta = ((TextBox)sender).Text;
         }
 
         private void AñadirDireccionButton_Click_1(object sender, EventArgs e)
@@ -300,7 +297,6 @@ namespace PalcoNet.Registro_de_Usuario
             cliente.direccion = direccion;
             cliente.fechaNacimiento = fechaNacimiento;
             cliente.fechaCreacion = DateTime.Now;
-            cliente.numeroTarjeta = numeroTarjeta;
             cliente.usuario = usuario;
 
             return cliente;
@@ -325,7 +321,7 @@ namespace PalcoNet.Registro_de_Usuario
             EmpresasDao empresasDao = new EmpresasDao();
             if (nombre != null & apellido != null & TipoDocumento != null &
                     dni != null & cuil != null & mail != null & telefono != null & direccion != null & 
-                    fechaNacimiento != null & numeroTarjeta != null)
+                    fechaNacimiento != null)
             {
                  if (CuilValidator.validarCuit(cuil))
                 {
@@ -337,7 +333,15 @@ namespace PalcoNet.Registro_de_Usuario
                         this.onFinisUpdate(id);
                     } else if (ClienteRadioButton.Checked)
                     {
-                        clientesDao.insertarCliente(getCliente(), contraseña);
+                        try
+                        {
+                            clientesDao.insertarCliente(getCliente(), contraseña);
+                        }
+                        catch (Exception ex) { 
+                            if(ex.GetType() == typeof(SqlInsertException)){
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
                     }
                     
                     if (this.onFinishregistration != null)

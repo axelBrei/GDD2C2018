@@ -19,7 +19,7 @@ namespace PalcoNet.Model
 
         public override string ToString()
         {
-            return tipoUbicaciones.descripcion + " fila: " + fila + " asiento: " + asiento;
+            return tipoUbicaciones.descripcion + " fila: " + fila + " / asiento: " + asiento;
         }
 
         public Ubicacion() { }
@@ -49,7 +49,10 @@ namespace PalcoNet.Model
         public override bool Equals(object obj)
         {
             var ubic = obj as Ubicacion;
-            return this.fila.ToUpper().Equals(ubic.fila.ToUpper()) & this.asiento.Equals(ubic.asiento);
+            if (ubic != null)
+                return this.fila.ToUpper().Equals(ubic.fila.ToUpper()) & this.asiento.Equals(ubic.asiento);
+            else
+                return false;
         }
     }
 }

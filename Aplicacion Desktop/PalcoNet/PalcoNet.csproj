@@ -101,11 +101,42 @@
     <Compile Include="Canje Puntos\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comprar\ComprarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\ComprarForm.Designer.cs">
+      <DependentUpon>ComprarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\ComprasController.cs" />
+    <Compile Include="Comprar\ConfirmacionCompraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\ConfirmacionCompraForm.Designer.cs">
+      <DependentUpon>ConfirmacionCompraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\DetallesCompraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\DetallesCompraForm.Designer.cs">
+      <DependentUpon>DetallesCompraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\DetallesUbicacionesCompraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\DetallesUbicacionesCompraForm.Designer.cs">
+      <DependentUpon>DetallesUbicacionesCompraForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Comprar\FiltrosForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Comprar\FiltrosForm.Designer.cs">
       <DependentUpon>FiltrosForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\IngresarTarjetaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\IngresarTarjetaForm.Designer.cs">
+      <DependentUpon>IngresarTarjetaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Comprar\ListadoPublicacionesComprasForm.cs">
       <SubType>Form</SubType>
@@ -113,18 +144,35 @@
     <Compile Include="Comprar\ListadoPublicacionesComprasForm.Designer.cs">
       <DependentUpon>ListadoPublicacionesComprasForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comprar\SeleccionarClienteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\SeleccionarClienteForm.Designer.cs">
+      <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comprar\SeleccionarTarjetaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comprar\SeleccionarTarjetaForm.Designer.cs">
+      <DependentUpon>SeleccionarTarjetaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
     <Compile Include="Constants\Strings.cs" />
+    <Compile Include="Constants\Utils.cs" />
     <Compile Include="Dao\ClientesDao.cs" />
+    <Compile Include="Dao\ComprasDao.cs" />
     <Compile Include="Dao\EmpresasDao.cs" />
     <Compile Include="Dao\EspectaculosDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\GradoDePublicacionDao.cs" />
+    <Compile Include="Dao\ItemFacturaDao.cs" />
     <Compile Include="Dao\LoginDao.cs" />
     <Compile Include="Dao\PublicacionesDao.cs" />
+    <Compile Include="Dao\PuntosDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
     <Compile Include="Dao\RubrosDao.cs" />
+    <Compile Include="Dao\TarjetasDao.cs" />
     <Compile Include="Dao\TipoDocumentoDao.cs" />
     <Compile Include="Dao\TipoUbicacionDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
@@ -219,17 +267,21 @@
     <Compile Include="MainMenu\SeleccionDeRol.Designer.cs">
       <DependentUpon>SeleccionDeRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Administrador.cs" />
     <Compile Include="Model\Cliente.cs" />
+    <Compile Include="Model\Compra.cs" />
     <Compile Include="Model\Direccion.cs" />
     <Compile Include="Model\Empresa.cs" />
     <Compile Include="Model\Espectaculo.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\GradoPublicacion.cs" />
+    <Compile Include="Model\ItemFactura.cs" />
     <Compile Include="Model\Publicacion.cs" />
     <Compile Include="Model\Registrable.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Rubro.cs" />
+    <Compile Include="Model\Tarjeta.cs" />
     <Compile Include="Model\TipoUbicacion.cs" />
     <Compile Include="Model\Ubicacion.cs" />
     <Compile Include="Model\Usuario.cs" />
@@ -273,11 +325,32 @@
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\ComprarForm.resx">
+      <DependentUpon>ComprarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\ConfirmacionCompraForm.resx">
+      <DependentUpon>ConfirmacionCompraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\DetallesCompraForm.resx">
+      <DependentUpon>DetallesCompraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\DetallesUbicacionesCompraForm.resx">
+      <DependentUpon>DetallesUbicacionesCompraForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Comprar\FiltrosForm.resx">
       <DependentUpon>FiltrosForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\IngresarTarjetaForm.resx">
+      <DependentUpon>IngresarTarjetaForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Comprar\ListadoPublicacionesComprasForm.resx">
       <DependentUpon>ListadoPublicacionesComprasForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\SeleccionarClienteForm.resx">
+      <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comprar\SeleccionarTarjetaForm.resx">
+      <DependentUpon>SeleccionarTarjetaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editar Publicacion\EditarEstadoForm.resx">
       <DependentUpon>EditarEstadoForm.cs</DependentUpon>

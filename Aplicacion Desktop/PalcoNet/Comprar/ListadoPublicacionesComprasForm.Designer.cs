@@ -42,14 +42,17 @@
             // 
             // PublicacionesListView
             // 
+            this.PublicacionesListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.PublicacionesListView.FullRowSelect = true;
             this.PublicacionesListView.GridLines = true;
             this.PublicacionesListView.Location = new System.Drawing.Point(12, 41);
+            this.PublicacionesListView.MultiSelect = false;
             this.PublicacionesListView.Name = "PublicacionesListView";
             this.PublicacionesListView.Size = new System.Drawing.Size(564, 543);
             this.PublicacionesListView.TabIndex = 0;
             this.PublicacionesListView.UseCompatibleStateImageBehavior = false;
             this.PublicacionesListView.View = System.Windows.Forms.View.Details;
+            this.PublicacionesListView.SelectedIndexChanged += new System.EventHandler(this.PublicacionesListView_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -57,9 +60,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(13, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 25);
+            this.label1.Size = new System.Drawing.Size(101, 25);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Compras";
+            this.label1.Text = "Comprar";
             // 
             // FiltrosButton
             // 
@@ -79,10 +82,11 @@
             this.DetallesButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.DetallesButton.Location = new System.Drawing.Point(604, 128);
             this.DetallesButton.Name = "DetallesButton";
-            this.DetallesButton.Size = new System.Drawing.Size(75, 23);
+            this.DetallesButton.Size = new System.Drawing.Size(75, 41);
             this.DetallesButton.TabIndex = 3;
-            this.DetallesButton.Text = "Detalles";
+            this.DetallesButton.Text = "Seleccionar Publicacion";
             this.DetallesButton.UseVisualStyleBackColor = false;
+            this.DetallesButton.Click += new System.EventHandler(this.DetallesButton_Click);
             // 
             // LimpiarFiltrosButton
             // 

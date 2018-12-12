@@ -85,6 +85,13 @@ namespace PalcoNet.Editar_Publicacion
             }
         }
 
+        public async Task<Publicacion> getPublicacionesPorIdAsync(int id) {
+            try {
+                return await Task.FromResult<Publicacion>(getPublicacionPorId(id));
+            }
+            catch (Exception e) { throw e; }
+        }
+
         public void actualizarPublicacion(Publicacion publicacion, SqlTransaction transaction,
                                              List<Ubicacion> agregados = null, List<Ubicacion>eliminados = null) {
             try

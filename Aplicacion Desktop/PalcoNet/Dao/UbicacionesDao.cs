@@ -76,7 +76,8 @@ namespace PalcoNet.Dao
         public List<Ubicacion> getUbicacionesDeLaPublicacion(int idPubli) {
             string query = baseQuery + ", ubpu_precio " + baseFrom + "JOIN [TheBigBangQuery].[Ubicaciones_publicacion] ON (ubpu_id_ubicacion = ubi_id) " +
                                        "JOIN [TheBigBangQuery].[TipoUbicacion] ON (tipu_id = ubi_tipo_codigo) " +
-                                       "WHERE ubpu_id_publicacion = @idPublicacion ORDER BY 2 ASC, 3 ASC";
+                                       "WHERE ubpu_id_publicacion = @idPublicacion AND [ubpu_disponible] = 0" +
+                                       "ORDER BY 2 ASC, 3 ASC";
             SqlDataReader reader = null;
             List<Ubicacion> ubicaciones;
             try

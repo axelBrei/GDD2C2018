@@ -110,6 +110,17 @@ namespace PalcoNet.Dao
 
         }
 
+        public async Task<Publicacion> getPublicacionPorIdAsync(int id) {
+            try
+            {
+                return await Task.FromResult<Publicacion>(getPublicacionPorId(id));
+            }
+            catch (Exception e) {
+                throw new DataNotFoundException("Error al buscar la publicacion con id {id}".Replace("{id}", id.ToString()));
+            }
+
+        }
+
         public List<Publicacion> getPublicacionesConInfoBasica() {
             string query = "SELECT publ_id, publ_espectaculo, publ_grad_nivel, publ_fecha_publicacion, publ_fecha_hora_espectaculo," +
                     "publ_estado, espe_descripcion, espe_direccion ,grad_nivel " +

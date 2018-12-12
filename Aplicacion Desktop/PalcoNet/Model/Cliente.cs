@@ -20,7 +20,6 @@ namespace PalcoNet.Model
         public Direccion direccion { get; set; }
         public Nullable<DateTime> fechaNacimiento { get; set; }
         public Nullable<DateTime> fechaCreacion { get; set; }
-        public string numeroTarjeta { get; set; }
         public string usuario { get; set; }
         public Nullable<DateTime> bajaLogica { get; set; }
         public Nullable<int> puntos;

@@ -15,6 +15,7 @@ namespace PalcoNet.Model
         public int cantidad { get; set; }
         public List<Ubicacion> ubicaciones { get; set; }
         public float total { get; set; }
+        public Publicacion publicacion { get; set; }
 
         public Compra() {
             ubicaciones = new List<Ubicacion>();

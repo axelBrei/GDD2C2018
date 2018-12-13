@@ -30,6 +30,7 @@ namespace PalcoNet.Comprar
             this.FechaTextBox.Text += publicacion.fechaEvento;
             this.MedioPagoTextBox.Text += compra.medioPago.ToString();
             this.CantUbicacionesTextBox.Text += compra.ubicaciones.Count.ToString();
+            this.MontoTextView.Text = compra.total.ToString();
             compra.ubicaciones.ForEach(elem => {
                 this.UbicacionesListTextBox.Text += "● " + elem.ToString() + '\n';
             });

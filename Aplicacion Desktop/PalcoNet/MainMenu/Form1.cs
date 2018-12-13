@@ -28,7 +28,7 @@ namespace PalcoNet.MainMenu
             funcionalidades = funcionalidadesDao.getFuncionalidades();
             this.panel2.Parent = this;
             this.iniciarBotones();
-            clickHandler(funcionalidades[0].id);
+            
         }
 
         private void iniciarBotones() {
@@ -47,8 +47,8 @@ namespace PalcoNet.MainMenu
                     button.FlatAppearance.BorderSize = 0;
                     this.panel1.Controls.Add(button);
                 }
-                
             }
+            clickHandler(rol.funcionalidades[0].id);
         }
 
         protected void getClickHandler(object sender, EventArgs e, int funcionalidadId)
@@ -112,7 +112,16 @@ namespace PalcoNet.MainMenu
                 case 10:
                     {
                         // HISTORIAL CLIENTE
-                        form = new Historial_Cliente.HistorialCliente();
+                        if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
+                        {
+                            form = new Historial_Cliente.HistorialCliente(usuario.usuarioRegistrable.getId());
+                        }
+                        else {
+                            Historial_Cliente.SeleccionarClienteForm selecCliForm = new Historial_Cliente.SeleccionarClienteForm();
+                            selecCliForm.onSelectClient += this.onClienteSeleccionado;
+                            form = selecCliForm;
+                        }
+                        
                         break;
                     }
                 case 11:
@@ -150,6 +159,22 @@ namespace PalcoNet.MainMenu
             form.Parent = this.Parent;
             this.panel2.Controls.Add(form);
             form.Show();
+        }
+
+        private void onClienteSeleccionado(int id) {
+            this.panel2.Controls.Clear();
+            Historial_Cliente.HistorialCliente form = new Historial_Cliente.HistorialCliente(id, 1);
+            form.onBackPress += this.onBackPressComprasDelCliente;
+            showNestedForm(form);
+
+        }
+
+        private void onBackPressComprasDelCliente()
+        {
+            this.panel2.Controls.Clear();
+            Historial_Cliente.SeleccionarClienteForm form = new Historial_Cliente.SeleccionarClienteForm();
+            form.onSelectClient += this.onClienteSeleccionado;
+            showNestedForm(form);
         }
 
         private void button1_Click(object sender, EventArgs e)

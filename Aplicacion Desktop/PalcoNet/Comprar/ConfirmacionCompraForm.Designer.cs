@@ -38,6 +38,8 @@
             this.PublicacionTextBox = new System.Windows.Forms.Label();
             this.MedioPagoTextBox = new System.Windows.Forms.Label();
             this.CantUbicacionesTextBox = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.MontoTextView = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -55,7 +57,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 59);
+            this.label2.Location = new System.Drawing.Point(14, 84);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 16);
             this.label2.TabIndex = 1;
@@ -66,7 +68,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(14, 99);
+            this.label4.Location = new System.Drawing.Point(14, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 16);
             this.label4.TabIndex = 2;
@@ -77,7 +79,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(14, 136);
+            this.label3.Location = new System.Drawing.Point(14, 161);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(117, 16);
             this.label3.TabIndex = 3;
@@ -88,7 +90,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(14, 177);
+            this.label5.Location = new System.Drawing.Point(14, 202);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(103, 16);
             this.label5.TabIndex = 4;
@@ -97,7 +99,7 @@
             // UbicacionesListTextBox
             // 
             this.UbicacionesListTextBox.AutoSize = true;
-            this.UbicacionesListTextBox.Location = new System.Drawing.Point(31, 193);
+            this.UbicacionesListTextBox.Location = new System.Drawing.Point(31, 218);
             this.UbicacionesListTextBox.Name = "UbicacionesListTextBox";
             this.UbicacionesListTextBox.Size = new System.Drawing.Size(0, 13);
             this.UbicacionesListTextBox.TabIndex = 5;
@@ -106,7 +108,7 @@
             // 
             this.FechaTextBox.AutoSize = true;
             this.FechaTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FechaTextBox.Location = new System.Drawing.Point(79, 59);
+            this.FechaTextBox.Location = new System.Drawing.Point(79, 84);
             this.FechaTextBox.Name = "FechaTextBox";
             this.FechaTextBox.Size = new System.Drawing.Size(0, 16);
             this.FechaTextBox.TabIndex = 6;
@@ -115,7 +117,7 @@
             // 
             this.PublicacionTextBox.AutoSize = true;
             this.PublicacionTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PublicacionTextBox.Location = new System.Drawing.Point(117, 99);
+            this.PublicacionTextBox.Location = new System.Drawing.Point(117, 124);
             this.PublicacionTextBox.Name = "PublicacionTextBox";
             this.PublicacionTextBox.Size = new System.Drawing.Size(0, 16);
             this.PublicacionTextBox.TabIndex = 7;
@@ -124,7 +126,7 @@
             // 
             this.MedioPagoTextBox.AutoSize = true;
             this.MedioPagoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MedioPagoTextBox.Location = new System.Drawing.Point(137, 136);
+            this.MedioPagoTextBox.Location = new System.Drawing.Point(137, 161);
             this.MedioPagoTextBox.Name = "MedioPagoTextBox";
             this.MedioPagoTextBox.Size = new System.Drawing.Size(0, 16);
             this.MedioPagoTextBox.TabIndex = 8;
@@ -133,10 +135,30 @@
             // 
             this.CantUbicacionesTextBox.AutoSize = true;
             this.CantUbicacionesTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CantUbicacionesTextBox.Location = new System.Drawing.Point(123, 177);
+            this.CantUbicacionesTextBox.Location = new System.Drawing.Point(123, 202);
             this.CantUbicacionesTextBox.Name = "CantUbicacionesTextBox";
             this.CantUbicacionesTextBox.Size = new System.Drawing.Size(0, 16);
             this.CantUbicacionesTextBox.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+                | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(14, 52);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 16);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Monto:";
+            // 
+            // MontoTextView
+            // 
+            this.MontoTextView.AutoSize = true;
+            this.MontoTextView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MontoTextView.Location = new System.Drawing.Point(74, 52);
+            this.MontoTextView.Name = "MontoTextView";
+            this.MontoTextView.Size = new System.Drawing.Size(0, 16);
+            this.MontoTextView.TabIndex = 11;
             // 
             // ConfirmacionCompraForm
             // 
@@ -144,6 +166,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(507, 392);
+            this.Controls.Add(this.MontoTextView);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.CantUbicacionesTextBox);
             this.Controls.Add(this.MedioPagoTextBox);
             this.Controls.Add(this.PublicacionTextBox);
@@ -174,6 +198,8 @@
         private System.Windows.Forms.Label PublicacionTextBox;
         private System.Windows.Forms.Label MedioPagoTextBox;
         private System.Windows.Forms.Label CantUbicacionesTextBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label MontoTextView;
 
     }
 }

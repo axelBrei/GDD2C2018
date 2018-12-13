@@ -325,7 +325,8 @@ CREATE TABLE [TheBigBangQuery].[Compras] (
     [comp_fecha_y_hora] DATETIME,
     [comp_medio_de_pago] nvarchar(255),
     [comp_cantidad] NUMERIC(12,0),
-	[comp_total] NUMERIC(18,2)
+	[comp_total] NUMERIC(18,2),
+	[comp_publicacion] NUMERIC(12,0)
 
     CONSTRAINT [PK_COMP] PRIMARY KEY ([comp_id])
 );
@@ -333,6 +334,8 @@ CREATE TABLE [TheBigBangQuery].[Compras] (
 ALTER TABLE [TheBigBangQuery].[Compras] 
     ADD CONSTRAINT [FK_COMP_CLI] FOREIGN KEY ([comp_cliente]) REFERENCES [TheBigBangQuery].[Cliente](clie_id);
 
+ALTER TABLE [TheBigBangQuery].[Compras] 
+	ADD CONSTRAINT [FK_COMP_PUB] FOREIGN KEY ([comp_publicacion]) REFERENCES [TheBigBangQuery].[Publicacion](publ_id);
 
 ALTER TABLE [TheBigBangQuery].[Compras] 
     ADD CONSTRAINT [FK_COMP_FACT] FOREIGN KEY (comp_n_factura) REFERENCES [TheBigBangQuery].[Factura](fact_numero);
@@ -408,7 +411,10 @@ INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('-'), ('Drama'), 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
-    WHERE R.rol_nombre = 'Cliente' AND F.func_desc = 'Comprar'
+    WHERE R.rol_nombre = 'Cliente' AND (F.func_desc = 'Comprar'
+		OR F.func_desc = 'Historial del Cliente'
+		OR F.func_desc = 'Canje y administracion de puntos'
+	)
 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
@@ -625,8 +631,9 @@ BEGIN TRANSACTION
 		[comp_fecha_y_hora],
 		[comp_cantidad],
 		[comp_medio_de_pago],
-		[comp_total])
-	SELECT c.clie_id, f.fact_numero,m.Compra_Fecha, m.Compra_Cantidad, 'Efectivo', f.fact_total
+		[comp_total],
+		[comp_publicacion])
+	SELECT c.clie_id, f.fact_numero,m.Compra_Fecha, m.Compra_Cantidad, 'Efectivo', f.fact_total, p.publ_id
 	FROM [gd_esquema].[Maestra] m LEFT JOIN [TheBigBangQuery].[Cliente] c ON (
 		c.clie_dni = m.Cli_Dni AND 
 		c.clie_apellido = m.Cli_Apeliido AND
@@ -642,8 +649,10 @@ BEGIN TRANSACTION
 		f.fact_numero = m.Factura_Nro AND 
 		f.fact_fecha = m.Factura_Fecha AND 
 		f.fact_total = m.Factura_Total
-	)
-	WHERE c.clie_id IS NOT NULL  AND f.fact_numero IS NOT NULL
+	) LEFT JOIN [TheBigBangQuery].[Publicacion] p ON (
+		p.publ_espectaculo = m.Espectaculo_Cod
+	) 
+	WHERE c.clie_id IS NOT NULL  AND f.fact_numero IS NOT NULL AND p.publ_id IS NOT NULL
 
 	-- INSERTO LAS UBICACIONES DE CADA COMPRA
 	INSERT INTO [TheBigBangQuery].[Ubicaciones_Compra](
@@ -1350,7 +1359,7 @@ RETURNS @temp  TABLE (
 	INSERT INTO @ordenada 
 	SELECT ROW_NUMBER() OVER( ORDER BY publ_grad_nivel ASC) AS RowNum, *
 	FROM @tablaAPAginar
-	WHERE publ_estado != 'Finalizada'
+	WHERE LOWER(publ_estado) != 'finalizada' AND LOWER(publ_estado) != 'borrador'
 
 
 	-- PAGINAS DE 40 ELEMENTOS 
@@ -1619,13 +1628,15 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarCompra] (
 		[comp_fecha_y_hora],
 		[comp_medio_de_pago],
 		[comp_cantidad],
-		[comp_total]
+		[comp_total],
+		[comp_publicacion]
 	) VALUES (
 		@cliente,
 		@fechaCompra,
 		@medioPago,
 		@cantidad,
-		@total
+		@total,
+		@publicacion
 	);
 
 	INSERT INTO [TheBigBangQuery].[Ubicaciones_Compra] (ubco_ubicacion, ubco_compra)
@@ -1683,3 +1694,64 @@ AS BEGIN
 	)
 END
 
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getComprasPorPagina]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getComprasPorPagina];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getComprasPorPagina] (@pagina INT, @clieId NUMERIC(18,0))
+RETURNS @return TABLE (
+	[coml_id] NUMERIC(12,0),
+	[coml_fecha_y_hora] DATETIME,
+	[coml_medio_pago] NVARCHAR(255),
+	[coml_cantidad] NUMERIC(12,0),
+	[coml_total] NUMERIC(18,2),
+	[com_public_id] NUMERIC(12,0),
+	[comp_desc_espec] NVARCHAR(255)
+) AS BEGIN 
+
+	DECLARE @ordenada TABLE (
+		fila BIGINT,
+		[coml_id] NUMERIC(12,0),
+		[coml_fecha_y_hora] DATETIME,
+		[coml_medio_pago] NVARCHAR(255),
+		[coml_cantidad] NUMERIC(12,0),
+		[coml_total] NUMERIC(18,2),
+		[com_public_id] NUMERIC(12,0),
+		[comp_desc_espec] NVARCHAR(255)
+	)
+	
+	SET @pagina = @pagina - 1;
+
+	INSERT INTO @ordenada
+	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora DESC) AS ROW, 
+		c.comp_id, c.comp_fecha_y_hora, 
+		c.comp_medio_de_pago, c.comp_cantidad,
+		c.comp_total,
+		p.publ_id,
+		e.espe_descripcion
+	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
+		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
+	WHERE c.comp_cliente = @clieId
+
+	INSERT INTO @return
+	SELECT [coml_id] , [coml_fecha_y_hora] ,[coml_medio_pago] ,
+		[coml_cantidad], [coml_total], [com_public_id], [comp_desc_espec]
+	FROM @ordenada
+	WHERE fila > (30 * @pagina) AND fila < ( (30 * @pagina) + 31 )
+
+	RETURN
+END
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getLastPaginaCompras]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getLastPaginaCompras];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getLastPaginaCompras](@clieId NUMERIC(12,0))
+RETURNS INT AS BEGIN
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 30 > 0 THEN (COUNT(*)/30) + 1
+				ELSE COUNT(*)/40 END 
+		FROM [TheBigBangQuery].[Compras]
+		WHERE @clieId = [comp_cliente]
+	);
+END
+GO

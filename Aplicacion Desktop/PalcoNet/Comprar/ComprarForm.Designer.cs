@@ -78,6 +78,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ComprarForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Comprar";
             this.ResumeLayout(false);
 

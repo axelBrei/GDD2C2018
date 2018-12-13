@@ -295,7 +295,19 @@ namespace PalcoNet.Generar_Publicacion
             }else{
                 if (!modificandoPublicacion)
                 {
-                    insertarPublicacionEnDB();
+                    Empresa empre = null;
+                    Usuario user = UserData.UserData.getUsuario();
+                    if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA)
+                    {
+                        empre.id = user.usuarioRegistrable.getId();
+                        insertarPublicacionEnDB(empre);
+                    }
+                    else {
+                        SeleccionarEmpresa form = new SeleccionarEmpresa();
+                        form.onFinisCompanySelection += this.onSelectCompany;
+                        form.Show(this);
+                    }
+                    
                 }
                 else { 
                     /*
@@ -312,7 +324,11 @@ namespace PalcoNet.Generar_Publicacion
             }
         }
 
-        private void insertarPublicacionEnDB() {
+        private void onSelectCompany(Empresa empre) {
+            insertarPublicacionEnDB(empre);
+        }
+
+        private void insertarPublicacionEnDB(Empresa empre) {
             SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();
             if (espectGenerado == false)
             {
@@ -320,8 +336,10 @@ namespace PalcoNet.Generar_Publicacion
                 espec.descripcion = descripcionPublicacion;
                 espec.direccion = direccionPublicacion;
                 espec.rubro = rubro;
-                espec.id = espectaculosDao.insertarEspectaculo(espec,transaction);
-                espectGenerado = true;
+                espec.empresa = empre;
+                espectGenerado = true;                
+                espec.id = espectaculosDao.insertarEspectaculo(espec, transaction);
+
             }
             try
             {
@@ -332,7 +350,6 @@ namespace PalcoNet.Generar_Publicacion
                     publicacion.fechaEvento = elem;
                     publicacion.fechaPublicacion = DateTime.Now.Date;
                     publicacion.estado = Strings.ESTADO_BORRADOR;
-
                     publicacion.espectaculo = espec;
                     publicacion.ubicaciones = ubicacionesList;
 
@@ -341,6 +358,7 @@ namespace PalcoNet.Generar_Publicacion
                 transaction.Commit();
                 MessageBox.Show("Se ha cargado la publicación");
                 borrarFormulario();
+                espectGenerado = false;
             }
             catch (SqlInsertException ex)
             {

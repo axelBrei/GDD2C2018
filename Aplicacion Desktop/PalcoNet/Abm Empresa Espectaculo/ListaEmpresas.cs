@@ -20,6 +20,8 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
         private Empresa empresaSeleccionada;
         private int indexEmpresaSeleccionada;
 
+
+
         private List<Empresa> empresasList = new List<Empresa>();
 
         public ListaEmpresas()

@@ -68,7 +68,8 @@ namespace PalcoNet
                     else
                     {
                         UserData.UserData.setRolActivo(usuario.getRol(0));
-                        new PalcoNet.MainMenu.Form1().Show();
+                        new PalcoNet.MainMenu.Form1().Show(); ;
+
                     }
                     this.Hide();
 
@@ -81,9 +82,15 @@ namespace PalcoNet
             
         }
 
+        private void afterCloseSignUp(object sender, FormClosedEventArgs e) {
+            this.Show();
+        }
+
         private void RegistrarseButton_Click(object sender, EventArgs e)
         {
-            new Registro_de_Usuario.RegistrarUsuario("").Show();
+            Registro_de_Usuario.RegistrarUsuario form = new Registro_de_Usuario.RegistrarUsuario("");
+            form.FormClosed += this.afterCloseSignUp;
+            form.Show();
             this.Hide();
         }
 

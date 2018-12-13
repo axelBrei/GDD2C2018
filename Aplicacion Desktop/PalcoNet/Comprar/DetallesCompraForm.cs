@@ -39,7 +39,7 @@ namespace PalcoNet.Comprar
                 DescripcionLabel.Text = p.espectaculo.descripcion;
                 DireccionLabel.Text = p.espectaculo.direccion;
                 EmpresaLabel.Text = p.espectaculo.empresa.razonSocial;
-                FechaLabel.Text = ((DateTime)p.fechaEvento).Date.ToShortDateString();
+                FechaLabel.Text = ((DateTime)p.fechaEvento).ToString();
                 CategoriaLabel.Text = p.espectaculo.rubro.descripcion;
                 publiActual = p;
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());

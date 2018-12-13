@@ -237,17 +237,35 @@
     <Compile Include="Generar Publicacion\PanelDateItem.Designer.cs">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Generar Publicacion\SeleccionarEmpresa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicacion\SeleccionarEmpresa.Designer.cs">
+      <DependentUpon>SeleccionarEmpresa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Generar Rendicion Comisiones\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Generar Rendicion Comisiones\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Historial Cliente\DetalleCompraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Historial Cliente\DetalleCompraForm.Designer.cs">
+      <DependentUpon>DetalleCompraForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Historial Cliente\HistorialCliente.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Historial Cliente\HistorialCliente.Designer.cs">
       <DependentUpon>HistorialCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Historial Cliente\SeleccionarClienteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Historial Cliente\SeleccionarClienteForm.Designer.cs">
+      <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -379,8 +397,17 @@
     <EmbeddedResource Include="Generar Publicacion\PanelDateItem.resx">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicacion\SeleccionarEmpresa.resx">
+      <DependentUpon>SeleccionarEmpresa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Historial Cliente\DetalleCompraForm.resx">
+      <DependentUpon>DetalleCompraForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\HistorialCliente.resx">
       <DependentUpon>HistorialCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Historial Cliente\SeleccionarClienteForm.resx">
+      <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

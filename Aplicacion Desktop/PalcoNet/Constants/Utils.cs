@@ -17,5 +17,14 @@ namespace PalcoNet.Constants
             }
             return fecha;
         }
+
+        public static DateTime getFechaMinima() {
+            DateTime fecha = new DateTime();
+            string f = ConfigurationManager.AppSettings.Get("fecha_min");
+            if (!string.IsNullOrEmpty(f)) {
+                fecha = DateTime.ParseExact(f, "yyyy-dd-MM", null);
+            }
+            return fecha;
+        }
     }
 }

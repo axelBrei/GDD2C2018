@@ -95,11 +95,17 @@
     <Compile Include="Abm Rubro\ListadoRubros.Designer.cs">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
     </Compile>
-    <Compile Include="Canje Puntos\Form1.cs">
+    <Compile Include="Canje Puntos\PremiosListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Canje Puntos\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Canje Puntos\PremiosListForm.Designer.cs">
+      <DependentUpon>PremiosListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Canje Puntos\PuntosForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Canje Puntos\PuntosForm.Designer.cs">
+      <DependentUpon>PuntosForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Comprar\ComprarForm.cs">
       <SubType>Form</SubType>
@@ -295,6 +301,7 @@
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\GradoPublicacion.cs" />
     <Compile Include="Model\ItemFactura.cs" />
+    <Compile Include="Model\Premio.cs" />
     <Compile Include="Model\Publicacion.cs" />
     <Compile Include="Model\Registrable.cs" />
     <Compile Include="Model\Rol.cs" />
@@ -342,6 +349,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rubro\ListadoRubros.resx">
       <DependentUpon>ListadoRubros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Canje Puntos\PremiosListForm.resx">
+      <DependentUpon>PremiosListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Canje Puntos\PuntosForm.resx">
+      <DependentUpon>PuntosForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Comprar\ComprarForm.resx">
       <DependentUpon>ComprarForm.cs</DependentUpon>

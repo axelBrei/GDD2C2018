@@ -45,6 +45,7 @@ namespace PalcoNet.MainMenu
                     button.Location = new Point(0, cantBotones * 35);
                     button.FlatStyle = FlatStyle.Flat;
                     button.FlatAppearance.BorderSize = 0;
+                    button.ForeColor = Color.White;
                     this.panel1.Controls.Add(button);
                 }
             }
@@ -127,7 +128,17 @@ namespace PalcoNet.MainMenu
                 case 11:
                     {
                         // CANJE DE PUNTOS
-                        form = new Canje_Puntos.Form1();
+                        if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
+                        {
+                            form = new Canje_Puntos.PuntosForm((Cliente)UserData.UserData.getClieOEmpresa());
+                        }
+                        else {
+                            Historial_Cliente.SeleccionarClienteForm t = new Historial_Cliente.SeleccionarClienteForm();
+                            t.onSelectClient += this.onClientSeleccionadoPuntos;
+                            form = t;
+                        }
+
+                        
                         break;
                     }
                 case 12:
@@ -167,6 +178,21 @@ namespace PalcoNet.MainMenu
             form.onBackPress += this.onBackPressComprasDelCliente;
             showNestedForm(form);
 
+        }
+
+        private void onClientSeleccionadoPuntos(int id) {
+            this.panel2.Controls.Clear();
+            ClientesDao dao = new ClientesDao();
+            Canje_Puntos.PuntosForm form = new Canje_Puntos.PuntosForm(dao.getClientePorId(id));
+            form.onBackPress += this.onBackPressPuntos;
+            showNestedForm(form);
+        }
+
+        private void onBackPressPuntos() {
+            this.panel2.Controls.Clear();
+            Historial_Cliente.SeleccionarClienteForm form = new Historial_Cliente.SeleccionarClienteForm();
+            form.onSelectClient += this.onClientSeleccionadoPuntos;
+            showNestedForm(form);
         }
 
         private void onBackPressComprasDelCliente()

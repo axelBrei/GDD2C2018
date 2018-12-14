@@ -1755,3 +1755,65 @@ RETURNS INT AS BEGIN
 	);
 END
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getPremiosDelPuntaje]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getPremiosDelPuntaje];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getPremiosDelPuntaje]()
+RETURNS @res TABLE (
+	punt_id NUMERIC(18,0),
+	punt_puntos NUMERIC(18,0),
+	punt_nombre NVARCHAR(255),
+	punt_vencimiento DATETIME
+) AS BEGIN
+	INSERT INTO @res
+	SELECT *
+	FROM [TheBigBangQuery].[Premio]
+	
+	RETURN;
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[insertarNuevoPremio]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[insertarNuevoPremio];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[insertarNuevoPremio](
+	@puntos NUMERIC(18,0),
+	@nombre NVARCHAR(255),
+	@vencimiento DATETIME
+) AS BEGIN
+	
+	INSERT INTO [TheBigBangQuery].[Premio] (
+		[prem_puntos_necesarios],
+		[prem_nombre],
+		[prem_vencimiento]
+	) VALUES (
+		@puntos,
+		@nombre,
+		@vencimiento
+	)
+
+END
+
+GO
+IF OBJECT_ID('[TheBigBangQuery].[canjearPuntos]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[canjearPuntos]
+GO
+CREATE PROCEDURE [TheBigBangQuery].[canjearPuntos](
+	@puntosCanjeados NUMERIC(18,0),
+	@idCliente NUMERIC(18,0)
+) AS BEGIN
+	IF (
+		SELECT clie_puntos
+		FROM [TheBigBangQuery].[Cliente]
+		WHERE clie_id = @idCliente
+	) < @puntosCanjeados
+	BEGIN
+		RAISERROR('No tenes puntos suficientes para canjear por dicho premio',16,1);
+	END ELSE BEGIN
+		UPDATE TheBigBangQuery.Cliente
+		SET clie_puntos = clie_puntos - @puntosCanjeados
+		WHERE clie_id = @idCliente
+	END
+		
+END

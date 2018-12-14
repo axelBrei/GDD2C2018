@@ -78,5 +78,6 @@ namespace PalcoNet.ConectionUtils
                 throw ex;
             }
         }
+
     }
 }

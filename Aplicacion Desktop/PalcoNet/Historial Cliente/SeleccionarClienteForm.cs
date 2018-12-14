@@ -40,10 +40,11 @@ namespace PalcoNet.Historial_Cliente
             this.ClientesListView.Columns.Insert(9, "Nacimiento", 10 * (int)ClientesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.ClientesListView.Columns.Insert(10, "Puntos", 10 * (int)ClientesListView.Font.SizeInPoints, HorizontalAlignment.Center);
 
-            clientes = clientesDao.getClientes(); 
-            clientes.ForEach(elem =>
-            {
-                ClientesListView.Items.Add(getItemFromClient(elem));
+            clientesDao.getClientesHabilitados((listaCli) => {
+                clientes = listaCli;
+                listaCli.ForEach(elem => {
+                    ClientesListView.Items.Add(getItemFromClient(elem));
+                });
             });
         }
 

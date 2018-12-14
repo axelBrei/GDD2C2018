@@ -51,6 +51,28 @@ namespace PalcoNet.Dao
             }
         }
 
+        public void getClientesHabilitados(Action<List<Cliente>>lambda) {
+            string query = getClientsQuery + " WHERE clie_dado_baja IS NULL";
+            SqlDataReader reader = null;
+            List<Cliente> clientesHabilitados = new List<Cliente>();
+            try {
+                reader = DatabaseConection.executeQuery(query);
+                if (reader.HasRows) {
+                    while (reader.Read()) { 
+                        clientesHabilitados.Add(getClienteFromReder(reader));
+                    }
+                }
+                lambda(clientesHabilitados);
+            }
+            catch(Exception e){
+                throw new DataNotFoundException("Error al buscar clientes habilitados");
+            }
+            finally{
+                if (reader != null & !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
         public void insertarCliente(Cliente cliente, string contraseña) {
             string query = "[TheBigBangQuery].[InsertarNuevoClienteConUsuario]";
             SqlDataReader reader = null;

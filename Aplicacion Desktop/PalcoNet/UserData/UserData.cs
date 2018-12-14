@@ -17,6 +17,7 @@ namespace PalcoNet.UserData
 
         private static Usuario usuario = null;
         private static Rol activeRol = null;
+        private static object clieOEmpresa;
 
         public UserData() { }
 
@@ -34,14 +35,18 @@ namespace PalcoNet.UserData
                         {
                             // empresa
                             EmpresasDao empresaDao = new EmpresasDao();
-                            usuario.usuarioRegistrable = empresaDao.getEmpresaPorUserId(usuario.id);
+                            Empresa empresa = empresaDao.getEmpresaPorUserId(usuario.id);
+                            usuario.usuarioRegistrable = empresa;
+                            clieOEmpresa = empresa;
                             break;
                         }
                     case 2:
                         {
                             // CLIENTE
                             ClientesDao clientesDao = new ClientesDao();
-                            usuario.usuarioRegistrable = clientesDao.getClientePorUserId(usuario.id);
+                            Cliente cliente = clientesDao.getClientePorUserId(usuario.id);
+                            usuario.usuarioRegistrable = cliente;
+                            clieOEmpresa = cliente;
                             break;
                         }
                     case 1: {
@@ -81,6 +86,10 @@ namespace PalcoNet.UserData
         public static void actualizarRolActual() {
             RolesDao rolesDao = new RolesDao();
             activeRol = rolesDao.getRolPorId(activeRol.id);
+        }
+
+        public static object getClieOEmpresa() {
+            return clieOEmpresa;
         }
     }
 }

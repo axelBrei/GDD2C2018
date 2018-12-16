@@ -42,6 +42,9 @@
             this.EmpresaTextBox = new System.Windows.Forms.Label();
             this.TotalTextBox = new System.Windows.Forms.Label();
             this.CerrarButton = new System.Windows.Forms.Button();
+            this.UbicacionesListView = new System.Windows.Forms.ListView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -164,19 +167,45 @@
             // 
             // CerrarButton
             // 
-            this.CerrarButton.Location = new System.Drawing.Point(354, 396);
+            this.CerrarButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.CerrarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.CerrarButton.Location = new System.Drawing.Point(521, 435);
             this.CerrarButton.Name = "CerrarButton";
             this.CerrarButton.Size = new System.Drawing.Size(75, 23);
             this.CerrarButton.TabIndex = 13;
             this.CerrarButton.Text = "Cerrar";
-            this.CerrarButton.UseVisualStyleBackColor = true;
+            this.CerrarButton.UseVisualStyleBackColor = false;
             this.CerrarButton.Click += new System.EventHandler(this.CerrarButton_Click);
+            // 
+            // UbicacionesListView
+            // 
+            this.UbicacionesListView.FullRowSelect = true;
+            this.UbicacionesListView.GridLines = true;
+            this.UbicacionesListView.HideSelection = false;
+            this.UbicacionesListView.Location = new System.Drawing.Point(16, 21);
+            this.UbicacionesListView.Name = "UbicacionesListView";
+            this.UbicacionesListView.Size = new System.Drawing.Size(298, 342);
+            this.UbicacionesListView.TabIndex = 14;
+            this.UbicacionesListView.UseCompatibleStateImageBehavior = false;
+            this.UbicacionesListView.View = System.Windows.Forms.View.Details;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.UbicacionesListView);
+            this.groupBox1.Location = new System.Drawing.Point(252, 21);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(331, 384);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Ubicaciones compradas";
             // 
             // DetalleCompraForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 431);
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClientSize = new System.Drawing.Size(608, 470);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.CerrarButton);
             this.Controls.Add(this.TotalTextBox);
             this.Controls.Add(this.EmpresaTextBox);
@@ -196,6 +225,7 @@
             this.Name = "DetalleCompraForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -217,5 +247,7 @@
         private System.Windows.Forms.Label EmpresaTextBox;
         private System.Windows.Forms.Label TotalTextBox;
         private System.Windows.Forms.Button CerrarButton;
+        private System.Windows.Forms.ListView UbicacionesListView;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

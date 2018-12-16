@@ -74,7 +74,7 @@ namespace PalcoNet.Dao
         }
 
 
-        public Publicacion getPublicacionPorId(int id) {
+        public Publicacion getPublicacionPorId(int id, SqlTransaction trans = null) {
             Publicacion publicacion;
             SqlDataReader reader = null;
             string query = baseQuery + "WHERE publ_id = @id";
@@ -83,6 +83,8 @@ namespace PalcoNet.Dao
                 publicacion = new Publicacion();
                 SqlCommand command = new SqlCommand();
                 command.CommandText = query;
+                if (trans != null)
+                    command.Transaction = trans;
 
                 SqlParameter param = new SqlParameter("@id", SqlDbType.Decimal);
                 param.Value = id;

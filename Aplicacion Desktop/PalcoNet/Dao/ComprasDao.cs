@@ -102,6 +102,38 @@ namespace PalcoNet.Dao
             }
         }
 
+        public void getComprasPorEmpresa(int empId, int canitdad, Action<List<Compra>> lambdaEmpresas) {
+            string query = "SELECT * FROM [TheBigBangQuery].[getComprasDeEmpresaPorCantidad] (@empeId, @cantidad)";
+            SqlDataReader reader = null;
+            try
+            {
+                List<Compra> comprasList = new List<Compra>();
+                SqlCommand command = new SqlCommand(query);
+                command.CommandText = query;
+
+                command.Parameters.AddWithValue("@empeId", empId);
+                command.Parameters.AddWithValue("@cantidad", canitdad);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        comprasList.Add(parsearCompraDelReader(reader));
+                    }
+                }
+                lambdaEmpresas(comprasList);
+            }
+            catch (Exception e)
+            {
+                throw new DataNotFoundException("No se encontraron compras para el cliente selecionado");
+            }
+            finally {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
         public Compra getDetalleCompraPorId(int id) {
             string query = "SELECT comp_id, comp_fecha_y_hora,comp_medio_de_pago, comp_cantidad,comp_total, " +
                                 "publ_id, espe_descripcion, publ_fecha_hora_espectaculo, publ_estado, empr_razon_social, rub_descripcion " +

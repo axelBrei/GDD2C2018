@@ -658,27 +658,15 @@ BEGIN TRANSACTION
 	INSERT INTO [TheBigBangQuery].[Ubicaciones_Compra](
 		[ubco_compra],[ubco_ubicacion]
 	)
-	SELECT DISTINCT c.clie_id, u.ubi_id
+	SELECT  co.comp_id, u.ubi_id
 	FROM [gd_esquema].[Maestra] m 
-	LEFT JOIN [TheBigBangQuery].[Cliente] c ON (
-		c.clie_dni = m.Cli_Dni AND 
-		c.clie_apellido = m.Cli_Apeliido AND
-		c.clie_nombre = m.Cli_Nombre AND 
-		c.clie_f_nacimiento = m.Cli_Fecha_Nac AND 
-		c.clie_mail = m.Cli_Mail AND
-		c.clie_direccion = m.Cli_Dom_Calle AND
-		c.clie_numero_calle = m.Cli_Nro_Calle AND 
-		c.clie_piso = m.Cli_Piso AND 
-		c.clie_departamento = m.Cli_Depto AND 
-		c.clie_codigo_postal = m.Cli_Cod_Postal
-	) 
-	LEFT JOIN [TheBigBangQuery].[Compras] co ON (co.comp_cliente = c.clie_id)
-	LEFT JOIN [TheBigBangQuery].[Ubicacion] u ON (
-		m.Ubicacion_Asiento = u.ubi_asiento AND 
-		m.Ubicacion_Fila = u.ubi_fila AND 
-		m.Ubicacion_Sin_numerar = u.ubi_sin_enumerar AND
-		m.Ubicacion_Tipo_Codigo = u.ubi_tipo_codigo
-	)
+		JOIN [TheBigBangQuery].[Compras] co ON (co.comp_n_factura = m.Factura_Nro)
+		JOIN [TheBigBangQuery].[Ubicacion] u ON (
+			m.Ubicacion_Asiento = u.ubi_asiento AND 
+			m.Ubicacion_Fila = u.ubi_fila AND 
+			m.Ubicacion_Sin_numerar = u.ubi_sin_enumerar AND
+			m.Ubicacion_Tipo_Codigo = u.ubi_tipo_codigo
+		)
 	WHERE m.Compra_Cantidad IS NOT NULL AND m.Compra_Fecha IS NOT NULL
 
 
@@ -1666,35 +1654,6 @@ AS BEGIN
 END
 
 GO
-IF OBJECT_ID('[TheBigBangQuery].[InsertarItemFactura]') IS NOT NULL
-	DROP PROCEDURE [TheBigBangQuery].[InsertarItemFactura];
-GO
-CREATE PROCEDURE [TheBigBangQuery].[InsertarItemFactura] (
-		@numFact NUMERIC(12,0),
-		@idUbi NUMERIC(12,0),
-		@idPubli NUMERIC(12,0),
-		@monto NUMERIC(18,2),
-		@cantidad NUMERIC(12,0),
-		@desc VARCHAR(255))
-AS BEGIN 
-	INSERT INTO [TheBigBangQuery].[Item_Factura](
-		[item_n_factura],
-		[item_ubicacion],
-		[item_publicacion],
-		[item_monto],
-		[item_cantidad],
-		[item_descripcion]
-	) VALUES (
-		@numFact,
-		@idUbi,
-		@idPubli,
-		@monto,
-		@cantidad,
-		@desc
-	)
-END
-
-GO
 IF OBJECT_ID('[TheBigBangQuery].[getComprasPorPagina]') IS NOT NULL
 	DROP FUNCTION [TheBigBangQuery].[getComprasPorPagina];
 GO
@@ -1817,3 +1776,122 @@ CREATE PROCEDURE [TheBigBangQuery].[canjearPuntos](
 	END
 		
 END
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getComprasDeEmpresaPorCantidad]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getComprasDeEmpresaPorCantidad];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getComprasDeEmpresaPorCantidad](
+	@empId NUMERIC(18,0),
+	@cantidad NUMERIC(12,0)
+)
+RETURNS @return TABLE (
+	[coml_id] NUMERIC(12,0),
+	[coml_fecha_y_hora] DATETIME,
+	[coml_medio_pago] NVARCHAR(255),
+	[coml_cantidad] NUMERIC(12,0),
+	[coml_total] NUMERIC(18,2),
+	[com_public_id] NUMERIC(12,0),
+	[comp_desc_espec] NVARCHAR(255)
+) AS BEGIN 
+
+	DECLARE @ordenada TABLE (
+		fila BIGINT,
+		[coml_id] NUMERIC(12,0),
+		[coml_fecha_y_hora] DATETIME,
+		[coml_medio_pago] NVARCHAR(255),
+		[coml_cantidad] NUMERIC(12,0),
+		[coml_total] NUMERIC(18,2),
+		[com_public_id] NUMERIC(12,0),
+		[comp_desc_espec] NVARCHAR(255)
+	)
+
+	INSERT INTO @ordenada
+	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora ASC) AS ROW, 
+		c.comp_id, c.comp_fecha_y_hora, 
+		c.comp_medio_de_pago, c.comp_cantidad,
+		c.comp_total,
+		p.publ_id,
+		e.espe_descripcion
+	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
+		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
+		JOIN [TheBigBangQuery].[Empresa] em ON (em.empr_id = e.espe_empresa)
+	WHERE em.empr_id = @empId
+
+	INSERT INTO @return
+	SELECT [coml_id] , [coml_fecha_y_hora] ,[coml_medio_pago] ,
+		[coml_cantidad], [coml_total], [com_public_id], [comp_desc_espec]
+	FROM @ordenada
+	WHERE fila < @cantidad
+	ORDER BY coml_fecha_y_hora ASC
+
+	RETURN;
+
+END
+
+GO
+IF OBJECT_ID('[TheBigBangQuery].[insertarNuevaFactura]') IS NOT NULL 
+	DROP PROCEDURE [TheBigBangQuery].[insertarNuevaFactura];
+GO
+
+CREATE PROCEDURE [TheBigBangQuery].[insertarNuevaFactura](
+	@idCompra NUMERIC(12,0),
+	@tipoPago NVARCHAR(255),
+	@importe NUMERIC(18,2),
+	@fecha DATETIME,
+	@idEmpresa NUMERIC(12,0),
+	@numeroFactura NUMERIC(18,0) OUTPUT) 
+AS BEGIN 
+
+	
+
+	INSERT INTO [TheBigBangQuery].[Factura] (
+		[fact_forma_de_pago],
+		[fact_total],
+		[fact_fecha],
+		[fact_empresa],
+		[fact_comision_hecha]
+	) VALUES (
+		@tipoPago,
+		@importe,
+		@fecha,
+		@idEmpresa,
+		1
+	);
+
+	SELECT @numeroFactura = SCOPE_IDENTITY();
+
+	UPDATE [TheBigBangQuery].[Compras]
+	SET [comp_n_factura] = @numeroFactura
+	WHERE [comp_id] = @idCompra
+END
+
+GO
+IF OBJECT_ID('[TheBigBangQuery].[InsertarItemFactura]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[InsertarItemFactura];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[InsertarItemFactura] (
+		@numFact NUMERIC(12,0),
+		@idUbi NUMERIC(12,0),
+		@idPubli NUMERIC(12,0),
+		@monto NUMERIC(18,2),
+		@cantidad NUMERIC(12,0),
+		@desc VARCHAR(255))
+AS BEGIN 
+	INSERT INTO [TheBigBangQuery].[Item_Factura](
+		[item_n_factura],
+		[item_ubicacion],
+		[item_publicacion],
+		[item_monto],
+		[item_cantidad],
+		[item_descripcion]
+	) VALUES (
+		@numFact,
+		@idUbi,
+		@idPubli,
+		@monto,
+		@cantidad,
+		@desc
+	)
+END
+
+GO

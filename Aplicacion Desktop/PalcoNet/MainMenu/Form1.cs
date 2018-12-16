@@ -144,7 +144,7 @@ namespace PalcoNet.MainMenu
                 case 12:
                     {
                         // GENERAR PAGO DE COMISIONES
-                        form = new Generar_Rendicion_Comisiones.Form1();
+                        form = new Generar_Rendicion_Comisiones.GenerarComisionesForm();
                         break;
                     }
                 case 13:

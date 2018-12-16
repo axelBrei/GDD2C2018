@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using PalcoNet.Model;
 using PalcoNet.ConectionUtils;
 using PalcoNet.Exceptions;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Dao
 {
@@ -55,22 +56,22 @@ namespace PalcoNet.Dao
             return empresa;
         }
 
-        public void insertarEmpresaConUsuario(Empresa empresa, String usuario , String contraseña) { 
+        public void insertarEmpresaConUsuario(Empresa empresa, String usuario , String contraseña) {
             string query = "EXEC [TheBigBangQuery].[InsertarEmpresaConUsuario]" +
-	            "@usuario = '" + usuario +"'," +
-	            "@contraseña = '" + contraseña +"'," +
-	            "@razonSocial = '" + empresa.razonSocial +"'," +
-	            "@cuit = '" + empresa.cuit +"'," +
-	            "@mail = '" + empresa.mailEmpresa +"'," +
-	            "@telefono = '" + empresa.telefonoEmpresa+"'," +
-	            "@calle = '" + empresa.direccion.calle +"'," +
-	            "@altura = '" + empresa.direccion.numero +"'," +
-	            "@piso = '" + empresa.direccion.piso +"'," +
-	            "@depto = '" + empresa.direccion.depto +"'," +
-	            "@localidad = '" + empresa.direccion.localidad +"'," +
-	            "@codigoPostal = '" + empresa.direccion.codigoPostal +"'," +
-	            "@ciudad = '" + empresa.direccion.ciudad +"'," +
-                "@fechaCreacion = '" + DateTime.Now.ToString("yyyy-dd-MM") + "'";
+                "@usuario = '" + usuario + "'," +
+                "@contraseña = '" + contraseña + "'," +
+                "@razonSocial = '" + empresa.razonSocial + "'," +
+                "@cuit = '" + empresa.cuit + "'," +
+                "@mail = '" + empresa.mailEmpresa + "'," +
+                "@telefono = '" + empresa.telefonoEmpresa + "'," +
+                "@calle = '" + empresa.direccion.calle + "'," +
+                "@altura = '" + empresa.direccion.numero + "'," +
+                "@piso = '" + empresa.direccion.piso + "'," +
+                "@depto = '" + empresa.direccion.depto + "'," +
+                "@localidad = '" + empresa.direccion.localidad + "'," +
+                "@codigoPostal = '" + empresa.direccion.codigoPostal + "'," +
+                "@ciudad = '" + empresa.direccion.ciudad + "'," +
+                "@fechaCreacion = '" + Utils.getFecha() +"'";
             try
             {
                 DatabaseConection.executeNoParamFunction(query);
@@ -138,10 +139,12 @@ namespace PalcoNet.Dao
             }
         }
 
-        public Empresa getEmpresaPorId(int id) {
+        public Empresa getEmpresaPorId(int id, SqlTransaction trans = null) {
             Empresa empresa = new Empresa();
             string query = mainEmpresaQuery + "WHERE empr_id = @id";
             SqlCommand command = new SqlCommand(query);
+            if (trans != null)
+                command.Transaction = trans;
             SqlParameter param = new SqlParameter("@id", System.Data.SqlDbType.Decimal);
             param.Value = id;
             command.Parameters.Add(param);
@@ -160,7 +163,7 @@ namespace PalcoNet.Dao
         }
 
         public Empresa getEmpresaPorUserId(int userId) {
-            string query = mainEmpresaQuery + " WHERE empr_id = @id";
+            string query = mainEmpresaQuery + " WHERE empr_usuario = @id";
             SqlCommand command = new SqlCommand(query);
             SqlParameter param = new SqlParameter("@id", System.Data.SqlDbType.Int);
             param.Value = userId;

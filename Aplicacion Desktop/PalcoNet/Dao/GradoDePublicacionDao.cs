@@ -120,7 +120,7 @@ namespace PalcoNet.Dao
             }
         }
 
-        public GradoPublicacion getGradoPorId(int id) {
+        public GradoPublicacion getGradoPorId(int id, SqlTransaction trans = null) {
             GradoPublicacion grado;
             string query = "SELECT * FROM [TheBigBangQuery].[GradoPublicaciones] WHERE grad_id = @id";
             SqlDataReader reader = null;
@@ -128,7 +128,8 @@ namespace PalcoNet.Dao
             {
                 grado = new GradoPublicacion();
                 SqlCommand command = new SqlCommand();
-
+                if (trans != null)
+                    command.Transaction = trans;
                 command.CommandText = query;
 
                 SqlParameter param = new SqlParameter("@id", SqlDbType.Decimal);

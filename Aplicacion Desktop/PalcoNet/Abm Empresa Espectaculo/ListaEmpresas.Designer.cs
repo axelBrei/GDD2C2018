@@ -57,12 +57,14 @@
             // AgregarButton
             // 
             this.AgregarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AgregarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
+            this.AgregarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.AgregarButton.Location = new System.Drawing.Point(622, 111);
             this.AgregarButton.Name = "AgregarButton";
             this.AgregarButton.Size = new System.Drawing.Size(75, 23);
             this.AgregarButton.TabIndex = 3;
             this.AgregarButton.Text = "Agregar";
-            this.AgregarButton.UseVisualStyleBackColor = true;
+            this.AgregarButton.UseVisualStyleBackColor = false;
             this.AgregarButton.Click += new System.EventHandler(this.AgregarButton_Click);
             // 
             // EmpresasListView
@@ -88,23 +90,27 @@
             // ModificarButton
             // 
             this.ModificarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModificarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
+            this.ModificarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.ModificarButton.Location = new System.Drawing.Point(622, 151);
             this.ModificarButton.Name = "ModificarButton";
             this.ModificarButton.Size = new System.Drawing.Size(75, 23);
             this.ModificarButton.TabIndex = 5;
             this.ModificarButton.Text = "Modificar";
-            this.ModificarButton.UseVisualStyleBackColor = true;
+            this.ModificarButton.UseVisualStyleBackColor = false;
             this.ModificarButton.Click += new System.EventHandler(this.ModificarButton_Click);
             // 
             // DeshabilitarButton
             // 
             this.DeshabilitarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeshabilitarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
+            this.DeshabilitarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.DeshabilitarButton.Location = new System.Drawing.Point(622, 193);
             this.DeshabilitarButton.Name = "DeshabilitarButton";
             this.DeshabilitarButton.Size = new System.Drawing.Size(75, 23);
             this.DeshabilitarButton.TabIndex = 6;
             this.DeshabilitarButton.Text = "Deshabilitar";
-            this.DeshabilitarButton.UseVisualStyleBackColor = true;
+            this.DeshabilitarButton.UseVisualStyleBackColor = false;
             this.DeshabilitarButton.Click += new System.EventHandler(this.DeshabilitarButton_Click);
             // 
             // ListaEmpresas

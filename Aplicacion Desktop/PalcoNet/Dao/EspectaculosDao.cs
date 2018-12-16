@@ -45,7 +45,7 @@ namespace PalcoNet.Dao
             }
         }
 
-        public Espectaculo getEspectaculoPorId(int id) {
+        public Espectaculo getEspectaculoPorId(int id, SqlTransaction trans = null) {
             string query = "SELECT * FROM [TheBigBangQuery].[Espectaculo] WHERE espe_id = @id";
             SqlDataReader reader = null;
             Espectaculo espectaculo;
@@ -54,7 +54,8 @@ namespace PalcoNet.Dao
                 espectaculo = new Espectaculo();
                 SqlCommand command = new SqlCommand(query);
                 command.CommandText = query;
-
+                if (trans != null)
+                    command.Transaction = trans;
                 command.Parameters.AddWithValue("@id", id);
 
                 reader = DatabaseConection.executeQuery(command);

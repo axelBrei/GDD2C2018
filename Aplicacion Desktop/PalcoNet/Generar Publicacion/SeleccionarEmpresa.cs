@@ -46,6 +46,23 @@ namespace PalcoNet.Generar_Publicacion
 
         }
 
+        public SeleccionarEmpresa(List<Empresa> empresasList) {
+            this.EmpresasListView.Columns.Insert(0, "Id", 10 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(1, "Razon Social", 20 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(2, "CUIT", 10 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(3, "Mail", 30 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(4, "Telefono", 30 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(5, "Calle", 12 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(6, "Altura", 10 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(7, "Piso", 5 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.EmpresasListView.Columns.Insert(8, "Ciudad", 10 * (int)EmpresasListView.Font.SizeInPoints, HorizontalAlignment.Center);
+
+            empresas.AddRange(empresasList);
+            empresasList.ForEach(elem => {
+                this.EmpresasListView.Items.Add(getItemEmpresa(elem));
+            });
+        }
+
         private ListViewItem getItemEmpresa(Empresa empresa)
         {
             ListViewItem item = new ListViewItem();

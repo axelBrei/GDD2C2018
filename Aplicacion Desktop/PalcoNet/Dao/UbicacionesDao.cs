@@ -73,7 +73,7 @@ namespace PalcoNet.Dao
             }
         }
 
-        public List<Ubicacion> getUbicacionesDeLaPublicacion(int idPubli) {
+        public List<Ubicacion> getUbicacionesDeLaPublicacion(int idPubli, SqlTransaction trans = null) {
             string query = baseQuery + ", ubpu_precio " + baseFrom + "JOIN [TheBigBangQuery].[Ubicaciones_publicacion] ON (ubpu_id_ubicacion = ubi_id) " +
                                        "JOIN [TheBigBangQuery].[TipoUbicacion] ON (tipu_id = ubi_tipo_codigo) " +
                                        "WHERE ubpu_id_publicacion = @idPublicacion AND [ubpu_disponible] = 0" +
@@ -86,6 +86,8 @@ namespace PalcoNet.Dao
 
                 SqlCommand command = new SqlCommand();
                 command.CommandText = query;
+                if (trans != null)
+                    command.Transaction = trans;
 
                 SqlParameter param = new SqlParameter("@idPublicacion", SqlDbType.Decimal);
                 param.Value = idPubli;

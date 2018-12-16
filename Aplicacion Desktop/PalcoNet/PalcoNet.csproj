@@ -169,6 +169,7 @@
     <Compile Include="Dao\ComprasDao.cs" />
     <Compile Include="Dao\EmpresasDao.cs" />
     <Compile Include="Dao\EspectaculosDao.cs" />
+    <Compile Include="Dao\FacturasDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\GradoDePublicacionDao.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Dao\TarjetasDao.cs" />
     <Compile Include="Dao\TipoDocumentoDao.cs" />
     <Compile Include="Dao\TipoUbicacionDao.cs" />
+    <Compile Include="Dao\UbicacionesCompraDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
     <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
     <Compile Include="Editar Publicacion\EditarEstadoForm.cs">
@@ -249,11 +251,11 @@
     <Compile Include="Generar Publicacion\SeleccionarEmpresa.Designer.cs">
       <DependentUpon>SeleccionarEmpresa.cs</DependentUpon>
     </Compile>
-    <Compile Include="Generar Rendicion Comisiones\Form1.cs">
+    <Compile Include="Generar Rendicion Comisiones\GenerarComisionesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Generar Rendicion Comisiones\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Generar Rendicion Comisiones\GenerarComisionesForm.Designer.cs">
+      <DependentUpon>GenerarComisionesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Historial Cliente\DetalleCompraForm.cs">
       <SubType>Form</SubType>
@@ -412,6 +414,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicacion\SeleccionarEmpresa.resx">
       <DependentUpon>SeleccionarEmpresa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Rendicion Comisiones\GenerarComisionesForm.resx">
+      <DependentUpon>GenerarComisionesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\DetalleCompraForm.resx">
       <DependentUpon>DetalleCompraForm.cs</DependentUpon>

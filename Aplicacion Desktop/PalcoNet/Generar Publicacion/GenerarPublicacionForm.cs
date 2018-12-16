@@ -295,11 +295,11 @@ namespace PalcoNet.Generar_Publicacion
             }else{
                 if (!modificandoPublicacion)
                 {
-                    Empresa empre = null;
+                    Empresa empre = new Empresa();
                     Usuario user = UserData.UserData.getUsuario();
                     if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA)
                     {
-                        empre.id = user.usuarioRegistrable.getId();
+                        empre.id = ((Empresa)UserData.UserData.getClieOEmpresa()).id;
                         insertarPublicacionEnDB(empre);
                     }
                     else {

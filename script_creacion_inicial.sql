@@ -1815,7 +1815,7 @@ RETURNS @return TABLE (
 	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
 		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
 		JOIN [TheBigBangQuery].[Empresa] em ON (em.empr_id = e.espe_empresa)
-	WHERE em.empr_id = @empId
+	WHERE em.empr_id = @empId AND comp_n_factura IS NULL
 
 	INSERT INTO @return
 	SELECT [coml_id] , [coml_fecha_y_hora] ,[coml_medio_pago] ,
@@ -1895,3 +1895,54 @@ AS BEGIN
 END
 
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getTop5EmpresasSinLocallidadesVendidas]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getTop5EmpresasSinLocallidadesVendidas];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getTop5EmpresasSinLocallidadesVendidas](
+	@fechaInicio DATETIME,
+	@fechaFin DATETIME,
+	@grado NUMERIC(18,0)
+)
+RETURNS @ret TABLE (
+	[empr_id] NUMERIC(18,0),
+	[cantSinVender] NUMERIC(18,0)
+) AS BEGIN
+	INSERT INTO @ret
+	SELECT TOP 5 empr_id, COUNT(ubpu_disponible)
+	FROM [TheBigBangQuery].[Empresa] 
+		JOIN [TheBigBangQuery].[Espectaculo] ON (espe_empresa = empr_id)
+		JOIN [TheBigBangQuery].Publicacion ON (publ_espectaculo = espe_id)
+		JOIN TheBigBangQuery.Ubicaciones_publicacion ON (ubpu_id_publicacion = publ_id)
+		JOIN [TheBigBangQuery].[GradoPublicaciones] ON (publ_grad_nivel = grad_id)
+	WHERE ubpu_disponible = 0 AND publ_fecha_hora_espectaculo > @fechaInicio AND publ_fecha_hora_espectaculo < @fechaFin
+		AND grad_id = @grado
+	GROUP BY empr_id, grad_comision
+	ORDER BY 2 DESC, grad_comision DESC
+
+	RETURN;
+END 
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getTop5ClientesPuntosVencidos]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getTop5ClientesPuntosVencidos];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getTop5ClientesPuntosVencidos](
+	@inicioTrimestre DATETIME,
+	@finTrimestre DATETIME
+)
+RETURNS @ret TABLE (
+	[clie_nombre] NVARCHAR(255),
+	[clie_puntosVencidos] NUMERIC(18,0)
+) AS BEGIN
+	
+	INSERT INTO @ret
+	SELECT TOP 5 CONCAT(clie_nombre , ' ', clie_apellido), clie_puntos
+	FROM TheBigBangQuery.Cliente
+	WHERE  clie_prox_vencimiento_puntos >= @inicioTrimestre AND clie_prox_vencimiento_puntos <= @finTrimestre
+	GROUP BY clie_nombre, clie_apellido, clie_puntos
+	ORDER BY clie_puntos DESC
+	RETURN;
+END
+GO 
+

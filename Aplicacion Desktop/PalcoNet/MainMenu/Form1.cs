@@ -150,7 +150,7 @@ namespace PalcoNet.MainMenu
                 case 13:
                     {
                         // LISTADO ESTADISTICO
-                        form = new Listado_Estadistico.Form1();
+                        form = new Listado_Estadistico.ListadoForm();
                         break;
                     }
                 default: {

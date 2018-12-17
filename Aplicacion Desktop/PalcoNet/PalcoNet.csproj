@@ -169,6 +169,7 @@
     <Compile Include="Dao\ComprasDao.cs" />
     <Compile Include="Dao\EmpresasDao.cs" />
     <Compile Include="Dao\EspectaculosDao.cs" />
+    <Compile Include="Dao\EstadisticasDao.cs" />
     <Compile Include="Dao\FacturasDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
@@ -275,11 +276,11 @@
     <Compile Include="Historial Cliente\SeleccionarClienteForm.Designer.cs">
       <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Listado Estadistico\Form1.cs">
+    <Compile Include="Listado Estadistico\ListadoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Listado Estadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Listado Estadistico\ListadoForm.Designer.cs">
+      <DependentUpon>ListadoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\Form1.cs">
       <SubType>Form</SubType>
@@ -299,6 +300,7 @@
     <Compile Include="Model\Direccion.cs" />
     <Compile Include="Model\Empresa.cs" />
     <Compile Include="Model\Espectaculo.cs" />
+    <Compile Include="Model\Estadistico.cs" />
     <Compile Include="Model\Factura.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\GradoPublicacion.cs" />
@@ -426,6 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\SeleccionarClienteForm.resx">
       <DependentUpon>SeleccionarClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listado Estadistico\ListadoForm.resx">
+      <DependentUpon>ListadoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

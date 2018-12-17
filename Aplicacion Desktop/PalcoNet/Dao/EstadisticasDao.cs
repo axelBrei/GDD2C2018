@@ -16,8 +16,8 @@ namespace PalcoNet.Dao
     {
         private string errorText = "No se han podido cargar las estadisticas";
 
-        public void getTop5EmpresasConMayorLocalidadesNoVendidas(DateTime fechaInicio, DateTime fechaFin, Action<List<Estadistico>> result) { 
-            string query = "SELECT TOP 5 empr_id, COUNT(ubpu_disponible) " +
+        public void getTop5EmpresasConMayorLocalidadesNoVendidas(DateTime fechaInicio, DateTime fechaFin, int gradoPubli, Action<List<Estadistico>> result) {
+            string query = "SELECT TOP 5 empr_razon_social, COUNT(ubpu_disponible) " +
 	                        "FROM [TheBigBangQuery].[Empresa] "  +
 	                            "JOIN [TheBigBangQuery].[Espectaculo] ON (espe_empresa = empr_id) " +
 	                            "JOIN [TheBigBangQuery].Publicacion ON (publ_espectaculo = espe_id) "  +
@@ -25,7 +25,7 @@ namespace PalcoNet.Dao
 	                            "JOIN [TheBigBangQuery].[GradoPublicaciones] ON (publ_grad_nivel = grad_id) " +
 	                        "WHERE ubpu_disponible = 0 AND publ_fecha_hora_espectaculo BETWEEN @fechaInicio AND  @fechaFin " +
 	                            "AND grad_id = @grado " +
-	                        "GROUP BY empr_id, grad_comision "+
+                            "GROUP BY empr_razon_social, grad_comision " +
 	                        "ORDER BY 2 DESC, grad_comision DESC";
             SqlDataReader reader = null;
             try
@@ -35,6 +35,7 @@ namespace PalcoNet.Dao
 
                 command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                 command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                command.Parameters.AddWithValue("@grado", gradoPubli);
 
                 reader = DatabaseConection.executeQuery(command);
                 if (reader.HasRows)
@@ -81,7 +82,7 @@ namespace PalcoNet.Dao
                     {
                         Estadistico est = new Estadistico();
                         est.nombre = reader.IsDBNull(0) ? null : reader.GetSqlString(0).ToString();
-                        est.cantidad = reader.IsDBNull(1) ? -1 : (int)reader.GetSqlInt32(1);
+                        est.cantidad = reader.IsDBNull(1) ? -1 : (int)reader.GetSqlDecimal(1);
                         list.Add(est);
                     }
                 }

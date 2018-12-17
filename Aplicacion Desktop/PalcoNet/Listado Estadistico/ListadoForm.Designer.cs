@@ -36,11 +36,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EstadisticaComboBox = new System.Windows.Forms.ComboBox();
+            this.gradoLabel = new System.Windows.Forms.Label();
+            this.gradoComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toplistView
             // 
+            this.toplistView.FullRowSelect = true;
+            this.toplistView.GridLines = true;
             this.toplistView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.toplistView.HideSelection = false;
             this.toplistView.Location = new System.Drawing.Point(12, 244);
@@ -52,6 +56,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.gradoLabel);
+            this.groupBox1.Controls.Add(this.gradoComboBox);
             this.groupBox1.Controls.Add(this.EstadisticaComboBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -85,7 +91,7 @@
             this.TrimestreComboBox.Location = new System.Drawing.Point(74, 83);
             this.TrimestreComboBox.Name = "TrimestreComboBox";
             this.TrimestreComboBox.Size = new System.Drawing.Size(97, 21);
-            this.TrimestreComboBox.TabIndex = 1;
+            this.TrimestreComboBox.TabIndex = 2;
             this.TrimestreComboBox.SelectedIndexChanged += new System.EventHandler(this.EstadisticaComboBox_SelectedIndexChanged);
             // 
             // label1
@@ -125,8 +131,26 @@
             this.EstadisticaComboBox.Location = new System.Drawing.Point(309, 39);
             this.EstadisticaComboBox.Name = "EstadisticaComboBox";
             this.EstadisticaComboBox.Size = new System.Drawing.Size(322, 21);
-            this.EstadisticaComboBox.TabIndex = 5;
+            this.EstadisticaComboBox.TabIndex = 1;
             this.EstadisticaComboBox.SelectedIndexChanged += new System.EventHandler(this.EstadisticaComboBox_SelectedIndexChanged);
+            // 
+            // gradoLabel
+            // 
+            this.gradoLabel.AutoSize = true;
+            this.gradoLabel.Location = new System.Drawing.Point(245, 86);
+            this.gradoLabel.Name = "gradoLabel";
+            this.gradoLabel.Size = new System.Drawing.Size(99, 13);
+            this.gradoLabel.TabIndex = 6;
+            this.gradoLabel.Text = "Grado de visibilidad";
+            // 
+            // gradoComboBox
+            // 
+            this.gradoComboBox.FormattingEnabled = true;
+            this.gradoComboBox.Location = new System.Drawing.Point(350, 83);
+            this.gradoComboBox.Name = "gradoComboBox";
+            this.gradoComboBox.Size = new System.Drawing.Size(121, 21);
+            this.gradoComboBox.TabIndex = 5;
+            this.gradoComboBox.SelectedIndexChanged += new System.EventHandler(this.EstadisticaComboBox_SelectedIndexChanged);
             // 
             // ListadoForm
             // 
@@ -155,5 +179,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox TrimestreComboBox;
         private System.Windows.Forms.ComboBox AñoComboBox;
+        private System.Windows.Forms.Label gradoLabel;
+        private System.Windows.Forms.ComboBox gradoComboBox;
     }
 }

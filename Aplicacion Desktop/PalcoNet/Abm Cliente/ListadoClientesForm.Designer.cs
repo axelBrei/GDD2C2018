@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.FiltroClientesTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.agregarClienteButton = new System.Windows.Forms.Button();
             this.ModificarClienteButton = new System.Windows.Forms.Button();
             this.DeshabilitarClienteButton = new System.Windows.Forms.Button();
@@ -47,47 +46,40 @@
             this.FiltroClientesTextBox.TabIndex = 1;
             this.FiltroClientesTextBox.TextChanged += new System.EventHandler(this.FiltroClientesTextBox_TextChanged);
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(622, 635);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Salir";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // agregarClienteButton
             // 
             this.agregarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.agregarClienteButton.BackColor = System.Drawing.Color.LightGray;
             this.agregarClienteButton.Location = new System.Drawing.Point(622, 113);
             this.agregarClienteButton.Name = "agregarClienteButton";
             this.agregarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.agregarClienteButton.TabIndex = 3;
             this.agregarClienteButton.Text = "Agregar";
-            this.agregarClienteButton.UseVisualStyleBackColor = true;
+            this.agregarClienteButton.UseVisualStyleBackColor = false;
             this.agregarClienteButton.Click += new System.EventHandler(this.agregarClienteButton_Click);
             // 
             // ModificarClienteButton
             // 
             this.ModificarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModificarClienteButton.BackColor = System.Drawing.Color.LightGray;
             this.ModificarClienteButton.Location = new System.Drawing.Point(622, 151);
             this.ModificarClienteButton.Name = "ModificarClienteButton";
             this.ModificarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.ModificarClienteButton.TabIndex = 4;
             this.ModificarClienteButton.Text = "Modificar";
-            this.ModificarClienteButton.UseVisualStyleBackColor = true;
+            this.ModificarClienteButton.UseVisualStyleBackColor = false;
             this.ModificarClienteButton.Click += new System.EventHandler(this.ModificarClienteButton_Click);
             // 
             // DeshabilitarClienteButton
             // 
             this.DeshabilitarClienteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeshabilitarClienteButton.BackColor = System.Drawing.Color.LightGray;
             this.DeshabilitarClienteButton.Location = new System.Drawing.Point(622, 191);
             this.DeshabilitarClienteButton.Name = "DeshabilitarClienteButton";
             this.DeshabilitarClienteButton.Size = new System.Drawing.Size(75, 23);
             this.DeshabilitarClienteButton.TabIndex = 5;
             this.DeshabilitarClienteButton.Text = "Deshabilitar";
-            this.DeshabilitarClienteButton.UseVisualStyleBackColor = true;
+            this.DeshabilitarClienteButton.UseVisualStyleBackColor = false;
             this.DeshabilitarClienteButton.Click += new System.EventHandler(this.DeshabilitarClienteButton_Click);
             // 
             // label1
@@ -129,7 +121,6 @@
             this.Controls.Add(this.DeshabilitarClienteButton);
             this.Controls.Add(this.ModificarClienteButton);
             this.Controls.Add(this.agregarClienteButton);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.FiltroClientesTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListadoClientesForm";
@@ -142,7 +133,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox FiltroClientesTextBox;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button agregarClienteButton;
         private System.Windows.Forms.Button ModificarClienteButton;
         private System.Windows.Forms.Button DeshabilitarClienteButton;

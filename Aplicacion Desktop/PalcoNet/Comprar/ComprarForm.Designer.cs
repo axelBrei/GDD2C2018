@@ -44,8 +44,9 @@
             // 
             // NextButton
             // 
-            this.NextButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.NextButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.NextButton.BackColor = System.Drawing.Color.LightGray;
+            this.NextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NextButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.NextButton.Location = new System.Drawing.Point(439, 455);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 23);
@@ -56,8 +57,9 @@
             // 
             // BackButton
             // 
-            this.BackButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.BackButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BackButton.BackColor = System.Drawing.Color.LightGray;
+            this.BackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BackButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.BackButton.Location = new System.Drawing.Point(358, 455);
             this.BackButton.Name = "BackButton";
             this.BackButton.Size = new System.Drawing.Size(75, 23);

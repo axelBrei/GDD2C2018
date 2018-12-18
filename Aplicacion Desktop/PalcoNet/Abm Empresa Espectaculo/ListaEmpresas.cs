@@ -77,12 +77,11 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         private void updateEmpresasAfterInsert() {
             try {
-                EmpresasDao empresasDao = new EmpresasDao();
-                empresasDao.getEmpresasMayoresAId(EmpresasListView.Items.Count - 1).ForEach(elem =>
+                new EmpresasDao().getEmpresas().ForEach(elem =>
                 {
                     EmpresasListView.Items.Add(getItemEmpresa(elem));
                     empresasList.Add(elem);
-                }); 
+                });
                 
             }catch(DataNotFoundException ex){
                 MessageBoxButtons alert = MessageBoxButtons.OK;
@@ -113,9 +112,19 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         private void ModificarButton_Click(object sender, EventArgs e)
         {
-            RegistrarUsuario form = new RegistrarUsuario(empresaSeleccionada);
-            form.onFinisUpdate += this.onFinishUpdateEmpresa;
-            form.Show(this);
+            //RegistrarUsuario form = new RegistrarUsuario(empresaSeleccionada);
+            //form.onFinisUpdate += this.onFinishUpdateEmpresa;
+            if (empresaSeleccionada != null)
+            {
+                AltaEmpresaForm form = new AltaEmpresaForm(empresaSeleccionada);
+                form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                form.onAccpetClientClick += this.onFinishUpdateEmpresa;
+                form.Show(this);
+                empresaSeleccionada = null;
+            }
+            else {
+                MessageBox.Show("Debe seleecionar una empresa para pdoer modificarla");
+            }
         }
         
         private void onFinishUpdateEmpresa(int id) {
@@ -171,9 +180,9 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
             {
                 TextBox filterInput = (TextBox)sender;
                 List<Empresa> empresas = this.empresasList.FindAll(elem =>
-                        elem.razonSocial.Contains(filterInput.Text) |
-                        elem.mailEmpresa.Contains(filterInput.Text) |
-                        elem.cuit.Equals(filterInput.Text)
+                        (elem.razonSocial != null && elem.razonSocial.ToLower().Contains(filterInput.Text.ToLower())) |
+                        (elem.mailEmpresa != null && elem.mailEmpresa.ToLower().Contains(filterInput.Text.ToLower())) |
+                        (elem.cuit != null && elem.cuit.ToLower().Equals(filterInput.Text.ToLower()))
                     );
 
                 this.EmpresasListView.BeginUpdate();

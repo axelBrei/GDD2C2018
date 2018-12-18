@@ -57,8 +57,8 @@
             // AgregarButton
             // 
             this.AgregarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AgregarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
-            this.AgregarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AgregarButton.BackColor = System.Drawing.Color.LightGray;
+            this.AgregarButton.ForeColor = System.Drawing.SystemColors.Desktop;
             this.AgregarButton.Location = new System.Drawing.Point(622, 111);
             this.AgregarButton.Name = "AgregarButton";
             this.AgregarButton.Size = new System.Drawing.Size(75, 23);
@@ -90,8 +90,8 @@
             // ModificarButton
             // 
             this.ModificarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ModificarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
-            this.ModificarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ModificarButton.BackColor = System.Drawing.Color.LightGray;
+            this.ModificarButton.ForeColor = System.Drawing.SystemColors.Desktop;
             this.ModificarButton.Location = new System.Drawing.Point(622, 151);
             this.ModificarButton.Name = "ModificarButton";
             this.ModificarButton.Size = new System.Drawing.Size(75, 23);
@@ -103,8 +103,8 @@
             // DeshabilitarButton
             // 
             this.DeshabilitarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeshabilitarButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(114)))), ((int)(((byte)(155)))));
-            this.DeshabilitarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DeshabilitarButton.BackColor = System.Drawing.Color.LightGray;
+            this.DeshabilitarButton.ForeColor = System.Drawing.SystemColors.Desktop;
             this.DeshabilitarButton.Location = new System.Drawing.Point(622, 193);
             this.DeshabilitarButton.Name = "DeshabilitarButton";
             this.DeshabilitarButton.Size = new System.Drawing.Size(75, 23);

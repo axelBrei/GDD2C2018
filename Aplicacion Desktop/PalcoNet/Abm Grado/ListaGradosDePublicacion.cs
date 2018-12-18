@@ -52,7 +52,8 @@ namespace PalcoNet.Abm_Grado
             if (index != -1){
                 GradosListView.BeginUpdate();
                     GradosListView.Items.RemoveAt(index);
-                    this.GradosListView.Items.Insert(index, getItemFromGrado(grado));    
+                    this.GradosListView.Items.Insert(index, getItemFromGrado(grado));
+                    this.GradosListView.Sort();
                 GradosListView.EndUpdate();
 
                 dao.actualizarGradoDePublicacion(grado);

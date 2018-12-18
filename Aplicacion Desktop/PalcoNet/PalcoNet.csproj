@@ -47,11 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Cliente\AltaClienteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\AltaClienteForm.Designer.cs">
+      <DependentUpon>AltaClienteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Cliente\ListadoClientesForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Cliente\ListadoClientesForm.Designer.cs">
       <DependentUpon>ListadoClientesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Empresa Espectaculo\AltaEmpresaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Empresa Espectaculo\AltaEmpresaForm.Designer.cs">
+      <DependentUpon>AltaEmpresaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Empresa Espectaculo\ListaEmpresas.cs">
       <SubType>Form</SubType>
@@ -330,8 +342,15 @@
     </Compile>
     <Compile Include="UserData\UserData.cs" />
     <Compile Include="Validators\CuilValidator.cs" />
+    <Compile Include="Validators\Validator.cs" />
+    <EmbeddedResource Include="Abm Cliente\AltaClienteForm.resx">
+      <DependentUpon>AltaClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Cliente\ListadoClientesForm.resx">
       <DependentUpon>ListadoClientesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Empresa Espectaculo\AltaEmpresaForm.resx">
+      <DependentUpon>AltaEmpresaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Empresa Espectaculo\ListaEmpresas.resx">
       <DependentUpon>ListaEmpresas.cs</DependentUpon>

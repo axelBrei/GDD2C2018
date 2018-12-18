@@ -41,11 +41,12 @@ namespace PalcoNet.MainMenu
                     Button button = new Button();
                     button.Text = fun.descripcion;
                     button.Click += (se, ev) => this.getClickHandler(se, ev, fun.id);
-                    button.Size = new Size(200, 30);
-                    button.Location = new Point(0, cantBotones * 35);
+                    button.Size = new Size(200, 50);
+                    button.Location = new Point(0, (cantBotones - 1) * 45);
                     button.FlatStyle = FlatStyle.Flat;
                     button.FlatAppearance.BorderSize = 0;
                     button.ForeColor = Color.White;
+                    button.Font = new Font(FontFamily.GenericSansSerif, 10.0f, FontStyle.Bold);
                     this.panel1.Controls.Add(button);
                 }
             }
@@ -206,6 +207,13 @@ namespace PalcoNet.MainMenu
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void CerrarSesionButton_Click(object sender, EventArgs e)
+        {
+            PalcoNet.Form1 loginForm = new PalcoNet.Form1();
+            loginForm.Show();
+            this.Close();
         }
     }
 }

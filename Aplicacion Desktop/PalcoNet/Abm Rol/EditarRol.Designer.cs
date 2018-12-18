@@ -115,7 +115,6 @@
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.RolNombre);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EditarRol";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

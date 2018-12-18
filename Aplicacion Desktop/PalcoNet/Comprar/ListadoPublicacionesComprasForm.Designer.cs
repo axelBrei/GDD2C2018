@@ -66,11 +66,12 @@
             // 
             // FiltrosButton
             // 
-            this.FiltrosButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.FiltrosButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.FiltrosButton.Location = new System.Drawing.Point(604, 62);
+            this.FiltrosButton.BackColor = System.Drawing.Color.LightGray;
+            this.FiltrosButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiltrosButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FiltrosButton.Location = new System.Drawing.Point(595, 39);
             this.FiltrosButton.Name = "FiltrosButton";
-            this.FiltrosButton.Size = new System.Drawing.Size(75, 23);
+            this.FiltrosButton.Size = new System.Drawing.Size(89, 23);
             this.FiltrosButton.TabIndex = 2;
             this.FiltrosButton.Text = "Filtros";
             this.FiltrosButton.UseVisualStyleBackColor = false;
@@ -78,11 +79,12 @@
             // 
             // DetallesButton
             // 
-            this.DetallesButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.DetallesButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.DetallesButton.Location = new System.Drawing.Point(604, 128);
+            this.DetallesButton.BackColor = System.Drawing.Color.LightGray;
+            this.DetallesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DetallesButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.DetallesButton.Location = new System.Drawing.Point(595, 105);
             this.DetallesButton.Name = "DetallesButton";
-            this.DetallesButton.Size = new System.Drawing.Size(75, 41);
+            this.DetallesButton.Size = new System.Drawing.Size(89, 41);
             this.DetallesButton.TabIndex = 3;
             this.DetallesButton.Text = "Seleccionar Publicacion";
             this.DetallesButton.UseVisualStyleBackColor = false;
@@ -90,12 +92,13 @@
             // 
             // LimpiarFiltrosButton
             // 
-            this.LimpiarFiltrosButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.LimpiarFiltrosButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.LimpiarFiltrosButton.Location = new System.Drawing.Point(604, 95);
+            this.LimpiarFiltrosButton.BackColor = System.Drawing.Color.LightGray;
+            this.LimpiarFiltrosButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LimpiarFiltrosButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LimpiarFiltrosButton.Location = new System.Drawing.Point(595, 72);
             this.LimpiarFiltrosButton.Margin = new System.Windows.Forms.Padding(7);
             this.LimpiarFiltrosButton.Name = "LimpiarFiltrosButton";
-            this.LimpiarFiltrosButton.Size = new System.Drawing.Size(75, 23);
+            this.LimpiarFiltrosButton.Size = new System.Drawing.Size(89, 23);
             this.LimpiarFiltrosButton.TabIndex = 4;
             this.LimpiarFiltrosButton.Text = "LimpiarFiltros";
             this.LimpiarFiltrosButton.UseVisualStyleBackColor = false;

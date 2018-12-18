@@ -39,15 +39,16 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 13);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(23, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.Size = new System.Drawing.Size(137, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Nombre del nuevo rol";
             // 
             // nombreRol
             // 
-            this.nombreRol.Location = new System.Drawing.Point(26, 29);
+            this.nombreRol.Location = new System.Drawing.Point(26, 46);
             this.nombreRol.Name = "nombreRol";
             this.nombreRol.Size = new System.Drawing.Size(310, 20);
             this.nombreRol.TabIndex = 1;
@@ -76,27 +77,37 @@
             // 
             // CancelarButton
             // 
+            this.CancelarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelarButton.BackColor = System.Drawing.Color.RosyBrown;
+            this.CancelarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CancelarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.CancelarButton.Location = new System.Drawing.Point(204, 408);
             this.CancelarButton.Name = "CancelarButton";
             this.CancelarButton.Size = new System.Drawing.Size(75, 23);
             this.CancelarButton.TabIndex = 4;
             this.CancelarButton.Text = "Cancelar";
-            this.CancelarButton.UseVisualStyleBackColor = true;
+            this.CancelarButton.UseVisualStyleBackColor = false;
+            this.CancelarButton.Click += new System.EventHandler(this.CancelarButton_Click);
             // 
             // AceptarButton
             // 
+            this.AceptarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AceptarButton.BackColor = System.Drawing.Color.RosyBrown;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.AceptarButton.Location = new System.Drawing.Point(302, 408);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
             this.AceptarButton.TabIndex = 5;
             this.AceptarButton.Text = "Aceptar";
-            this.AceptarButton.UseVisualStyleBackColor = true;
+            this.AceptarButton.UseVisualStyleBackColor = false;
             this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // NuevRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(389, 443);
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.CancelarButton);
@@ -104,7 +115,11 @@
             this.Controls.Add(this.funcionalidadesCheckboxList);
             this.Controls.Add(this.nombreRol);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "NuevRol";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "NuevRol";
             this.ResumeLayout(false);
             this.PerformLayout();

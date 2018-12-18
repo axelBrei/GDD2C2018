@@ -31,7 +31,6 @@
             this.AgregarButton = new System.Windows.Forms.Button();
             this.EditarButton = new System.Windows.Forms.Button();
             this.EliminarButton = new System.Windows.Forms.Button();
-            this.SalirButton = new System.Windows.Forms.Button();
             this.listaRoles = new System.Windows.Forms.ListView();
             this.Rol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -81,20 +80,6 @@
             this.EliminarButton.UseVisualStyleBackColor = false;
             this.EliminarButton.Click += new System.EventHandler(this.EliminarButton_Click);
             // 
-            // SalirButton
-            // 
-            this.SalirButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.SalirButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.SalirButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SalirButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.SalirButton.Location = new System.Drawing.Point(12, 638);
-            this.SalirButton.Name = "SalirButton";
-            this.SalirButton.Size = new System.Drawing.Size(75, 23);
-            this.SalirButton.TabIndex = 7;
-            this.SalirButton.Text = "Salir";
-            this.SalirButton.UseVisualStyleBackColor = false;
-            this.SalirButton.Click += new System.EventHandler(this.SalirButton_Click);
-            // 
             // listaRoles
             // 
             this.listaRoles.Alignment = System.Windows.Forms.ListViewAlignment.Left;
@@ -103,16 +88,21 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listaRoles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Rol});
+            this.listaRoles.FullRowSelect = true;
+            this.listaRoles.GridLines = true;
+            this.listaRoles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listaRoles.Location = new System.Drawing.Point(12, 70);
             this.listaRoles.Name = "listaRoles";
             this.listaRoles.Size = new System.Drawing.Size(550, 420);
             this.listaRoles.TabIndex = 8;
             this.listaRoles.UseCompatibleStateImageBehavior = false;
+            this.listaRoles.View = System.Windows.Forms.View.Details;
             this.listaRoles.SelectedIndexChanged += new System.EventHandler(this.listaRoles_SelectedIndexChanged);
             // 
             // Rol
             // 
-            this.Rol.Width = 150;
+            this.Rol.Text = "Rol";
+            this.Rol.Width = 545;
             // 
             // Form1
             // 
@@ -120,7 +110,6 @@
             this.ClientSize = new System.Drawing.Size(709, 689);
             this.ControlBox = false;
             this.Controls.Add(this.listaRoles);
-            this.Controls.Add(this.SalirButton);
             this.Controls.Add(this.EliminarButton);
             this.Controls.Add(this.EditarButton);
             this.Controls.Add(this.AgregarButton);
@@ -136,7 +125,6 @@
         private System.Windows.Forms.Button AgregarButton;
         private System.Windows.Forms.Button EditarButton;
         private System.Windows.Forms.Button EliminarButton;
-        private System.Windows.Forms.Button SalirButton;
         private System.Windows.Forms.ListView listaRoles;
         private System.Windows.Forms.ColumnHeader Rol;
     }

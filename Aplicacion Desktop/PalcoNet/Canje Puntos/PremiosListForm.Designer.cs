@@ -47,8 +47,9 @@
             // 
             // CanjearButton
             // 
-            this.CanjearButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.CanjearButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.CanjearButton.BackColor = System.Drawing.Color.LightGray;
+            this.CanjearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CanjearButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.CanjearButton.Location = new System.Drawing.Point(568, 34);
             this.CanjearButton.Name = "CanjearButton";
             this.CanjearButton.Size = new System.Drawing.Size(113, 23);

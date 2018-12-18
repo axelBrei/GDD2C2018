@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Dao;
+using PalcoNet.Validators;
 
 
 namespace PalcoNet.Registro_de_Usuario
@@ -28,6 +29,8 @@ namespace PalcoNet.Registro_de_Usuario
 
         public delegate void GetDirectioonHandler(Direccion dir);
         public event GetDirectioonHandler getDireccion;
+
+        private readonly ErrorProvider errorProveide = new ErrorProvider();
 
         public static string TIPO_CLIENTE = "CLIENTE";
         public static string TIPO_EMPRESA = "EMPRESA";
@@ -137,12 +140,40 @@ namespace PalcoNet.Registro_de_Usuario
 
         private void CancelarButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         private void AlturaDireccion_TextChanged(object sender, EventArgs e)
         {
             altura = ((TextBox)sender).Text;
+        }
+
+        // ----------------- VALIDACIONES DEL FORMULARIO --------------------------------
+
+        private void AlturaDireccion_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(AlturaDireccion.Text.Trim())) {
+                errorProveide.SetError(AlturaDireccion, "La altura debe ser un valor numerico unicamente");
+                e.Cancel = true;
+            }
+        }
+
+        private void CodPostalDireccion_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(CodPostalDireccion.Text.Trim()))
+            {
+                errorProveide.SetError(CodPostalDireccion, "La altura debe ser un valor numerico unicamente");
+                e.Cancel = true;
+            }
+        }
+
+        private void DirPiso_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(DirPiso.Text.Trim()))
+            {
+                errorProveide.SetError(DirPiso, "La altura debe ser un valor numerico unicamente");
+                e.Cancel = true;
+            }
         }
     }
 }

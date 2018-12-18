@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.MainGroupBox = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.RubrosRadioButton = new System.Windows.Forms.RadioButton();
+            this.FechasRadioButton = new System.Windows.Forms.RadioButton();
+            this.DescRadioButton = new System.Windows.Forms.RadioButton();
+            this.AceptarButton = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.RubrosListView = new System.Windows.Forms.CheckedListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.FechasRadioButton = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.FechaIDatePicker = new System.Windows.Forms.DateTimePicker();
             this.FechaFDatePicker = new System.Windows.Forms.DateTimePicker();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.DescRadioButton = new System.Windows.Forms.RadioButton();
             this.DescripcionFilterTextBox = new System.Windows.Forms.TextBox();
-            this.AceptarButton = new System.Windows.Forms.Button();
             this.MainGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -67,16 +67,6 @@
             this.MainGroupBox.TabIndex = 0;
             this.MainGroupBox.TabStop = false;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.RubrosListView);
-            this.groupBox3.Location = new System.Drawing.Point(45, 222);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(332, 217);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Categoria";
-            // 
             // RubrosRadioButton
             // 
             this.RubrosRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -90,6 +80,57 @@
             this.RubrosRadioButton.TabStop = true;
             this.RubrosRadioButton.UseVisualStyleBackColor = true;
             this.RubrosRadioButton.CheckedChanged += new System.EventHandler(this.RubrosRadioButton_CheckedChanged);
+            // 
+            // FechasRadioButton
+            // 
+            this.FechasRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FechasRadioButton.AutoSize = true;
+            this.FechasRadioButton.Location = new System.Drawing.Point(12, 157);
+            this.FechasRadioButton.Name = "FechasRadioButton";
+            this.FechasRadioButton.Size = new System.Drawing.Size(14, 13);
+            this.FechasRadioButton.TabIndex = 2;
+            this.FechasRadioButton.TabStop = true;
+            this.FechasRadioButton.UseVisualStyleBackColor = true;
+            this.FechasRadioButton.CheckedChanged += new System.EventHandler(this.FechasRadioButton_CheckedChanged);
+            // 
+            // DescRadioButton
+            // 
+            this.DescRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DescRadioButton.AutoSize = true;
+            this.DescRadioButton.Location = new System.Drawing.Point(12, 60);
+            this.DescRadioButton.Name = "DescRadioButton";
+            this.DescRadioButton.Size = new System.Drawing.Size(14, 13);
+            this.DescRadioButton.TabIndex = 1;
+            this.DescRadioButton.TabStop = true;
+            this.DescRadioButton.UseVisualStyleBackColor = true;
+            this.DescRadioButton.CheckedChanged += new System.EventHandler(this.DescRadioButton_CheckedChanged);
+            // 
+            // AceptarButton
+            // 
+            this.AceptarButton.BackColor = System.Drawing.Color.LightGray;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.AceptarButton.Location = new System.Drawing.Point(302, 462);
+            this.AceptarButton.Name = "AceptarButton";
+            this.AceptarButton.Size = new System.Drawing.Size(75, 23);
+            this.AceptarButton.TabIndex = 5;
+            this.AceptarButton.Text = "Aceptar";
+            this.AceptarButton.UseVisualStyleBackColor = false;
+            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.RubrosListView);
+            this.groupBox3.Location = new System.Drawing.Point(45, 222);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(332, 217);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Categoria";
             // 
             // RubrosListView
             // 
@@ -115,20 +156,6 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Fecha";
-            // 
-            // FechasRadioButton
-            // 
-            this.FechasRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FechasRadioButton.AutoSize = true;
-            this.FechasRadioButton.Location = new System.Drawing.Point(12, 157);
-            this.FechasRadioButton.Name = "FechasRadioButton";
-            this.FechasRadioButton.Size = new System.Drawing.Size(14, 13);
-            this.FechasRadioButton.TabIndex = 2;
-            this.FechasRadioButton.TabStop = true;
-            this.FechasRadioButton.UseVisualStyleBackColor = true;
-            this.FechasRadioButton.CheckedChanged += new System.EventHandler(this.FechasRadioButton_CheckedChanged);
             // 
             // label2
             // 
@@ -174,20 +201,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Descripcion";
             // 
-            // DescRadioButton
-            // 
-            this.DescRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescRadioButton.AutoSize = true;
-            this.DescRadioButton.Location = new System.Drawing.Point(12, 60);
-            this.DescRadioButton.Name = "DescRadioButton";
-            this.DescRadioButton.Size = new System.Drawing.Size(14, 13);
-            this.DescRadioButton.TabIndex = 1;
-            this.DescRadioButton.TabStop = true;
-            this.DescRadioButton.UseVisualStyleBackColor = true;
-            this.DescRadioButton.CheckedChanged += new System.EventHandler(this.DescRadioButton_CheckedChanged);
-            // 
             // DescripcionFilterTextBox
             // 
             this.DescripcionFilterTextBox.Location = new System.Drawing.Point(10, 23);
@@ -195,18 +208,6 @@
             this.DescripcionFilterTextBox.Name = "DescripcionFilterTextBox";
             this.DescripcionFilterTextBox.Size = new System.Drawing.Size(312, 20);
             this.DescripcionFilterTextBox.TabIndex = 0;
-            // 
-            // AceptarButton
-            // 
-            this.AceptarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.AceptarButton.Location = new System.Drawing.Point(302, 462);
-            this.AceptarButton.Name = "AceptarButton";
-            this.AceptarButton.Size = new System.Drawing.Size(75, 23);
-            this.AceptarButton.TabIndex = 5;
-            this.AceptarButton.Text = "Aceptar";
-            this.AceptarButton.UseVisualStyleBackColor = false;
-            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // FiltrosForm
             // 

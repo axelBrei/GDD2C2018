@@ -55,15 +55,25 @@ namespace PalcoNet.Abm_Rol
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-            Rol rol = new Rol();
-            rol.nombre = nombreNuevoRol;
-            rol.funcionalidades = funcionalidadesDelRol;
+            if (funcionalidadesDelRol.Count != 0)
+            {
+                Rol rol = new Rol();
+                rol.nombre = nombreNuevoRol;
+                rol.funcionalidades = funcionalidadesDelRol;
 
-            RolesDao rolesDao = new RolesDao();
-            rolesDao.insertarNuevoRol(rol);
+                RolesDao rolesDao = new RolesDao();
+                rolesDao.insertarNuevoRol(rol);
 
-            this.nuevoRol(rol);
+                this.nuevoRol(rol);
 
+                this.Close();
+            }
+            else
+                MessageBox.Show("Debe seleecionar al menos una funcionalidad para crear un rol.");
+        }
+
+        private void CancelarButton_Click(object sender, EventArgs e)
+        {
             this.Close();
         }
 

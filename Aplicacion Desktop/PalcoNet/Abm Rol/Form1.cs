@@ -18,6 +18,7 @@ namespace PalcoNet.Abm_Rol
     {
         private List<Rol> roles = new List<Rol>();
         private Rol rolSeleccionado = null;
+        private int indexSeleccionado;
 
         public Form1()
         {
@@ -26,8 +27,6 @@ namespace PalcoNet.Abm_Rol
             RolesDao rolesDao = new RolesDao();
             roles = rolesDao.getRoles();
 
-            listaRoles.View = View.Details;
-            listaRoles.HeaderStyle = ColumnHeaderStyle.None;
 
             foreach (Rol rol in roles) {
                 ListViewItem item = new ListViewItem(rol.nombre);
@@ -44,9 +43,15 @@ namespace PalcoNet.Abm_Rol
 
         private void EditarButton_Click(object sender, EventArgs e)
         {
-            EditarRol form = new EditarRol(rolSeleccionado);
-            form.updateRol += this.updateRol;
-            form.ShowDialog();
+            if (rolSeleccionado != null)
+            {
+                EditarRol form = new EditarRol(rolSeleccionado);
+                form.updateRol += this.updateRol;
+                form.Show(this);
+            }
+            else {
+                MessageBox.Show("Debe seleccionar un rol para poder modificarlo");
+            }
         }
 
         private void listaRoles_SelectedIndexChanged(object sender, EventArgs e)
@@ -65,6 +70,7 @@ namespace PalcoNet.Abm_Rol
                 if (rol.bajaLogica != null)
                 {
                     rolSeleccionado = rol;
+                    indexSeleccionado = listBox.SelectedIndices[0];
                 }
                 else
                 {
@@ -80,7 +86,24 @@ namespace PalcoNet.Abm_Rol
         public void updateRol(Rol rol)
         {
             RolesDao rolesDao = new RolesDao();
-            roles.Insert(roles.IndexOf(rol), rolesDao.getRolPorId(rol.id));
+            roles.Remove(rol);
+            roles.Insert(indexSeleccionado, rolesDao.getRolPorId(rol.id));
+            
+            listaRoles.BeginUpdate();
+                listaRoles.Items.Clear();
+                roles.ForEach(elem => {
+                    ListViewItem item = new ListViewItem(elem.nombre);
+                    if (elem.bajaLogica == DateTime.Parse("01/01/1900 0:00:00"))
+                    {
+                        item.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        item.ForeColor = Color.Gray;
+                    }
+                    this.listaRoles.Items.Add(item);
+                });
+            listaRoles.EndUpdate();
         }
 
         private void SalirButton_Click(object sender, EventArgs e)
@@ -92,7 +115,7 @@ namespace PalcoNet.Abm_Rol
         {
             NuevRol nuevoRolForm = new NuevRol();
             nuevoRolForm.nuevoRol += this.añadirNuevoRol;
-            nuevoRolForm.ShowDialog();
+            nuevoRolForm.Show(this);
         }
 
         private void añadirNuevoRol(Rol rol){

@@ -79,6 +79,7 @@
             this.DirPiso.Size = new System.Drawing.Size(193, 20);
             this.DirPiso.TabIndex = 3;
             this.DirPiso.TextChanged += new System.EventHandler(this.DirPiso_TextChanged);
+            this.DirPiso.Validating += new System.ComponentModel.CancelEventHandler(this.DirPiso_Validating);
             // 
             // label2
             // 
@@ -171,6 +172,7 @@
             this.CodPostalDireccion.Size = new System.Drawing.Size(157, 20);
             this.CodPostalDireccion.TabIndex = 11;
             this.CodPostalDireccion.TextChanged += new System.EventHandler(this.textBox6_TextChanged);
+            this.CodPostalDireccion.Validating += new System.ComponentModel.CancelEventHandler(this.CodPostalDireccion_Validating);
             // 
             // label6
             // 
@@ -216,6 +218,7 @@
             this.AlturaDireccion.Size = new System.Drawing.Size(193, 20);
             this.AlturaDireccion.TabIndex = 15;
             this.AlturaDireccion.TextChanged += new System.EventHandler(this.AlturaDireccion_TextChanged);
+            this.AlturaDireccion.Validating += new System.ComponentModel.CancelEventHandler(this.AlturaDireccion_Validating);
             // 
             // label5
             // 

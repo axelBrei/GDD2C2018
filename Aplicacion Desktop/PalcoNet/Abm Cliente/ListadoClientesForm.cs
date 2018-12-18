@@ -52,10 +52,10 @@ namespace PalcoNet.Abm_Cliente
             {
                 TextBox filterInput = (TextBox)sender;
                 List<Cliente> clientes = this.listaClientes.FindAll(elem =>
-                        elem.nombre.Contains(filterInput.Text) |
-                        elem.apellido.Contains(filterInput.Text) |
-                        elem.documento.Equals(filterInput.Text) |
-                        elem.mail.Contains(filterInput.Text)
+                        elem.nombre.ToLower().Contains(filterInput.Text.ToLower()) |
+                        elem.apellido.ToLower().Contains(filterInput.Text.ToLower()) |
+                        elem.documento.ToLower().Equals(filterInput.Text.ToLower()) |
+                        elem.mail.ToLower().Contains(filterInput.Text.ToLower())
                     );
 
                 this.ListaCliente.BeginUpdate();
@@ -112,9 +112,27 @@ namespace PalcoNet.Abm_Cliente
 
         private void ModificarClienteButton_Click(object sender, EventArgs e)
         {
-            RegistrarUsuario form = new RegistrarUsuario(clienteSeleccionado);
-            form.onFinisUpdate += onFinishUpdateClient;
-            form.Show(this);
+            if (clienteSeleccionado != null)
+            {
+                AltaClienteForm form = new AltaClienteForm(clienteSeleccionado);
+                form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                form.onAccpetClientClick += this.onFinishUpdateClient;
+                form.Show(this);
+                clienteSeleccionado = null;
+            }
+            else {
+                MessageBox.Show("Debe seleccionar un cliente para poder modificarlo.");
+            }
+        }
+
+        private void onFormCloseNewClient(object sender, FormClosedEventArgs eve) {
+            ListaCliente.BeginUpdate();
+                ClientesDao clieDao = new ClientesDao();
+                clieDao.getClientesMayoresAId(((Cliente)ListaCliente.Items[ListaCliente.Items.Count].Tag).id).ForEach(elem =>
+                {
+                    ListaCliente.Items.Add(getItemFromClient(elem));
+                });
+            ListaCliente.EndUpdate();
         }
 
         private void ListaCliente_SelectedIndexChanged(object sender, EventArgs e)
@@ -144,6 +162,11 @@ namespace PalcoNet.Abm_Cliente
             catch (Exception ex) {
                 Console.Write(ex.Message);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

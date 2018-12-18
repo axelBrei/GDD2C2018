@@ -57,23 +57,29 @@
             // AceptarButton
             // 
             this.AceptarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AceptarButton.BackColor = System.Drawing.Color.RosyBrown;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.AceptarButton.Location = new System.Drawing.Point(381, 95);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
             this.AceptarButton.TabIndex = 2;
             this.AceptarButton.Text = "Aceptar";
-            this.AceptarButton.UseVisualStyleBackColor = true;
+            this.AceptarButton.UseVisualStyleBackColor = false;
             this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // CancelarButton
             // 
             this.CancelarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelarButton.BackColor = System.Drawing.Color.RosyBrown;
+            this.CancelarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CancelarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.CancelarButton.Location = new System.Drawing.Point(300, 95);
             this.CancelarButton.Name = "CancelarButton";
             this.CancelarButton.Size = new System.Drawing.Size(75, 23);
             this.CancelarButton.TabIndex = 3;
             this.CancelarButton.Text = "Cancelar";
-            this.CancelarButton.UseVisualStyleBackColor = true;
+            this.CancelarButton.UseVisualStyleBackColor = false;
             this.CancelarButton.Click += new System.EventHandler(this.CancelarButton_Click);
             // 
             // ComisionNumericDropDown
@@ -108,6 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(468, 130);
             this.Controls.Add(this.Title);
             this.Controls.Add(this.label2);
@@ -121,7 +128,8 @@
             this.MinimizeBox = false;
             this.Name = "AgregarGradoForm";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.ComisionNumericDropDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

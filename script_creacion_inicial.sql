@@ -492,8 +492,13 @@ BEGIN TRANSACTION
 		empr_numero_calle,
 		empr_piso,
 		empr_dpto,
-		empr_codigo_postal)
-	SELECT DISTINCT Espec_Empresa_Razon_Social, Espec_Empresa_Cuit, Espec_Empresa_Fecha_Creacion, Espec_Empresa_Mail, Espec_Empresa_Dom_Calle, Espec_Empresa_Nro_Calle, Espec_Empresa_Piso,Espec_Empresa_Depto,Espec_Empresa_Cod_Postal
+		empr_codigo_postal,
+		empr_telefono,
+		empr_localidad,
+		empr_ciudad
+		)
+	SELECT DISTINCT Espec_Empresa_Razon_Social, Espec_Empresa_Cuit, Espec_Empresa_Fecha_Creacion, Espec_Empresa_Mail, Espec_Empresa_Dom_Calle, Espec_Empresa_Nro_Calle, 
+			Espec_Empresa_Piso,Espec_Empresa_Depto,Espec_Empresa_Cod_Postal, 'Sin Especificar', 'Sin Especificar','Sin Especificar'
 	FROM [gd_esquema].[Maestra]
 	WHERE Espec_Empresa_Cuit IS NOT NULL
 
@@ -511,9 +516,13 @@ BEGIN TRANSACTION
 		[clie_codigo_postal],
 		[clie_tipo_documento],
 		[clie_f_creacion],
-		[clie_puntos]
+		[clie_puntos],
+		[clie_locacalidad],
+		[clie_telefono],
+		[clie_cuil]
 	)
-	SELECT M.Cli_Dni,Cli_Apeliido, M.Cli_Nombre,M.Cli_Fecha_Nac, M.Cli_Mail,Cli_Dom_Calle, M.Cli_Nro_Calle,M.Cli_Piso,M.Cli_Depto,M.Cli_Cod_Postal,D.tipo_id, GETDATE(), 0
+	SELECT M.Cli_Dni,Cli_Apeliido, M.Cli_Nombre,M.Cli_Fecha_Nac, M.Cli_Mail,Cli_Dom_Calle, M.Cli_Nro_Calle,M.Cli_Piso,M.Cli_Depto,M.Cli_Cod_Postal,D.tipo_id, GETDATE(), 0, 
+		'Sin Especificar', 'Sin Especificar','Sin Especificar'
 	FROM [gd_esquema].[Maestra] M, [TheBigBangQuery].[Tipo_Documento] D
 	WHERE Cli_Dni IS NOT NULL AND D.tipo_descripcion = 'DNI'
 	GROUP BY M.Cli_Dni,Cli_Apeliido, M.Cli_Nombre,M.Cli_Fecha_Nac, M.Cli_Mail,Cli_Dom_Calle, M.Cli_Nro_Calle,M.Cli_Piso,M.Cli_Depto,M.Cli_Cod_Postal,D.tipo_id
@@ -525,10 +534,11 @@ BEGIN TRANSACTION
 		espe_id,
 		espe_descripcion,
 		espe_rubro,
+		espe_direccion,
 		espe_empresa)
-	SELECT DISTINCT m.Espectaculo_Cod, m.Espectaculo_Descripcion,  CASE WHEN m.Espectaculo_Rubro_Descripcion = '' THEN 1 
+	SELECT DISTINCT m.Espectaculo_Cod, m.Espectaculo_Descripcion, CASE WHEN m.Espectaculo_Rubro_Descripcion = '' THEN 1 
 																		WHEN m.Espectaculo_Rubro_Descripcion = NULL THEN 1
-																		ELSE r.rub_id END, e.empr_id
+																		ELSE r.rub_id END, 'Sin Especificar',e.empr_id
 	FROM [gd_esquema].[Maestra] m 
 		LEFT JOIN [TheBigBangQuery].[Empresa] e ON (
 			e.empr_cuit = m.Espec_Empresa_Cuit AND 

@@ -44,6 +44,7 @@
             this.ModificarRolesButton = new System.Windows.Forms.Button();
             this.UsuarioLabel = new System.Windows.Forms.Label();
             this.IdLabel = new System.Windows.Forms.Label();
+            this.VolverButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -221,12 +222,25 @@
             this.IdLabel.Size = new System.Drawing.Size(0, 16);
             this.IdLabel.TabIndex = 5;
             // 
+            // VolverButton
+            // 
+            this.VolverButton.BackColor = System.Drawing.Color.LightGray;
+            this.VolverButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VolverButton.Location = new System.Drawing.Point(538, 404);
+            this.VolverButton.Name = "VolverButton";
+            this.VolverButton.Size = new System.Drawing.Size(75, 23);
+            this.VolverButton.TabIndex = 7;
+            this.VolverButton.Text = "Salir";
+            this.VolverButton.UseVisualStyleBackColor = false;
+            this.VolverButton.Click += new System.EventHandler(this.button2_Click);
+            // 
             // UserDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(625, 439);
+            this.Controls.Add(this.VolverButton);
             this.Controls.Add(this.ModificarRolesButton);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.groupBox2);
@@ -264,5 +278,6 @@
         private System.Windows.Forms.Button ModificarRolesButton;
         private System.Windows.Forms.Label UsuarioLabel;
         private System.Windows.Forms.Label IdLabel;
+        private System.Windows.Forms.Button VolverButton;
     }
 }

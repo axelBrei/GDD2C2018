@@ -66,5 +66,42 @@ namespace PalcoNet.Usuarios
                 
             }
         }
+
+        private void onFormClosing() { }
+
+        private void DeshabilitarButton_Click(object sender, EventArgs e)
+        {
+            UsuariosDao userDao = new UsuariosDao();
+            try
+            {
+                Usuario user = (Usuario)this.UsuariosListView.SelectedItems[0].Tag;
+                bool habilitado = user.habilitado == 1;
+                userDao.habilitarDeshabilitarUsuario(user.id, habilitado);
+                UsuariosListView.Items.Clear();
+                userDao.getUsuarios(
+                result =>
+                {
+                    result.ForEach(elem =>
+                    {
+                        this.UsuariosListView.Items.Add(getItemDelUsuario(elem));
+                    });
+                }
+            );
+            }
+            catch (Exception ex) { }
+        }
+
+        private void UsuariosListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Usuario user = (Usuario)this.UsuariosListView.SelectedItems[0].Tag;
+                if (user.habilitado == 1)
+                    DeshabilitarButton.Text = "Deshabilitar";
+                else
+                    DeshabilitarButton.Text = "Habilidar";
+            }
+            catch (Exception ex) { }
+        }
     }
 }

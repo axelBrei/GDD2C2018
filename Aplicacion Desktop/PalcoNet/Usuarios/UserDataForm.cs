@@ -43,6 +43,7 @@ namespace PalcoNet.Usuarios
                 RolesListView.Enabled = false;
                 ModificarRolesButton.Visible = false;
                 RolesListView.BackColor = Color.White;
+                VolverButton.Visible = false;
             }
         }
 
@@ -153,6 +154,11 @@ namespace PalcoNet.Usuarios
             if (NuevaContraseñaTextBox.Text.Length == 0) req += " Nueva contraseña \n";
 
             return req;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

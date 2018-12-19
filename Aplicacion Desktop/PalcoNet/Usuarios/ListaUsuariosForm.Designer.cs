@@ -45,6 +45,7 @@
             this.UsuariosListView.TabIndex = 0;
             this.UsuariosListView.UseCompatibleStateImageBehavior = false;
             this.UsuariosListView.View = System.Windows.Forms.View.Details;
+            this.UsuariosListView.SelectedIndexChanged += new System.EventHandler(this.UsuariosListView_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -78,6 +79,7 @@
             this.DeshabilitarButton.TabIndex = 4;
             this.DeshabilitarButton.Text = "Deshabilitar";
             this.DeshabilitarButton.UseVisualStyleBackColor = false;
+            this.DeshabilitarButton.Click += new System.EventHandler(this.DeshabilitarButton_Click);
             // 
             // ListaUsuariosForm
             // 

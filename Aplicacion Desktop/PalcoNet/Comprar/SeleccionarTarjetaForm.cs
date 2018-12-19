@@ -78,7 +78,6 @@ namespace PalcoNet.Comprar
         {
             form = new IngresarTarjetaForm();
             form.cli = cliente;
-            form.FormClosing += this.tarjetaClosing;
             form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             Button button = Utils.crearBoton("Aceptar");
             button.ForeColor = Color.Black;
@@ -95,24 +94,13 @@ namespace PalcoNet.Comprar
                 MessageBox.Show("Debe completar los campos requeridos: \n\n:" + esTarjetaValida(form.tarjeta));
             }
             else {
-                form.Close();
-            }
-        }
-
-        private void tarjetaClosing(object sender, FormClosingEventArgs e) {
-            if (form != null) {
-                if (form.tarjeta != null)
+                new TarjetasDao().insertarTarjetaDeCliente(form.tarjeta, cliente.id);
+                TarjetasListView.Items.Clear();
+                new TarjetasDao().getTardejtasDelCliente(cliente.id).ForEach(elem =>
                 {
-                    new TarjetasDao().insertarTarjetaDeCliente(form.tarjeta, cliente.id);
-                    TarjetasListView.Items.Clear();
-                    new TarjetasDao().getTardejtasDelCliente(cliente.id).ForEach(elem => {
-                        TarjetasListView.Items.Add(creatItemDeTarjeta(elem));
-                    });
-                }
-                else {
-                    MessageBox.Show("Debe completar todos los datos de la tarjeta");
-                }
-                
+                    TarjetasListView.Items.Add(creatItemDeTarjeta(elem));
+                });
+                form.Close();
             }
         }
 

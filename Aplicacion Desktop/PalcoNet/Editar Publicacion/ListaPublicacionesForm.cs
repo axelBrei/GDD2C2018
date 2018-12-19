@@ -14,6 +14,7 @@ using System.Data.SqlClient;
 using PalcoNet.Dao;
 using PalcoNet.Constants;
 using System.Threading;
+using PalcoNet.Generar_Publicacion;
 
 namespace PalcoNet.Editar_Publicacion
 {
@@ -37,24 +38,22 @@ namespace PalcoNet.Editar_Publicacion
         private PublicacionesController publicacionesController;
         private PublicacionesDao publicacionesDao;
 
+        private ListaPublicacionesPaginadaForm publicacionesForm;
+
+        private int paginaActual;
+
         public ListaPublicacionesForm()
         {
             InitializeComponent();
             publicacionesController = new PublicacionesController();
             publicacionesDao = new PublicacionesDao();
 
-            this.PublicacionesListView.Columns.Insert(0, "Id", 5 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(1, "Descripcion", 30 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(2, "Estado", 10 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(3, "Fecha Publicada", 15 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(4, "Fecha del evento", 15 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(5, "Direccion/Teatro", 15 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
-            this.PublicacionesListView.Columns.Insert(6, "Grado", 10 * (int)PublicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            Filtro filtro = new Filtro();
+            filtro.tipo = -1;
+            publicacionesForm = new ListaPublicacionesPaginadaForm(ListaPublicacionesPaginadaForm.TIPO_EDITAR);
+            publicacionesForm.actualizarPagina(1);
 
-            PublicacionesListView.BeginUpdate();
-            publicacionesDao.getPublicacionesConInfoBasica().ForEach(elem => { 
-                PublicacionesListView.Items.Add(getItemFromPublicacion(elem));
-            });
+            Utils.añadirVistaAPanel(publicacionesForm, PublicacionesPanel);
 
         }
 
@@ -86,19 +85,25 @@ namespace PalcoNet.Editar_Publicacion
 
         private void EditarButton_Click(object sender, EventArgs e)
         {
-            
-            Publicacion publicacion = publicacionesController.getPublicacionPorId(publicacionSeleccionada.id);
-            EditarPublicacionForm form = new EditarPublicacionForm(publicacion);
-            form.publicacionEditadaHandler += this.publicacionEditadaHandler;
-            form.Show(this);
+            EditarButton.Enabled = false;
+
+            paginaActual = publicacionesForm.paginaActual;
+            if (publicacionesForm.publicacionSeleccionada != null)
+            {
+                Publicacion publicacion = publicacionesController.getPublicacionPorId(publicacionesForm.publicacionSeleccionada.id);
+                EditarPublicacionForm form = new EditarPublicacionForm(publicacion);
+                form.publicacionEditadaHandler += this.publicacionEditadaHandler;
+                form.Show(this);
+            }
+            else {
+                MessageBox.Show("Debe seleccionar una publicacion para poder continuar");
+            }
+            EditarButton.Enabled = true;
         }
 
-        private void publicacionEditadaHandler(Publicacion publi) { 
+        private void publicacionEditadaHandler(Publicacion publi) {
 
-            this.PublicacionesListView.BeginUpdate();
-                this.PublicacionesListView.Items.RemoveAt(indexSeleccionado);
-                this.PublicacionesListView.Items.Insert(indexSeleccionado, getItemFromPublicacion(publi));
-            this.PublicacionesListView.EndUpdate();
+            publicacionesForm.actualizarPagina(paginaActual);
         }
     }
 }

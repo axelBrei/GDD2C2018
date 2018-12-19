@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panelCliente = new System.Windows.Forms.Panel();
+            this.CancelarButton = new System.Windows.Forms.Button();
+            this.AceptarButton = new System.Windows.Forms.Button();
             this.FechaNacimientoCliente = new System.Windows.Forms.DateTimePicker();
             this.nada = new System.Windows.Forms.Label();
             this.CuilCliente = new System.Windows.Forms.TextBox();
@@ -46,8 +48,7 @@
             this.ApellidoCliente = new System.Windows.Forms.TextBox();
             this.NombreCliente = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.AceptarButton = new System.Windows.Forms.Button();
-            this.CancelarButton = new System.Windows.Forms.Button();
+            this.LimpiarButton = new System.Windows.Forms.Button();
             this.panelCliente.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,6 +56,7 @@
             // 
             this.panelCliente.AutoSize = true;
             this.panelCliente.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelCliente.Controls.Add(this.LimpiarButton);
             this.panelCliente.Controls.Add(this.CancelarButton);
             this.panelCliente.Controls.Add(this.AceptarButton);
             this.panelCliente.Controls.Add(this.FechaNacimientoCliente);
@@ -79,6 +81,32 @@
             this.panelCliente.Name = "panelCliente";
             this.panelCliente.Size = new System.Drawing.Size(377, 381);
             this.panelCliente.TabIndex = 32;
+            // 
+            // CancelarButton
+            // 
+            this.CancelarButton.BackColor = System.Drawing.Color.LightGray;
+            this.CancelarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CancelarButton.Location = new System.Drawing.Point(208, 355);
+            this.CancelarButton.Name = "CancelarButton";
+            this.CancelarButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelarButton.TabIndex = 36;
+            this.CancelarButton.Text = "Cancelar";
+            this.CancelarButton.UseVisualStyleBackColor = false;
+            this.CancelarButton.Visible = false;
+            this.CancelarButton.Click += new System.EventHandler(this.CancelarButton_Click);
+            // 
+            // AceptarButton
+            // 
+            this.AceptarButton.BackColor = System.Drawing.Color.LightGray;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.Location = new System.Drawing.Point(289, 355);
+            this.AceptarButton.Name = "AceptarButton";
+            this.AceptarButton.Size = new System.Drawing.Size(75, 23);
+            this.AceptarButton.TabIndex = 35;
+            this.AceptarButton.Text = "Aceptar";
+            this.AceptarButton.UseVisualStyleBackColor = false;
+            this.AceptarButton.Visible = false;
+            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // FechaNacimientoCliente
             // 
@@ -235,31 +263,18 @@
             this.label6.TabIndex = 9;
             this.label6.Text = "Nombre";
             // 
-            // AceptarButton
+            // LimpiarButton
             // 
-            this.AceptarButton.BackColor = System.Drawing.Color.LightGray;
-            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AceptarButton.Location = new System.Drawing.Point(270, 355);
-            this.AceptarButton.Name = "AceptarButton";
-            this.AceptarButton.Size = new System.Drawing.Size(75, 23);
-            this.AceptarButton.TabIndex = 35;
-            this.AceptarButton.Text = "Aceptar";
-            this.AceptarButton.UseVisualStyleBackColor = false;
-            this.AceptarButton.Visible = false;
-            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
-            // 
-            // CancelarButton
-            // 
-            this.CancelarButton.BackColor = System.Drawing.Color.LightGray;
-            this.CancelarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CancelarButton.Location = new System.Drawing.Point(189, 355);
-            this.CancelarButton.Name = "CancelarButton";
-            this.CancelarButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelarButton.TabIndex = 36;
-            this.CancelarButton.Text = "Cancelar";
-            this.CancelarButton.UseVisualStyleBackColor = false;
-            this.CancelarButton.Visible = false;
-            this.CancelarButton.Click += new System.EventHandler(this.CancelarButton_Click);
+            this.LimpiarButton.BackColor = System.Drawing.Color.LightGray;
+            this.LimpiarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LimpiarButton.Location = new System.Drawing.Point(13, 355);
+            this.LimpiarButton.Name = "LimpiarButton";
+            this.LimpiarButton.Size = new System.Drawing.Size(75, 23);
+            this.LimpiarButton.TabIndex = 37;
+            this.LimpiarButton.Text = "Limpiar";
+            this.LimpiarButton.UseVisualStyleBackColor = false;
+            this.LimpiarButton.Visible = false;
+            this.LimpiarButton.Click += new System.EventHandler(this.LimpiarButton_Click);
             // 
             // AltaClienteForm
             // 
@@ -300,5 +315,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button AceptarButton;
         private System.Windows.Forms.Button CancelarButton;
+        private System.Windows.Forms.Button LimpiarButton;
     }
 }

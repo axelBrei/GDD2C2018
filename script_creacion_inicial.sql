@@ -389,9 +389,8 @@ INSERT INTO [TheBigBangQuery].[Tipo_Documento] (tipo_descripcion) VALUES ('CI');
 INSERT INTO [TheBigBangQuery].[Tipo_Documento] (tipo_descripcion) VALUES ('LE');
 INSERT INTO [TheBigBangQuery].[Tipo_Documento] (tipo_descripcion) VALUES ('LC');
 
-INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Login Y Seguridad');
+INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('ABM Usuarios');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('ABM Rol');
-INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Registro de Usuarios');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('ABM de Clientes');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('ABM de Empresa de espectaculos');
 INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('ABM de Categorias');
@@ -406,7 +405,13 @@ INSERT INTO [TheBigBangQuery].[Funcionalidad] (func_desc) VALUES ('Listado Estad
 
 
 
-INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('-'), ('Drama'), ('StandUp'), ('Comedia'), ('Opera'), ('Infantil'), ('Musical');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Sin Especificar');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Drama');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('StandUp');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Comedia');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Opera');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Infantil');
+INSERT INTO [TheBigBangQuery].[Rubro](rub_descripcion) VALUES ('Musical');
 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     SELECT F.func_id, R.rol_cod 
@@ -414,6 +419,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     WHERE R.rol_nombre = 'Cliente' AND (F.func_desc = 'Comprar'
 		OR F.func_desc = 'Historial del Cliente'
 		OR F.func_desc = 'Canje y administracion de puntos'
+		OR F.func_desc = 'ABM Usuarios'
 	)
 
 INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
@@ -429,7 +435,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
     FROM [TheBigBangQuery].[Rol] R, [TheBigBangQuery].[Funcionalidad] F
     WHERE R.rol_nombre = 'Administrativo' AND (
         F.func_desc = 'ABM Rol' OR
-        F.func_desc = 'Registro de Usuarios' OR
+        F.func_desc = 'ABM Usuarios' OR
         F.func_desc = 'ABM de Clientes' OR
         F.func_desc = 'ABM de Empresa de espectaculos' OR
         F.func_desc = 'ABM de Categorias' OR
@@ -469,15 +475,12 @@ COMMIT
 
 BEGIN TRANSACTION
 
-	-- INSERTO LOS RUBROS
-	INSERT INTO [TheBigBangQuery].[Rubro] ([rub_descripcion])
-		SELECT DISTINCT Espectaculo_Rubro_Descripcion
-		FROM [gd_esquema].[Maestra]
 
 	-- INSERTO LAS FORMAS DE PAGO
 	INSERT INTO [TheBigBangQuery].[FormaDePago] 
 		SELECT DISTINCT Forma_Pago_Desc
-		FROM [gd_esquema].[Maestra]
+		FROM gd_esquema.Maestra
+		WHERE Forma_Pago_Desc != '' OR Forma_Pago_Desc IS NOT NULL
 	
 	-- INSERTO LAS EMPRESAS
 	INSERT INTO [TheBigBangQuery].[Empresa] (
@@ -1262,6 +1265,8 @@ AS BEGIN
 				[publ_estado] = @estado
 			WHERE [publ_id] = CONVERT(NUMERIC, @publId)
 
+
+
 		END TRY
 		BEGIN CATCH
 			RAISERROR( 'No se ha podido actualizar la publicacion' ,16,1);
@@ -1345,8 +1350,10 @@ RETURNS @temp  TABLE (
 	SET @numeroPagina = @numeroPagina - 1;
 
 	INSERT INTO @ordenada 
-	SELECT ROW_NUMBER() OVER( ORDER BY publ_grad_nivel ASC) AS RowNum, *
-	FROM @tablaAPAginar
+	SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+		t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
+		t.publ_estado, t.espe_descripcion, t.espe_direccion, g.grad_nivel
+	FROM @tablaAPAginar t JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 	WHERE LOWER(publ_estado) != 'finalizada' AND LOWER(publ_estado) != 'borrador'
 
 
@@ -1400,7 +1407,9 @@ RETURNS @temp  TABLE (
 		r.rub_descripcion
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
+		JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (g.grad_id = publ_grad_nivel)
 	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%'
+	ORDER BY g.grad_comision DESC
 
 	INSERT INTO @temp 
 	SELECT *
@@ -1408,6 +1417,97 @@ RETURNS @temp  TABLE (
 
 	RETURN;
 END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa]') IS NOT NULL 
+	DROP FUNCTION [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa];
+GO
+
+CREATE FUNCTION [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina int, @empresa NUMERIC(18,0))
+RETURNS @temp TABLE (
+	publ_id NUMERIC(12,0),
+	publ_espectaculo NUMERIC(12,0),
+	publ_grad_nivel NUMERIC(12,0),
+	publ_fecha_publicacion DATETIME,
+	publ_fecha_hora_espectaculo DATETIME,
+	publ_estado NVARCHAR(50),
+	espe_descripcion nvarchar(255),
+	espe_direccion nvarchar(255),
+	grad_nivel nvarchar(255)
+) AS BEGIN 
+
+	DECLARE @ordenada TABLE (
+		fila bigInt,
+		publ_id NUMERIC(12,0),
+		publ_espectaculo NUMERIC(12,0),
+		publ_grad_nivel NUMERIC(12,0),
+		publ_fecha_publicacion DATETIME,
+		publ_fecha_hora_espectaculo DATETIME,
+		publ_estado NVARCHAR(50),
+		espe_descripcion nvarchar(255),
+		espe_direccion nvarchar(255),
+		rub_descripcion nvarchar(255)
+	);
+
+	SET @pagina = @pagina - 1;
+
+	DECLARE @query NVARCHAR(MAX);
+
+	IF @empresa IS NULL
+	BEGIN
+		INSERT INTO @ordenada 
+		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+			t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
+			t.publ_estado, e.espe_descripcion, e.espe_direccion, g.grad_nivel
+		FROM [TheBigBangQuery].[Publicacion] t 
+			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
+			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
+	END ELSE BEGIN 
+		INSERT INTO @ordenada 
+		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+			t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
+			t.publ_estado, e.espe_descripcion, e.espe_direccion, g.grad_nivel
+		FROM [TheBigBangQuery].[Publicacion] t 
+			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
+			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
+		WHERE @empresa = espe_empresa
+	END
+
+
+	-- PAGINAS DE 40 ELEMENTOS 
+
+	INSERT INTO @temp
+	SELECT publ_id, 
+		publ_espectaculo, 
+		publ_grad_nivel, 
+		publ_fecha_publicacion, 
+		publ_fecha_hora_espectaculo,
+		publ_estado, 
+		espe_descripcion, 
+		espe_direccion , 
+		rub_descripcion
+	FROM @ordenada
+	WHERE fila >= 40 * @pagina AND fila < (40 * @pagina) + 41
+
+	RETURN;
+
+END
+
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro];
+GO
+
+CREATE FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]()
+RETURNS INT AS BEGIN
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
+			ELSE COUNT(*)/40 END 
+		FROM [TheBigBangQuery].[Publicacion] 
+	)
+END
+
 GO
 
 IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroFecha]') IS NOT NULL
@@ -1560,36 +1660,6 @@ RETURNS INT AS BEGIN
 	)
 END
 GO
--- TRIGGER PARA ACTUALIZAR FACTURA CUANDO SE INSERTA UN ITEM
-IF OBJECT_ID('[TheBigBangQuery].[ActualizarfacturaTrigger]') IS NOT NULL	
-	DROP TRIGGER [TheBigBangQuery].[ActualizarfacturaTrigger];
-GO
-CREATE TRIGGER [TheBigBangQuery].[ActualizarfacturaTrigger] ON [TheBigBangQuery].[Item_Factura] AFTER INSERT 
-AS BEGIN
-	-- CURSOR PARA SUMAR CADA ITEM A SU CORRESPONDIENTE FACTURA
-	DECLARE @monto NUMERIC(18,2);
-	DECLARE @factNum NUMERIC(12,0);
-	DECLARE c CURSOR FOR (
-		SELECT item_monto, item_n_factura
-		FROM inserted
-	);
-	OPEN c;
-	FETCH c INTO @monto, @factNum;
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE [TheBigBangQuery].[Factura]
-		SET [fact_total] = [fact_total] + @monto
-		WHERE fact_numero = @factNum
-
-		FETCH c INTO @monto, @factNum;
-	END
-
-	CLOSE c;
-	DEALLOCATE c;
-
-END
-
-GO
 
 IF OBJECT_ID('[TheBigBangQuery].[InsertarCompra]') IS NOT NULL
 	DROP PROCEDURE [TheBigBangQuery].[InsertarCompra];
@@ -1635,6 +1705,17 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarCompra] (
 	SET [ubpu_disponible] = 1
 	WHERE [ubpu_id_publicacion] = @publicacion AND 
 		[ubpu_id_ubicacion] IN (SELECT ubli_ubicacion FROM @ubicaciones)
+
+	IF (SELECT CASE WHEN COUNT(*) IS NULL THEN 0 
+					WHEN COUNT(*) = 0 THEN 0
+					ELSE COUNT(*) END
+		FROM TheBigBangQuery.Publicacion LEFT JOIN TheBigBangQuery.Ubicaciones_publicacion ON (publ_id = ubpu_id_publicacion)
+		WHERE ubpu_disponible = 0 AND publ_id = @publicacion) = 0 
+	BEGIN
+			UPDATE [TheBigBangQuery].Publicacion
+			SET publ_estado = 'Finalizada'
+			WHERE publ_id = @publicacion
+	END
 END
 GO
 
@@ -1689,6 +1770,7 @@ RETURNS @return TABLE (
 		p.publ_id,
 		e.espe_descripcion
 	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
+		JOIN [TheBigBangQuery].[GradoPublicaciones] ON (publ_grad_nivel = grad_id)
 		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
 	WHERE c.comp_cliente = @clieId
 
@@ -1836,7 +1918,6 @@ GO
 CREATE PROCEDURE [TheBigBangQuery].[insertarNuevaFactura](
 	@idCompra NUMERIC(12,0),
 	@tipoPago NVARCHAR(255),
-	@importe NUMERIC(18,2),
 	@fecha DATETIME,
 	@idEmpresa NUMERIC(12,0),
 	@numeroFactura NUMERIC(18,0) OUTPUT) 
@@ -1846,16 +1927,16 @@ AS BEGIN
 
 	INSERT INTO [TheBigBangQuery].[Factura] (
 		[fact_forma_de_pago],
-		[fact_total],
 		[fact_fecha],
 		[fact_empresa],
-		[fact_comision_hecha]
+		[fact_comision_hecha],
+		[fact_total]
 	) VALUES (
 		@tipoPago,
-		@importe,
 		@fecha,
 		@idEmpresa,
-		1
+		1,
+		0
 	);
 
 	SELECT @numeroFactura = SCOPE_IDENTITY();
@@ -1866,6 +1947,37 @@ AS BEGIN
 END
 
 GO
+
+IF OBJECT_ID('[TheBigBangQuery].[actualizarTotalFactura]') IS NOT NULL
+	DROP TRIGGER [TheBigBangQuery].[actualizarTotalFactura];
+GO
+CREATE TRIGGER [TheBigBangQuery].[actualizarTotalFactura] ON [TheBigBangQuery].[Item_Factura] 
+FOR INSERT AS BEGIN
+	DECLARE cu CURSOR FOR (
+		SELECT item_n_factura, item_monto
+		FROM inserted
+	);
+	DECLARE @monto NUMERIC(18,2), @numFact NUMERIC(18,0);
+	OPEN cu;
+	FETCH cu INTO @numFact, @monto;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN 
+		UPDATE [TheBigBangQuery].[Factura]
+		SET fact_total = fact_total + @monto
+		WHERE fact_numero = @numFact
+
+		FETCH cu INTO @numFact, @monto;
+	END
+	CLOSE cu;
+	DEALLOCATE cu;
+	
+
+END
+
+
+GO
+
+
 IF OBJECT_ID('[TheBigBangQuery].[InsertarItemFactura]') IS NOT NULL
 	DROP PROCEDURE [TheBigBangQuery].[InsertarItemFactura];
 GO
@@ -1946,3 +2058,38 @@ RETURNS @ret TABLE (
 END
 GO 
 
+IF OBJECT_ID('[TheBigBangQuery].[esContraseñaValida]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[esContraseñaValida];
+GO
+CREATE FUNCTION [TheBigBangQuery].[esContraseñaValida](@contraseña NVARCHAR(255), @usuario NUMERIC(18,0))
+RETURNS INT AS BEGIN
+	
+	DECLARE @ret INT;
+	SET @ret = 0;
+	SELECT @ret = CASE 
+		WHEN [TheBigBangQuery].[getHashPassword](@contraseña) = usua_password THEN 1
+		ELSE 0 END
+	FROM [TheBigBangQuery].[Usuario]
+	WHERE usua_id = @usuario
+
+	RETURN CASE WHEN @ret = NULL THEN 0
+		ELSE @ret END;
+END
+GO
+
+IF OBJECT_ID('[TheBigBangQuery].[actualizarContraseñaUsuario]') IS NOT NULL
+	DROP PROCEDURE [TheBigBangQuery].[actualizarContraseñaUsuario];
+GO
+CREATE PROCEDURE [TheBigBangQuery].[actualizarContraseñaUsuario](@pswAnterior NVARCHAR(255), @nuevaPsw NVARCHAR(255), @userId NUMERIC(18,0))
+AS BEGIN
+	
+	IF [TheBigBangQuery].[esContraseñaValida](@pswAnterior, @userId) = 1
+	BEGIN 
+		UPDATE [TheBigBangQuery].[Usuario]
+		SET usua_password = [TheBigBangQuery].[getHashPassword](@nuevaPsw)
+		WHERE usua_id = @userId
+	END ELSE BEGIN
+		RAISERROR('La contraseña anterior ingresada no es correcta',16,1);
+	END
+
+END

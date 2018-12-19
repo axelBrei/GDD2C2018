@@ -40,8 +40,9 @@
             // 
             // LoginButton
             // 
-            this.LoginButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.LoginButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.LoginButton.BackColor = System.Drawing.Color.LightGray;
+            this.LoginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.LoginButton.Location = new System.Drawing.Point(82, 86);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(129, 23);
@@ -88,8 +89,9 @@
             // 
             // RegistrarseButton
             // 
-            this.RegistrarseButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.RegistrarseButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.RegistrarseButton.BackColor = System.Drawing.Color.LightGray;
+            this.RegistrarseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RegistrarseButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.RegistrarseButton.Location = new System.Drawing.Point(82, 127);
             this.RegistrarseButton.Name = "RegistrarseButton";
             this.RegistrarseButton.Size = new System.Drawing.Size(129, 23);
@@ -110,7 +112,7 @@
             // 
             // Form1
             // 
-            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BackColor = System.Drawing.Color.RosyBrown;
             this.ClientSize = new System.Drawing.Size(292, 163);
             this.Controls.Add(this.ErrorImage);
             this.Controls.Add(this.RegistrarseButton);

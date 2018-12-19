@@ -157,7 +157,7 @@ namespace PalcoNet.Dao
                 {
                     reader.Read();
                     compra = parsearCompraDelReader(reader);
-                    compra.publicacion.fechaEvento = reader.IsDBNull(7) ? Utils.getFechaMinima() : (DateTime)reader.GetSqlDateTime(7);
+                    compra.publicacion.fechaEvento = reader.IsDBNull(7) ? Generals.getFechaMinima() : (DateTime)reader.GetSqlDateTime(7);
                     compra.publicacion.estado = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
                     Empresa emp = new Empresa();
                     emp.razonSocial = reader.IsDBNull(9) ? null : reader.GetSqlString(9).ToString();
@@ -185,7 +185,7 @@ namespace PalcoNet.Dao
             Compra compra = new Compra();
 
             compra.id = (int)reader.GetSqlDecimal(0);
-            compra.fechaCompra = reader.IsDBNull(1) ? Utils.getFechaMinima() : (DateTime)  reader.GetSqlDateTime(1);
+            compra.fechaCompra = reader.IsDBNull(1) ? Generals.getFechaMinima() : (DateTime)reader.GetSqlDateTime(1);
             string medioPago = reader.IsDBNull(2) ? null : reader.GetSqlString(2).ToString();
             List<string> medios = medioPago.Split('/').ToList();
             Tarjeta tarjeta = new Tarjeta();

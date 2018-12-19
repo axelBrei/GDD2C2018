@@ -22,9 +22,14 @@ namespace PalcoNet
             DatabaseConection.initDatabase();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.ApplicationExit += new EventHandler(OnExit);
             Application.Run(new Form1());
 
             
+        }
+
+        static void OnExit(object sender, EventArgs e) {
+            DatabaseConection.closeDatabase();
         }
     }
 }

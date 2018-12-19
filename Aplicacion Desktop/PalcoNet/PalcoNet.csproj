@@ -176,7 +176,7 @@
     </Compile>
     <Compile Include="ConectionUtils\DatabaseConection.cs" />
     <Compile Include="Constants\Strings.cs" />
-    <Compile Include="Constants\Utils.cs" />
+    <Compile Include="Constants\Generals.cs" />
     <Compile Include="Dao\ClientesDao.cs" />
     <Compile Include="Dao\ComprasDao.cs" />
     <Compile Include="Dao\EmpresasDao.cs" />
@@ -191,6 +191,7 @@
     <Compile Include="Dao\PublicacionesDao.cs" />
     <Compile Include="Dao\PuntosDao.cs" />
     <Compile Include="Dao\RolesDao.cs" />
+    <Compile Include="Dao\RolusuarioDao.cs" />
     <Compile Include="Dao\RubrosDao.cs" />
     <Compile Include="Dao\TarjetasDao.cs" />
     <Compile Include="Dao\TipoDocumentoDao.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Dao\UbicacionesCompraDao.cs" />
     <Compile Include="Dao\UbicacionesDao.cs" />
     <Compile Include="Dao\UbicacionesPublicacionDao.cs" />
+    <Compile Include="Dao\UsuariosDao.cs" />
     <Compile Include="Editar Publicacion\EditarEstadoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +253,12 @@
     </Compile>
     <Compile Include="Generar Publicacion\GenerarPublicacionForm.Designer.cs">
       <DependentUpon>GenerarPublicacionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicacion\ListaPublicacionesPaginadaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicacion\ListaPublicacionesPaginadaForm.Designer.cs">
+      <DependentUpon>ListaPublicacionesPaginadaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Generar Publicacion\PanelDateItem.cs">
       <SubType>Form</SubType>
@@ -314,6 +322,7 @@
     <Compile Include="Model\Espectaculo.cs" />
     <Compile Include="Model\Estadistico.cs" />
     <Compile Include="Model\Factura.cs" />
+    <Compile Include="Model\Filtro.cs" />
     <Compile Include="Model\Funcionalidad.cs" />
     <Compile Include="Model\GradoPublicacion.cs" />
     <Compile Include="Model\ItemFactura.cs" />
@@ -341,6 +350,19 @@
       <DependentUpon>RegistrarUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="UserData\UserData.cs" />
+    <Compile Include="Usuarios\ListaUsuariosForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Usuarios\ListaUsuariosForm.Designer.cs">
+      <DependentUpon>ListaUsuariosForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usuarios\UserDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Usuarios\UserDataForm.Designer.cs">
+      <DependentUpon>UserDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
     <Compile Include="Validators\CuilValidator.cs" />
     <Compile Include="Validators\Validator.cs" />
     <EmbeddedResource Include="Abm Cliente\AltaClienteForm.resx">
@@ -430,6 +452,9 @@
     <EmbeddedResource Include="Generar Publicacion\GenerarPublicacionForm.resx">
       <DependentUpon>GenerarPublicacionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicacion\ListaPublicacionesPaginadaForm.resx">
+      <DependentUpon>ListaPublicacionesPaginadaForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicacion\PanelDateItem.resx">
       <DependentUpon>PanelDateItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -471,6 +496,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Registro de Usuario\RegistrarUsuario.resx">
       <DependentUpon>RegistrarUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usuarios\ListaUsuariosForm.resx">
+      <DependentUpon>ListaUsuariosForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usuarios\UserDataForm.resx">
+      <DependentUpon>UserDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

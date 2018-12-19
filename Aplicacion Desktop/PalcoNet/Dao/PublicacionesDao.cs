@@ -357,6 +357,56 @@ namespace PalcoNet.Dao
             }
         }
 
+        public List<Publicacion> getPublicacionesPorPagina(int pagina, Nullable<int> empresaId = null) {
+            string function = "SELECT * FROM [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina, @empresa)";
+            SqlDataReader reader = null;
+            List<Publicacion> publicacionesList = new List<Publicacion>();
+            try
+            {
+                SqlCommand command = new SqlCommand(function);
+                command.CommandText = function;
+
+                command.Parameters.AddWithValue("@pagina", pagina);
+                if (empresaId != null)
+                    command.Parameters.AddWithValue("@empresa", empresaId);
+                else
+                    command.Parameters.AddWithValue("@empresa", DBNull.Value);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Publicacion publi = ParserPublicaciones.parsearPublicacionDelReader(reader);
+                        publi.espectaculo.descripcion = reader.IsDBNull(6) ? null : reader.GetSqlString(6).ToString();
+                        publi.espectaculo.direccion = reader.IsDBNull(7) ? null : reader.GetSqlString(7).ToString();
+                        publi.gradoPublicacion.nivel = reader.IsDBNull(8) ? null : reader.GetSqlString(8).ToString();
+                        publicacionesList.Add(publi);
+                    }
+                }
+                return publicacionesList;
+            }
+            catch (Exception ex)
+            {
+                throw new DataNotFoundException("No se han encontrado publicaciones para la pagina seleccionada");
+            }
+            finally {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close();
+            }
+        }
+
+        public int getUlitimaPaginaNoFiltro() {
+            string function = "SELECT [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]()";
+            try
+            {
+                return DatabaseConection.executeParamFunction<int>(function);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public int getUltimaPaginaDesc(string desc) {
             string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc)";

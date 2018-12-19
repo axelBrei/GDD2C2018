@@ -18,9 +18,9 @@ namespace PalcoNet.Comprar
         public Tarjeta tarjetaSeleccionada { get; set; }
         public List<Tarjeta> tarjetas {
             set {
-                value.ForEach(elem =>
-                {
-                    this.TarjetasListView.Items.Add(creatItemDeTarjeta(elem));
+                this.TarjetasListView.Items.Clear();
+                value.ForEach(tarj => {
+                    this.TarjetasListView.Items.Add(creatItemDeTarjeta(tarj));
                 });
             }
         }
@@ -74,5 +74,6 @@ namespace PalcoNet.Comprar
         {
 
         }
+
     }
 }

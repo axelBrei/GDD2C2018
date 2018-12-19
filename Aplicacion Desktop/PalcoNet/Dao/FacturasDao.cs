@@ -15,7 +15,6 @@ namespace PalcoNet.Dao
     class FacturasDao
     {
         public void insertarFactura(SqlTransaction transaction ,string tipoPago, Compra compra, Action<int> resNuevoId) {
-            float totalComisiones = float.Parse(compra.total.ToString()) / (float)compra.publicacion.gradoPublicacion.comision;
             string procedure = "[TheBigBangQuery].[insertarNuevaFactura]";
             try {
                 SqlCommand command = new SqlCommand(procedure);
@@ -25,8 +24,7 @@ namespace PalcoNet.Dao
 
                 command.Parameters.AddWithValue("@idCompra",compra.id);
                 command.Parameters.AddWithValue("@tipoPago", tipoPago);
-                command.Parameters.AddWithValue("@importe", totalComisiones);
-                command.Parameters.AddWithValue("@fecha", Utils.getFecha());
+                command.Parameters.AddWithValue("@fecha", Generals.getFecha());
                 command.Parameters.AddWithValue("@idEmpresa", compra.publicacion.espectaculo.empresa.id);
                 SqlParameter param = new SqlParameter("@numeroFactura", SqlDbType.Decimal) { Direction = ParameterDirection.Output };
                 command.Parameters.Add(param);

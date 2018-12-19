@@ -36,6 +36,8 @@ namespace PalcoNet.Comprar
 
         TarjetasDao tarjetasDao;
 
+        Usuario user = UserData.UserData.getUsuario();
+
 
         public ComprarForm(Publicacion publi)
         {
@@ -99,12 +101,12 @@ namespace PalcoNet.Comprar
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            if (currentForm > 0) {
-                currentForm--;
-                if (currentForm == 0)
+            if (actualizarDatosDelFormBack(ref currentForm)) {
+                if (currentForm == 0) {
                     this.BackButton.Text = "Salir";
-                    
-                else {
+                }
+                else
+                {
                     this.BackButton.Text = "Anterior";
                     this.NextButton.Text = "Siguiente";
                 }
@@ -115,6 +117,31 @@ namespace PalcoNet.Comprar
             }
         }
 
+        private bool actualizarDatosDelFormBack(ref int currentForm) {
+            switch (currentForm) {
+                case 0: {
+
+                    return false;
+                }
+                case 2: {
+                    currentForm = 1;
+                    clienteActual = null;
+                    return true;
+                }
+                case 4: {
+                    if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
+                        currentForm = 1;
+                    else
+                        currentForm = 2;
+                    return true;
+                }
+                default: {
+                    currentForm--;
+                    return true;
+                }
+            }
+        }
+
         private bool actualizarDatosDelForm(ref int currentForm){
             switch(currentForm){
                 case 0: {
@@ -122,7 +149,7 @@ namespace PalcoNet.Comprar
                     return true;
                 }
                 case 1: {
-                    Usuario user = UserData.UserData.getUsuario();
+                    
                     
                    ubicacionesAComprar = ubicacionesForm.ubicacionesSeleccionadas;
                    if (ubicacionesAComprar.Count == 0) {
@@ -182,24 +209,18 @@ namespace PalcoNet.Comprar
                     currentForm = 4;
                     return true;
                 }
-                case 4: {
-
-
-                    Tarjeta tarj = tarjetaParaPagar;
-                    if (!Application.OpenForms.OfType<IngresarTarjetaForm>().Any())
-                    {
-                        
-                        tarj = tarjetaForm.tarjetaSeleccionada;
-                        if (tarj == null) {
-                            MessageBox.Show("Debe seleccionar un metodo de pago valido");
-                            return false;
-                        }
+                case 4: {                        
+                    Tarjeta tarj = tarjetaForm.tarjetaSeleccionada;
+                    if (tarj == null) {
+                        MessageBox.Show("Debe seleccionar un metodo de pago valido");
+                        return false;
                     }
+                    
                     // CONFIRMAR COMPRA
                     Compra compra = new Compra();
                     compra.cli = clienteActual;
                     compra.ubicaciones = ubicacionesAComprar;
-                    compra.fechaCompra = Constants.Utils.getFecha();
+                    compra.fechaCompra = Constants.Generals.getFecha();
                     compra.cantidad = ubicacionesForm.ubicacionesSeleccionadas.Count;
                     ubicacionesForm.ubicacionesSeleccionadas.ForEach(elem => compra.total += elem.precio);
                     compraA = compra;
@@ -228,6 +249,7 @@ namespace PalcoNet.Comprar
             {
                 controller.insertarCompraConItems(compraA, publicacionActual);
                 MessageBox.Show("Compra realizada con exito!");
+               
             }
             catch (Exception ex)
             {

@@ -147,8 +147,10 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             SqlTransaction trans = DatabaseConection.getInstance().BeginTransaction();
             try
             {
+
+
                 for (int i = 0; i < this.CantidadARedimirNumericDD.Value; i++) {
-                    Compra compra = (Compra)this.ComprasListView.Items[0].Tag;
+                    Compra compra = (Compra)this.ComprasListView.Items[i].Tag;
                     compra.publicacion = publisDao.getPublicacionPorId(compra.publicacion.id, trans);
                     compra.publicacion.gradoPublicacion =
                             gradosDao.getGradoPorId(compra.publicacion.gradoPublicacion.id, trans);
@@ -160,12 +162,12 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
                 }
                 trans.Commit();
                 MessageBox.Show("Generación de comisiones exitosa!");
+                
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
                 trans.Rollback();
             }
-                
         }
 
         private void insertarFactura(SqlTransaction trans,FacturasDao factDao, Compra compra){

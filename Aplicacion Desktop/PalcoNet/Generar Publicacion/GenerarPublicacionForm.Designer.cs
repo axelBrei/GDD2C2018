@@ -162,8 +162,9 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.Desktop;
-            this.button1.ForeColor = System.Drawing.Color.Snow;
+            this.button1.BackColor = System.Drawing.Color.LightGray;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
             this.button1.Location = new System.Drawing.Point(15, 379);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(115, 23);
@@ -199,8 +200,9 @@
             // AceptarButton
             // 
             this.AceptarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AceptarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AceptarButton.ForeColor = System.Drawing.Color.Snow;
+            this.AceptarButton.BackColor = System.Drawing.Color.LightGray;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.ForeColor = System.Drawing.Color.Black;
             this.AceptarButton.Location = new System.Drawing.Point(630, 617);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
@@ -211,8 +213,9 @@
             // 
             // EliminarUbicacionButton
             // 
-            this.EliminarUbicacionButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.EliminarUbicacionButton.ForeColor = System.Drawing.Color.Snow;
+            this.EliminarUbicacionButton.BackColor = System.Drawing.Color.LightGray;
+            this.EliminarUbicacionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EliminarUbicacionButton.ForeColor = System.Drawing.Color.Black;
             this.EliminarUbicacionButton.Location = new System.Drawing.Point(15, 420);
             this.EliminarUbicacionButton.Name = "EliminarUbicacionButton";
             this.EliminarUbicacionButton.Size = new System.Drawing.Size(115, 23);
@@ -223,8 +226,9 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Desktop;
-            this.button2.ForeColor = System.Drawing.Color.Snow;
+            this.button2.BackColor = System.Drawing.Color.LightGray;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.Black;
             this.button2.Location = new System.Drawing.Point(590, 68);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(115, 23);
@@ -237,7 +241,7 @@
             // 
             this.HoraEventoTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.HoraEventoTimePicker.CustomFormat = "HH:mm";
-            this.HoraEventoTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.HoraEventoTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.HoraEventoTimePicker.Location = new System.Drawing.Point(402, 69);
             this.HoraEventoTimePicker.Name = "HoraEventoTimePicker";
             this.HoraEventoTimePicker.ShowUpDown = true;
@@ -249,8 +253,9 @@
             // ClearFormButton
             // 
             this.ClearFormButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearFormButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClearFormButton.ForeColor = System.Drawing.Color.Snow;
+            this.ClearFormButton.BackColor = System.Drawing.Color.LightGray;
+            this.ClearFormButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ClearFormButton.ForeColor = System.Drawing.Color.Black;
             this.ClearFormButton.Location = new System.Drawing.Point(630, 577);
             this.ClearFormButton.Name = "ClearFormButton";
             this.ClearFormButton.Size = new System.Drawing.Size(75, 23);

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.UserData;
 using PalcoNet.Model;
 using PalcoNet.Dao;
+using PalcoNet.Usuarios;
 
 namespace PalcoNet.MainMenu
 {
@@ -63,6 +64,16 @@ namespace PalcoNet.MainMenu
             Form form = null;
             switch (funcionalidadId)
             {
+                case 0: {
+                    // ABM USUARIOS
+                    if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE) {
+                        form = new UserDataForm(usuario);
+                        form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                    }
+                    else
+                        form = new ListaUsuariosForm();
+                    break;
+                }
                 case 1:
                     {
                         // ABM ROL

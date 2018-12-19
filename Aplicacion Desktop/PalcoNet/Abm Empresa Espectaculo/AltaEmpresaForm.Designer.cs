@@ -40,6 +40,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.CancelarButton = new System.Windows.Forms.Button();
             this.AceptarButton = new System.Windows.Forms.Button();
+            this.LimpiarButton = new System.Windows.Forms.Button();
             this.PanelEmpresa.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -169,12 +170,26 @@
             this.AceptarButton.UseVisualStyleBackColor = false;
             this.AceptarButton.Visible = false;
             // 
+            // LimpiarButton
+            // 
+            this.LimpiarButton.BackColor = System.Drawing.Color.LightGray;
+            this.LimpiarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LimpiarButton.Location = new System.Drawing.Point(0, 355);
+            this.LimpiarButton.Name = "LimpiarButton";
+            this.LimpiarButton.Size = new System.Drawing.Size(75, 23);
+            this.LimpiarButton.TabIndex = 39;
+            this.LimpiarButton.Text = "Limpiar";
+            this.LimpiarButton.UseVisualStyleBackColor = false;
+            this.LimpiarButton.Visible = false;
+            this.LimpiarButton.Click += new System.EventHandler(this.LimpiarButton_Click);
+            // 
             // AltaEmpresaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.RosyBrown;
             this.ClientSize = new System.Drawing.Size(357, 381);
+            this.Controls.Add(this.LimpiarButton);
             this.Controls.Add(this.CancelarButton);
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.PanelEmpresa);
@@ -201,5 +216,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button CancelarButton;
         private System.Windows.Forms.Button AceptarButton;
+        private System.Windows.Forms.Button LimpiarButton;
     }
 }

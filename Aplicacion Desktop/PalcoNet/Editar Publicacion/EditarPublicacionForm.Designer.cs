@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.EstadoButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.PublicacionesMenuButton = new System.Windows.Forms.Button();
             this.ContentPanel = new System.Windows.Forms.Panel();
-            this.EstadoButton = new System.Windows.Forms.Button();
             this.MenuPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuPanel
             // 
-            this.MenuPanel.BackColor = System.Drawing.SystemColors.Desktop;
+            this.MenuPanel.BackColor = System.Drawing.Color.RosyBrown;
             this.MenuPanel.Controls.Add(this.EstadoButton);
             this.MenuPanel.Controls.Add(this.button2);
             this.MenuPanel.Controls.Add(this.PublicacionesMenuButton);
@@ -47,11 +47,25 @@
             this.MenuPanel.Size = new System.Drawing.Size(200, 700);
             this.MenuPanel.TabIndex = 0;
             // 
+            // EstadoButton
+            // 
+            this.EstadoButton.FlatAppearance.BorderSize = 0;
+            this.EstadoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EstadoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EstadoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EstadoButton.Location = new System.Drawing.Point(6, 160);
+            this.EstadoButton.Name = "EstadoButton";
+            this.EstadoButton.Size = new System.Drawing.Size(194, 45);
+            this.EstadoButton.TabIndex = 2;
+            this.EstadoButton.Text = "Estado/Otros";
+            this.EstadoButton.UseVisualStyleBackColor = true;
+            this.EstadoButton.Click += new System.EventHandler(this.EstadoButton_Click);
+            // 
             // button2
             // 
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.button2.Location = new System.Drawing.Point(3, 109);
             this.button2.Name = "button2";
@@ -65,7 +79,7 @@
             // 
             this.PublicacionesMenuButton.FlatAppearance.BorderSize = 0;
             this.PublicacionesMenuButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PublicacionesMenuButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PublicacionesMenuButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PublicacionesMenuButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.PublicacionesMenuButton.Location = new System.Drawing.Point(3, 58);
             this.PublicacionesMenuButton.Name = "PublicacionesMenuButton";
@@ -86,20 +100,6 @@
             this.ContentPanel.Name = "ContentPanel";
             this.ContentPanel.Size = new System.Drawing.Size(717, 700);
             this.ContentPanel.TabIndex = 1;
-            // 
-            // EstadoButton
-            // 
-            this.EstadoButton.FlatAppearance.BorderSize = 0;
-            this.EstadoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EstadoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EstadoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EstadoButton.Location = new System.Drawing.Point(6, 160);
-            this.EstadoButton.Name = "EstadoButton";
-            this.EstadoButton.Size = new System.Drawing.Size(194, 45);
-            this.EstadoButton.TabIndex = 2;
-            this.EstadoButton.Text = "Estado/Otros";
-            this.EstadoButton.UseVisualStyleBackColor = true;
-            this.EstadoButton.Click += new System.EventHandler(this.EstadoButton_Click);
             // 
             // EditarPublicacionForm
             // 

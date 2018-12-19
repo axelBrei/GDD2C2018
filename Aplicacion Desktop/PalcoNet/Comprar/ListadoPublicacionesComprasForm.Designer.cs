@@ -28,31 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PublicacionesListView = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.FiltrosButton = new System.Windows.Forms.Button();
             this.DetallesButton = new System.Windows.Forms.Button();
             this.LimpiarFiltrosButton = new System.Windows.Forms.Button();
-            this.PaginaTextBox = new System.Windows.Forms.TextBox();
-            this.LastButton = new System.Windows.Forms.Button();
-            this.NextButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ListaPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // PublicacionesListView
-            // 
-            this.PublicacionesListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.PublicacionesListView.FullRowSelect = true;
-            this.PublicacionesListView.GridLines = true;
-            this.PublicacionesListView.Location = new System.Drawing.Point(12, 41);
-            this.PublicacionesListView.MultiSelect = false;
-            this.PublicacionesListView.Name = "PublicacionesListView";
-            this.PublicacionesListView.Size = new System.Drawing.Size(564, 543);
-            this.PublicacionesListView.TabIndex = 0;
-            this.PublicacionesListView.UseCompatibleStateImageBehavior = false;
-            this.PublicacionesListView.View = System.Windows.Forms.View.Details;
-            this.PublicacionesListView.SelectedIndexChanged += new System.EventHandler(this.PublicacionesListView_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -69,7 +50,7 @@
             this.FiltrosButton.BackColor = System.Drawing.Color.LightGray;
             this.FiltrosButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FiltrosButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.FiltrosButton.Location = new System.Drawing.Point(595, 39);
+            this.FiltrosButton.Location = new System.Drawing.Point(608, 46);
             this.FiltrosButton.Name = "FiltrosButton";
             this.FiltrosButton.Size = new System.Drawing.Size(89, 23);
             this.FiltrosButton.TabIndex = 2;
@@ -82,7 +63,7 @@
             this.DetallesButton.BackColor = System.Drawing.Color.LightGray;
             this.DetallesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DetallesButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DetallesButton.Location = new System.Drawing.Point(595, 105);
+            this.DetallesButton.Location = new System.Drawing.Point(608, 112);
             this.DetallesButton.Name = "DetallesButton";
             this.DetallesButton.Size = new System.Drawing.Size(89, 41);
             this.DetallesButton.TabIndex = 3;
@@ -95,7 +76,7 @@
             this.LimpiarFiltrosButton.BackColor = System.Drawing.Color.LightGray;
             this.LimpiarFiltrosButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LimpiarFiltrosButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LimpiarFiltrosButton.Location = new System.Drawing.Point(595, 72);
+            this.LimpiarFiltrosButton.Location = new System.Drawing.Point(608, 79);
             this.LimpiarFiltrosButton.Margin = new System.Windows.Forms.Padding(7);
             this.LimpiarFiltrosButton.Name = "LimpiarFiltrosButton";
             this.LimpiarFiltrosButton.Size = new System.Drawing.Size(89, 23);
@@ -104,72 +85,12 @@
             this.LimpiarFiltrosButton.UseVisualStyleBackColor = false;
             this.LimpiarFiltrosButton.Click += new System.EventHandler(this.LimpiarFiltrosButton_Click);
             // 
-            // PaginaTextBox
+            // ListaPanel
             // 
-            this.PaginaTextBox.Location = new System.Drawing.Point(279, 617);
-            this.PaginaTextBox.Name = "PaginaTextBox";
-            this.PaginaTextBox.Size = new System.Drawing.Size(30, 20);
-            this.PaginaTextBox.TabIndex = 5;
-            this.PaginaTextBox.Text = "1";
-            this.PaginaTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.PaginaTextBox.TextChanged += new System.EventHandler(this.PaginaTextBox_TextChanged);
-            this.PaginaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PaginaTextBox_KeyPress);
-            // 
-            // LastButton
-            // 
-            this.LastButton.FlatAppearance.BorderSize = 0;
-            this.LastButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LastButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LastButton.Location = new System.Drawing.Point(250, 615);
-            this.LastButton.Name = "LastButton";
-            this.LastButton.Size = new System.Drawing.Size(23, 23);
-            this.LastButton.TabIndex = 6;
-            this.LastButton.Text = "<";
-            this.LastButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LastButton.UseVisualStyleBackColor = true;
-            this.LastButton.Click += new System.EventHandler(this.LastButton_Click);
-            // 
-            // NextButton
-            // 
-            this.NextButton.FlatAppearance.BorderSize = 0;
-            this.NextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NextButton.Location = new System.Drawing.Point(315, 615);
-            this.NextButton.Name = "NextButton";
-            this.NextButton.Size = new System.Drawing.Size(23, 23);
-            this.NextButton.TabIndex = 7;
-            this.NextButton.Text = ">";
-            this.NextButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.NextButton.UseVisualStyleBackColor = true;
-            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(344, 615);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(38, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = ">>";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(204, 615);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(40, 23);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "<<";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.ListaPanel.Location = new System.Drawing.Point(12, 46);
+            this.ListaPanel.Name = "ListaPanel";
+            this.ListaPanel.Size = new System.Drawing.Size(586, 612);
+            this.ListaPanel.TabIndex = 5;
             // 
             // ListadoPublicacionesComprasForm
             // 
@@ -177,16 +98,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(709, 670);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.NextButton);
-            this.Controls.Add(this.LastButton);
-            this.Controls.Add(this.PaginaTextBox);
+            this.Controls.Add(this.ListaPanel);
             this.Controls.Add(this.LimpiarFiltrosButton);
             this.Controls.Add(this.DetallesButton);
             this.Controls.Add(this.FiltrosButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.PublicacionesListView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListadoPublicacionesComprasForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -198,15 +114,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView PublicacionesListView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button FiltrosButton;
         private System.Windows.Forms.Button DetallesButton;
         private System.Windows.Forms.Button LimpiarFiltrosButton;
-        private System.Windows.Forms.TextBox PaginaTextBox;
-        private System.Windows.Forms.Button LastButton;
-        private System.Windows.Forms.Button NextButton;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel ListaPanel;
     }
 }

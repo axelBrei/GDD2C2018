@@ -41,16 +41,21 @@ namespace PalcoNet.Abm_Rol
 
         private void funcionalidadesCheckboxList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckedListBox listBox = (CheckedListBox)sender;
-
-            Funcionalidad funcionalidad = funcionalidades.Find(elem => elem.descripcion == listBox.SelectedItem.ToString());
-            if (funcionalidadesDelRol.Contains(funcionalidad) & listBox.GetSelected(listBox.SelectedIndex))
+            try
             {
-                funcionalidadesDelRol.Remove(funcionalidad);
+                CheckedListBox listBox = (CheckedListBox)sender;
+
+                Funcionalidad funcionalidad = funcionalidades.Find(elem => elem.descripcion == listBox.SelectedItem.ToString());
+                if (funcionalidadesDelRol.Contains(funcionalidad) & listBox.GetSelected(listBox.SelectedIndex))
+                {
+                    funcionalidadesDelRol.Remove(funcionalidad);
+                }
+                else
+                {
+                    funcionalidadesDelRol.Add(funcionalidad);
+                }
             }
-            else {
-                funcionalidadesDelRol.Add(funcionalidad);
-            }
+            catch (Exception ex) { }
         }
 
         private void AceptarButton_Click(object sender, EventArgs e)
@@ -77,6 +82,15 @@ namespace PalcoNet.Abm_Rol
             this.Close();
         }
 
+        private void LimpiarButton_Click(object sender, EventArgs e)
+        {
+            nombreRol.Text = "";
+            funcionalidadesDelRol.Clear();
+            for (int i = 0; i < funcionalidadesCheckboxList.Items.Count; i++)
+            {
+                funcionalidadesCheckboxList.SetItemChecked(i, false);
+            }
 
+        }
     }
 }

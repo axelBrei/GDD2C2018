@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.CancelarButton = new System.Windows.Forms.Button();
             this.AceptarButton = new System.Windows.Forms.Button();
+            this.LimpiarButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -103,12 +104,27 @@
             this.AceptarButton.UseVisualStyleBackColor = false;
             this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
+            // LimpiarButton
+            // 
+            this.LimpiarButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LimpiarButton.BackColor = System.Drawing.Color.RosyBrown;
+            this.LimpiarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LimpiarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.LimpiarButton.Location = new System.Drawing.Point(12, 408);
+            this.LimpiarButton.Name = "LimpiarButton";
+            this.LimpiarButton.Size = new System.Drawing.Size(75, 23);
+            this.LimpiarButton.TabIndex = 6;
+            this.LimpiarButton.Text = "Limpiar";
+            this.LimpiarButton.UseVisualStyleBackColor = false;
+            this.LimpiarButton.Click += new System.EventHandler(this.LimpiarButton_Click);
+            // 
             // NuevRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(389, 443);
+            this.Controls.Add(this.LimpiarButton);
             this.Controls.Add(this.AceptarButton);
             this.Controls.Add(this.CancelarButton);
             this.Controls.Add(this.label2);
@@ -134,6 +150,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button CancelarButton;
         private System.Windows.Forms.Button AceptarButton;
+        private System.Windows.Forms.Button LimpiarButton;
 
     }
 }

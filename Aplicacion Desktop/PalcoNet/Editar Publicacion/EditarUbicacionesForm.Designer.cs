@@ -48,8 +48,9 @@
             // 
             // AgregarUbicacionButton
             // 
-            this.AgregarUbicacionButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AgregarUbicacionButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AgregarUbicacionButton.BackColor = System.Drawing.Color.LightGray;
+            this.AgregarUbicacionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AgregarUbicacionButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.AgregarUbicacionButton.Location = new System.Drawing.Point(579, 95);
             this.AgregarUbicacionButton.Name = "AgregarUbicacionButton";
             this.AgregarUbicacionButton.Size = new System.Drawing.Size(118, 23);
@@ -60,8 +61,9 @@
             // 
             // ModificarButtton
             // 
-            this.ModificarButtton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ModificarButtton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ModificarButtton.BackColor = System.Drawing.Color.LightGray;
+            this.ModificarButtton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModificarButtton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ModificarButtton.Location = new System.Drawing.Point(579, 133);
             this.ModificarButtton.Name = "ModificarButtton";
             this.ModificarButtton.Size = new System.Drawing.Size(118, 23);
@@ -72,8 +74,9 @@
             // 
             // EliminarButton
             // 
-            this.EliminarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.EliminarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EliminarButton.BackColor = System.Drawing.Color.LightGray;
+            this.EliminarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EliminarButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.EliminarButton.Location = new System.Drawing.Point(579, 172);
             this.EliminarButton.Name = "EliminarButton";
             this.EliminarButton.Size = new System.Drawing.Size(118, 23);

@@ -84,7 +84,7 @@ namespace PalcoNet.Abm_Cliente
                 cli.telefono = TelefonoCliente.Text;
                 cli.cuil = CuilCliente.Text.Trim();
                 cli.direccion = dirDelCliente;
-                cli.fechaCreacion = Utils.getFecha();
+                cli.fechaCreacion = Generals.getFecha();
                 cli.fechaNacimiento = FechaNacimientoCliente.Value;
                 cli.TipoDocumento = ListaTiposDocumento.SelectedItem.ToString();
                 return cli;
@@ -119,6 +119,18 @@ namespace PalcoNet.Abm_Cliente
             this.Close();
         }
 
+        public void LimpiarButton_Click(object sender, EventArgs e)
+        {
+            NombreCliente.Text = "";
+            ApellidoCliente.Text = "";
+            MailCliente.Text = "";
+            TelefonoCliente.Text = "";
+            CuilCliente.Text = "";
+            dirDelCliente = null;
+            FechaNacimientoCliente.Value = Generals.getFecha();
+            DniCliente.Text = "";
+            ListaTiposDocumento.SelectedIndex = 0;
+        }
 
         // ----------------------------- VALIDAR CAMPOS REQUERIDOS ---------------------------
         private string getCamposRequeridos() {
@@ -126,6 +138,7 @@ namespace PalcoNet.Abm_Cliente
 
             if (NombreCliente.Text.Length == 0) requeridos += "Nombre \n";
             if (ApellidoCliente.Text.Length == 0) requeridos += "Apellido \n";
+            if (DniCliente.Text.Length == 0) requeridos += "Dni \n";
             if (MailCliente.Text.Length == 0) requeridos += "Mail \n";
             if (TelefonoCliente.Text.Length == 0) requeridos += "Telefono \n";
             if (CuilCliente.Text.Length == 0) requeridos += "Nombre \n";
@@ -156,6 +169,8 @@ namespace PalcoNet.Abm_Cliente
                 e.Cancel = true;
             }
         }
+
+        
 
        
 

@@ -24,7 +24,7 @@ namespace PalcoNet.Listado_Estadistico
             InitializeComponent();
             estadisticasDao = new EstadisticasDao();
 
-            for (int i = Utils.getFecha().Year + 1; i >= 2000; i--)
+            for (int i = Generals.getFecha().Year + 1; i >= 2000; i--)
             {
                 this.AñoComboBox.Items.Add(i.ToString());
             }

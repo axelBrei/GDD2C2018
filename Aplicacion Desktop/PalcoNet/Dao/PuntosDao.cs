@@ -104,7 +104,7 @@ namespace PalcoNet.Dao
             pre.id = (int) r.GetSqlDecimal(0);
             pre.puntosNecesarios = (int)r.GetSqlDecimal(1);
             pre.nombre = r.IsDBNull(2) ? null : r.GetSqlString(2).ToString();
-            pre.fechaVencimiento = r.IsDBNull(3) ? Utils.getFechaMinima() : (DateTime)r.GetSqlDateTime(3);
+            pre.fechaVencimiento = r.IsDBNull(3) ? Generals.getFechaMinima() : (DateTime)r.GetSqlDateTime(3);
 
 
             return pre;

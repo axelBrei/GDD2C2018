@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Model
 {
-    interface Registrable
+    public interface Registrable
     {
         int getId();
         string getNombre();

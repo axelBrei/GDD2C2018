@@ -84,6 +84,17 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
             this.Close();
         }
 
+        public void LimpiarButton_Click(object sender, EventArgs e)
+        {
+            RazonSocialEmpresa.Text = "";
+            MailEmpresa1.Text = "";
+            telefonoEmpresa1.Text = "";
+            CuitEmpresa.Text = "";
+            dirEmpresa = null;
+
+        }
+
+
         // --------------------------- VALIDAR CAMPOS REQUERIDOS--------------------------------------------------
         private string getCamposRequeridos()
         {
@@ -92,7 +103,6 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
             if (RazonSocialEmpresa.Text.Length == 0) requeridos += "Nombre \n";
             if (MailEmpresa1.Text.Length == 0) requeridos += "Mail \n";
             if (telefonoEmpresa1.Text.Length == 0) requeridos += "Telefono \n";
-            if (CuitEmpresa.Text.Length == 0) requeridos += "Nombre \n";
             if (dirEmpresa == null) requeridos += "Direccion \n";
             if (!CuilValidator.validarCuit(CuitEmpresa.Text.Trim())) requeridos += "Cuit \n";
             return requeridos;
@@ -109,11 +119,12 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
         private void telefonoEmpresa1_Validating(object sender, CancelEventArgs e)
         {
             if (!Validator.esTelefonoValido(telefonoEmpresa1.Text.Trim())) {
-                errorProveide.SetError(CuitEmpresa, "El Telefono debe ser unicamente numerico");
+                errorProveide.SetError(telefonoEmpresa1, "El Telefono debe ser unicamente numerico");
                 e.Cancel = true;
             }
         }
 
+        
         
         
 

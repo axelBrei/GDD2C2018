@@ -71,7 +71,7 @@ namespace PalcoNet.Dao
                 "@localidad = '" + empresa.direccion.localidad + "'," +
                 "@codigoPostal = '" + empresa.direccion.codigoPostal + "'," +
                 "@ciudad = '" + empresa.direccion.ciudad + "'," +
-                "@fechaCreacion = '" + Utils.getFecha() +"'";
+                "@fechaCreacion = '" + Generals.getFecha() + "'";
             try
             {
                 DatabaseConection.executeNoParamFunction(query);

@@ -134,8 +134,9 @@
             // 
             // ListaComprasButton
             // 
-            this.ListaComprasButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ListaComprasButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ListaComprasButton.BackColor = System.Drawing.Color.LightGray;
+            this.ListaComprasButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListaComprasButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ListaComprasButton.Location = new System.Drawing.Point(10, 58);
             this.ListaComprasButton.Name = "ListaComprasButton";
             this.ListaComprasButton.Size = new System.Drawing.Size(131, 23);
@@ -155,11 +156,12 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Desktop;
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(572, 20);
+            this.button2.BackColor = System.Drawing.Color.LightGray;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button2.Location = new System.Drawing.Point(568, 20);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 47);
+            this.button2.Size = new System.Drawing.Size(79, 47);
             this.button2.TabIndex = 0;
             this.button2.Text = "Rendir Comisiones";
             this.button2.UseVisualStyleBackColor = false;
@@ -167,8 +169,9 @@
             // 
             // SeleccionarButton
             // 
-            this.SeleccionarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.SeleccionarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SeleccionarButton.BackColor = System.Drawing.Color.LightGray;
+            this.SeleccionarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeleccionarButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.SeleccionarButton.Location = new System.Drawing.Point(6, 18);
             this.SeleccionarButton.Name = "SeleccionarButton";
             this.SeleccionarButton.Size = new System.Drawing.Size(136, 20);
@@ -190,8 +193,9 @@
             // 
             // DetalleButton
             // 
-            this.DetalleButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.DetalleButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DetalleButton.BackColor = System.Drawing.Color.LightGray;
+            this.DetalleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DetalleButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.DetalleButton.Location = new System.Drawing.Point(11, 19);
             this.DetalleButton.Name = "DetalleButton";
             this.DetalleButton.Size = new System.Drawing.Size(133, 23);
@@ -223,7 +227,7 @@
             this.Empresa.Size = new System.Drawing.Size(653, 56);
             this.Empresa.TabIndex = 9;
             this.Empresa.TabStop = false;
-            this.Empresa.Text = "groupBox1";
+            this.Empresa.Text = "Seleccion de empresa";
             // 
             // RazonSocialTextBox
             // 

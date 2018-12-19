@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace PalcoNet.Model
 {
-    class Usuario
+    public class Usuario
     {
         public int id { get; set; }
         public string usuario { get; set; }
         public int intentos { get; set; }
         public List<Rol> roles { get; set; }
         public Registrable usuarioRegistrable { get; set; }
+        public int habilitado { get; set; }
 
         public Usuario() { 
             roles = new List<Rol>();

@@ -42,6 +42,7 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.AceptarButton = new System.Windows.Forms.Button();
             this.DatosPanel = new System.Windows.Forms.Panel();
+            this.LimpiarButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.TipoUsuariogroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +92,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGray;
+            this.panel1.Controls.Add(this.LimpiarButton);
             this.panel1.Controls.Add(this.TipoUsuariogroupBox);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.UsuarioTextBox);
@@ -189,6 +191,18 @@
             this.DatosPanel.Size = new System.Drawing.Size(367, 399);
             this.DatosPanel.TabIndex = 34;
             // 
+            // LimpiarButton
+            // 
+            this.LimpiarButton.BackColor = System.Drawing.Color.LightGray;
+            this.LimpiarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LimpiarButton.Location = new System.Drawing.Point(12, 406);
+            this.LimpiarButton.Name = "LimpiarButton";
+            this.LimpiarButton.Size = new System.Drawing.Size(75, 23);
+            this.LimpiarButton.TabIndex = 35;
+            this.LimpiarButton.Text = "Limpiar";
+            this.LimpiarButton.UseVisualStyleBackColor = false;
+            this.LimpiarButton.Click += new System.EventHandler(this.LimpiarButton_Click);
+            // 
             // RegistrarUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,5 +240,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button AceptarButton;
         private System.Windows.Forms.Panel DatosPanel;
+        private System.Windows.Forms.Button LimpiarButton;
     }
 }

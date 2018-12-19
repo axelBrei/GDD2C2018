@@ -44,7 +44,7 @@ namespace PalcoNet.Canje_Puntos
                 this.PuntosLabel.Visible = false;
                 premiosForm.CanjearButton.Enabled = false;
             }
-            else if (DateTime.Compare((DateTime)cli.vencimientoPuntos, Utils.getFecha()) < 0)
+            else if (DateTime.Compare((DateTime)cli.vencimientoPuntos, Generals.getFecha()) < 0)
             {
                 // PUNTOS VENCIDOS
                 premiosForm.CanjearButton.Enabled = false;

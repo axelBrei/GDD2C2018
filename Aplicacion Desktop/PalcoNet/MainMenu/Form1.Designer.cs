@@ -118,7 +118,7 @@
             this.Name = "Form1";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "PalcoNet";
+            this.Text = "  ";
             this.TopMost = true;
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();

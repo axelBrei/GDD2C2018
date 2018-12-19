@@ -16,6 +16,7 @@ using PalcoNet.UserData;
 using System.Data.SqlClient;
 using PalcoNet.ConectionUtils;
 using PalcoNet.Editar_Publicacion;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Generar_Publicacion
 {
@@ -51,7 +52,7 @@ namespace PalcoNet.Generar_Publicacion
         {
             InitializeComponent();
             // Dia Minimo: ayer
-            fechaMinima = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            fechaMinima = Generals.getFechaMinima().Subtract(new TimeSpan(1,0,0,0));
             fechasDeLaPublicacion.Add(fechaMinima);
             this.FechaEventoTimePicker.MinDate = fechaMinima;
             this.FechaEventoTimePicker.Value = fechaMinima;
@@ -65,10 +66,7 @@ namespace PalcoNet.Generar_Publicacion
             InitializeComponent();
             // INICIALIZO DATOS COMUNES
             initContent();
-            // CARGO LOS DATOS DE LAS FECHAS
-            fechaMinima = ( (DateTime)publicacion.fechaEvento).Date;
-            this.FechaEventoTimePicker.MinDate = fechaMinima.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
-            //this.FechaEventoTimePicker.Value = fechaMinima.Date;
+            
             // CARGO LOS DATOS DE LA DIRECCION
             direccionPublicacion = publicacion.espectaculo.direccion;
             this.DireccionTextBox.Text = publicacion.espectaculo.direccion;
@@ -86,6 +84,14 @@ namespace PalcoNet.Generar_Publicacion
             publicacion.ubicaciones.ForEach(elem => {
                 this.UbicacionesListView.Items.Add(getItemDeUbicacion(elem));
             });
+            // CARGO LOS DATOS DE LAS FECHAS
+
+            fechasDeLaPublicacion.Add( (DateTime) publicacion.fechaEvento);
+
+            fechaMinima = ((DateTime)publicacion.fechaEvento).Subtract(new TimeSpan(1, 0, 0, 0));
+            this.FechaEventoTimePicker.MinDate = fechaMinima;
+            this.FechaEventoTimePicker.Value = (DateTime) publicacion.fechaEvento;
+            this.HoraEventoTimePicker.Value = ((DateTime)publicacion.fechaEvento);
 
             this.button2.Visible = false;
             this.ClearFormButton.Visible = false;
@@ -105,7 +111,7 @@ namespace PalcoNet.Generar_Publicacion
             espectaculosDao = new EspectaculosDao();
             controller = new PublicacionesController();
 
-            rubrosDao.getRubros().ForEach(
+            rubrosDao.getRubros().Skip(1).ToList().ForEach(
                 elem => RubroComboBox.Items.Add(elem)
             );
 

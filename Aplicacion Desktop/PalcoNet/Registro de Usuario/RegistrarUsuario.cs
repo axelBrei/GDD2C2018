@@ -108,6 +108,18 @@ namespace PalcoNet.Registro_de_Usuario
             this.Close();
         }
 
+        private void LimpiarButton_Click(object sender, EventArgs e)
+        {
+            UsuarioTextBox.Text = "";
+            PasswordTextBox.Text = "";
+            if (tipoUsuario == TIPO_CLIENTE) {
+                altaClieForm.LimpiarButton_Click(null, null);
+            }
+            else if (tipoUsuario == TIPO_EMPRESA) {
+                altaEmpresaForm.LimpiarButton_Click(null, null);
+            }
+        }
+
         private void AceptarButton_Click(object sender, EventArgs e)
         {
             try
@@ -159,6 +171,8 @@ namespace PalcoNet.Registro_de_Usuario
 
             return resp;
         }
+
+        
 
         
         

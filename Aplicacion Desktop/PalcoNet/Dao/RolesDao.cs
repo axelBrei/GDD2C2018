@@ -99,6 +99,73 @@ namespace PalcoNet.Dao
             return rolesList;
         }
 
+        public List<Rol> getRolesPorUserId(int rolId) {
+            string query = "SELECT rol_cod, rol_nombre, rol_dado_baja, func_id, func_desc " +
+                "FROM TheBigBangQuery.Rol JOIN TheBigBangQuery.Funcionalidades_rol ON (fpr_rol = rol_cod) " +
+                "JOIN TheBigBangQuery.Funcionalidad ON (func_id = fpr_id) " +
+                "JOIN TheBigBangQuery.Roles_usuario ON (rolu_rol = rol_cod) " +
+                "WHERE rolu_usuario = @rolId " +
+                "Order by rol_nombre ASC";
+            List<Rol> rolesList = new List<Rol>();
+            SqlDataReader reader = null;
+            try
+            {
+                SqlCommand command = new SqlCommand(query);
+
+                command.Parameters.AddWithValue("@rolId", rolId);
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    Rol rol = new Rol();
+                    Funcionalidad fun = new Funcionalidad();
+
+                    reader.Read();
+
+                    rol.id = (int)reader.GetSqlDecimal(0);
+                    rol.nombre = (string)reader.GetSqlString(1);
+                    rol.bajaLogica = (DateTime)reader.GetSqlDateTime(2);
+
+
+                    fun.id = (int)reader.GetSqlDecimal(3);
+                    fun.descripcion = (string)reader.GetSqlString(4);
+                    rol.agregarFuncionalidad(fun);
+
+                    while (reader.Read())
+                    {
+                        string rolNombre = (string)reader.GetSqlString(1);
+                        if (rolNombre.Equals(rol.nombre))
+                        {
+                            fun = new Funcionalidad();
+                            fun.id = (int)reader.GetSqlDecimal(3);
+                            fun.descripcion = (string)reader.GetSqlString(4);
+                            rol.agregarFuncionalidad(fun);
+                        }
+                        else
+                        {
+                            rolesList.Add(rol);
+                            rol = new Rol();
+                            rol.id = (int)reader.GetSqlDecimal(0);
+                            rol.nombre = rolNombre;
+                            rol.bajaLogica = (DateTime)reader.GetSqlDateTime(2);
+
+                            fun = new Funcionalidad();
+                            fun.id = (int)reader.GetSqlDecimal(3);
+                            fun.descripcion = (string)reader.GetSqlString(4);
+                            rol.agregarFuncionalidad(fun);
+                        }
+                    }
+                    rolesList.Add(rol);
+                }
+            }
+            catch (Exception e) { }
+            finally
+            {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close();
+            }
+            return rolesList;
+        }
+
         public Rol getRolPorId(int rolId) {
             string query = "SELECT rol_cod, rol_nombre, func_id, func_desc " +
                 "FROM TheBigBangQuery.Rol JOIN TheBigBangQuery.Funcionalidades_rol ON (fpr_rol = rol_cod) " +

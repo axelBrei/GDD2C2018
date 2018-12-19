@@ -77,7 +77,7 @@ namespace PalcoNet.Comprar
 
             
             compra.ubicaciones = ubicaciones;
-            compra.fechaCompra = Utils.getFecha();
+            compra.fechaCompra = Generals.getFecha();
             compra.cantidad = ubicaciones.Count;
             Cliente clie = new Cliente();
             compra.cli = clie;

@@ -72,7 +72,8 @@ namespace PalcoNet.Historial_Cliente
             if (compras.Count == 0)
             {
                 paginaActual--;
-                MessageBox.Show("No hay mas paginas con historial de compras para mostrar");
+                if (paginaActual != 0)
+                    MessageBox.Show("No hay mas paginas con historial de compras para mostrar");
             }
             else {
                 this.HistorialListView.Items.Clear();
@@ -139,7 +140,7 @@ namespace PalcoNet.Historial_Cliente
         private void BackButton_Click(object sender, EventArgs e)
         {
             if (this.onBackPress != null) {
-                this.Close();
+                this.Hide();
                 this.onBackPress();
             }
         }
@@ -165,6 +166,20 @@ namespace PalcoNet.Historial_Cliente
                 compraSeleccionada = (Compra)((ListView)sender).SelectedItems[0].Tag;
             }
             catch (Exception ec) { }
+        }
+
+        private void HistorialCliente_Load(object sender, EventArgs e)
+        {
+            Usuario user = UserData.UserData.getUsuario();
+            if (this.HistorialListView.Items.Count == 0 && user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_ADMIN) {
+                if (MessageBox.Show("El cliente no posee compras realizadas.\nDesea volver?","", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                    this.BackButton_Click(null, null);
+                }
+            }
+            else if (this.HistorialListView.Items.Count == 0 && user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
+            {
+                MessageBox.Show("No posee compras registradas");
+            }
         }
 
     }

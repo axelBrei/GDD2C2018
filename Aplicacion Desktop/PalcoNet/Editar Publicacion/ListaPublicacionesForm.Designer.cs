@@ -28,26 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PublicacionesListView = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.EditarButton = new System.Windows.Forms.Button();
+            this.PublicacionesPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // PublicacionesListView
-            // 
-            this.PublicacionesListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PublicacionesListView.FullRowSelect = true;
-            this.PublicacionesListView.GridLines = true;
-            this.PublicacionesListView.Location = new System.Drawing.Point(12, 69);
-            this.PublicacionesListView.MultiSelect = false;
-            this.PublicacionesListView.Name = "PublicacionesListView";
-            this.PublicacionesListView.Size = new System.Drawing.Size(586, 516);
-            this.PublicacionesListView.TabIndex = 0;
-            this.PublicacionesListView.UseCompatibleStateImageBehavior = false;
-            this.PublicacionesListView.View = System.Windows.Forms.View.Details;
-            this.PublicacionesListView.SelectedIndexChanged += new System.EventHandler(this.PublicacionesListView_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -61,8 +45,9 @@
             // 
             // EditarButton
             // 
-            this.EditarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.EditarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EditarButton.BackColor = System.Drawing.Color.LightGray;
+            this.EditarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EditarButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.EditarButton.Location = new System.Drawing.Point(612, 69);
             this.EditarButton.Name = "EditarButton";
             this.EditarButton.Size = new System.Drawing.Size(75, 23);
@@ -71,16 +56,23 @@
             this.EditarButton.UseVisualStyleBackColor = false;
             this.EditarButton.Click += new System.EventHandler(this.EditarButton_Click);
             // 
+            // PublicacionesPanel
+            // 
+            this.PublicacionesPanel.Location = new System.Drawing.Point(17, 49);
+            this.PublicacionesPanel.Name = "PublicacionesPanel";
+            this.PublicacionesPanel.Size = new System.Drawing.Size(589, 578);
+            this.PublicacionesPanel.TabIndex = 3;
+            // 
             // ListaPublicacionesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(717, 593);
+            this.ClientSize = new System.Drawing.Size(717, 639);
             this.ControlBox = false;
+            this.Controls.Add(this.PublicacionesPanel);
             this.Controls.Add(this.EditarButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.PublicacionesListView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -94,8 +86,8 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView PublicacionesListView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button EditarButton;
+        private System.Windows.Forms.Panel PublicacionesPanel;
     }
 }

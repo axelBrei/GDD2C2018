@@ -7,7 +7,7 @@ using System.Configuration;
 
 namespace PalcoNet.Constants
 {
-    class Utils
+    class Generals
     {
         public static DateTime getFecha() {
             DateTime fecha = new DateTime();

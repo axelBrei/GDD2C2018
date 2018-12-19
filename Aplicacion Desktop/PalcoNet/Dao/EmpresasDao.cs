@@ -128,7 +128,7 @@ namespace PalcoNet.Dao
         public void habilitarODesahabilitarEmpresa(Empresa empresa) {
             string query = "UPDATE TheBigBangQuery.Empresa " +
                             "SET empr_dado_baja = " + 
-                                (empresa.bajaLogica != null ? "'"+DateTime.Now.ToString("yyyy-dd-MM")+"'" : "NULL" )  +
+                                (empresa.bajaLogica != null ? "'"+Generals.getFecha().ToString("yyyy-dd-MM")+"'" : "NULL" )  +
                             " WHERE empr_id = 1";
             try
             {

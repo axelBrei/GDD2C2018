@@ -50,8 +50,10 @@ namespace PalcoNet.Usuarios
         private void actualizarRolesDelUsuario() {
             rolesTotales.ForEach(elem =>
             {
-                bool check = usuario.roles.Contains(elem);
-                this.RolesListView.Items.Add(getItemDelRol(elem, check));
+                if (elem.bajaLogica == DateTime.Parse("01/01/1900")) {
+                    bool check = usuario.roles.Contains(elem);
+                    this.RolesListView.Items.Add(getItemDelRol(elem, check));
+                }
 
             });
         }
@@ -134,6 +136,8 @@ namespace PalcoNet.Usuarios
                                 usuario.id
                         );
                         MessageBox.Show("Contraseña modificada con exito!");
+                        ContraseñaActualTextBox.Text = "";
+                        NuevaContraseñaTextBox.Text = "";
                     }
                     else
                         MessageBox.Show("La nueva contraseña debe ser distinta de la actual");
@@ -159,6 +163,11 @@ namespace PalcoNet.Usuarios
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void RolesListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

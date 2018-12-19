@@ -26,6 +26,7 @@ namespace PalcoNet.Generar_Publicacion
         {
             InitializeComponent();
             this.fechaAnterior = lastDate;
+            fecha = lastDate;
             this.index = index;
             this.CheckboxHabilitado.Checked = true;
             this.PickerFecha.MinDate = fechaAnterior;
@@ -66,17 +67,18 @@ namespace PalcoNet.Generar_Publicacion
 
         private void PickerFecha_ValueChanged(object sender, EventArgs e)
         {
-            DateTimePicker picker = (DateTimePicker)sender;
             try
             {
-                if (picker.Value.Date.CompareTo(fechaAnterior.Date) < 0)
+                if (PickerFecha.Value.CompareTo(fechaAnterior.Date) < 0)
                 {
                     MessageBox.Show("La fecha introducida es anterior a la fecha ya establecida anteriormente");
                 }
-                else { 
-                    fecha = picker.Value.Date;
-                    if (this.onDateChange != null)
-                        this.onDateChange(fecha, index);
+                else {
+                    if (this.onDateChange != null) {
+                        fecha = PickerFecha.Value;
+                        this.onDateChange(PickerFecha.Value, index);
+                    }
+                        
                 }
                 
 
@@ -87,18 +89,18 @@ namespace PalcoNet.Generar_Publicacion
 
         private void PickerHora_ValueChanged(object sender, EventArgs e)
         {
-            DateTimePicker picker = (DateTimePicker)sender;
             try
             {
-                if (picker.Value.TimeOfDay.CompareTo(fechaAnterior.TimeOfDay) < 0)
+                if (PickerHora.Value.CompareTo(fechaAnterior) < 0)
                 {
                     MessageBox.Show("La fecha introducida es anterior a la fecha ya establecida anteriormente");
                 }
                 else {
-                    fecha = fecha.AddHours(picker.Value.Hour);
-                    fecha = fecha.AddMinutes(picker.Value.Minute);
+                    DateTime fechaModif = fecha.Date;
+                     fechaModif = fechaModif.AddHours(PickerHora.Value.Hour);
+                     fechaModif = fechaModif.AddMinutes(PickerHora.Value.Minute);
                     if (this.onDateChange != null)
-                        this.onDateChange(fecha, index);
+                        this.onDateChange(fechaModif, index);
                 }
                 
             }

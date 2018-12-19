@@ -27,6 +27,8 @@ namespace PalcoNet.Canje_Puntos
             InitializeComponent();
             cliente = cli;
 
+            actualizarPuntos();
+
             premiosForm = new PremiosListForm(cli);
             premiosForm.TopLevel = false;
             premiosForm.AutoScroll = true;
@@ -61,6 +63,19 @@ namespace PalcoNet.Canje_Puntos
     
         }
 
+        private void actualizarPuntos() {
+            try
+            {
+                cliente.puntos = new ClientesDao().getPuntosDelCliente(cliente.id);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                cliente.puntos = 0;
+            }
+            PuntosLabel.Text = cliente.puntos.ToString();
+        }
+
         private void onBackBtnPress(object sender,EventArgs e){
             if (this.onBackPress != null)
                 this.onBackPress();
@@ -79,7 +94,10 @@ namespace PalcoNet.Canje_Puntos
         }
 
         private void onCanjePuntos(int puntosRestados) {
-            this.PuntosLabel.Text = ((int)cliente.puntos - puntosRestados).ToString();
+
+            cliente.puntos = (int)cliente.puntos - puntosRestados;
+            premiosForm.cliente = cliente;
+            this.PuntosLabel.Text = cliente.puntos.ToString();
         }
 
         private void PuntosForm_Load(object sender, EventArgs e)

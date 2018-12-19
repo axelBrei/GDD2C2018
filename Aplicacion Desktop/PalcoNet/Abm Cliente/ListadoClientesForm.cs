@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.Dao;
 using PalcoNet.Model;
 using PalcoNet.Registro_de_Usuario;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Abm_Cliente
 {
@@ -155,7 +156,7 @@ namespace PalcoNet.Abm_Cliente
             try
             {
                 bool isHabilitado = clienteSeleccionado.bajaLogica == null;
-                if (!isHabilitado) clienteSeleccionado.bajaLogica = DateTime.Now;
+                if (!isHabilitado) clienteSeleccionado.bajaLogica = Generals.getFecha();
                 clientesDao.habilitarODesabilitarCliente(clienteSeleccionado);
                 ((ListViewItem)ListaCliente.SelectedItems[0]).ForeColor = isHabilitado ? Color.Gray : Color.Black;
             }

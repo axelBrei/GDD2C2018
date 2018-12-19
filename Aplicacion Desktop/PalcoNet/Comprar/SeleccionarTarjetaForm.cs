@@ -115,6 +115,22 @@ namespace PalcoNet.Comprar
                 
             }
         }
+
+        private void EliminarTarjetaButton_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Esta seguro que desea eliminar la tarjeta", "Advertencia", MessageBoxButtons.YesNo))
+            {
+                tarjetasDao.elminarTarjetaDelCliente(cliente.id, tarjetaSeleccionada.id);
+                tarjetaSeleccionada = null;
+                TarjetasListView.Items.Clear();
+                tarjetasDao.getTardejtasDelCliente(cliente.id).ForEach(elem => { 
+                    TarjetasListView.Items.Add(creatItemDeTarjeta(elem));
+                });
+
+            }
+        }
+
+
         private string esTarjetaValida(Tarjeta tar) {
             string res = "";
             if(tar.numero.Length == 0) res += "Numero de tarjeta \n";
@@ -124,5 +140,7 @@ namespace PalcoNet.Comprar
 
             return res;
         }
+
+        
     }
 }

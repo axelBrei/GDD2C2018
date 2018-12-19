@@ -11,6 +11,7 @@ using PalcoNet.Model;
 using PalcoNet.Dao;
 using PalcoNet.Exceptions;
 using System.Data;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Abm_Grado
 {
@@ -114,7 +115,7 @@ namespace PalcoNet.Abm_Grado
         {
             GradosListView.Items[indexSeleccionado].ForeColor = gradoSeleccionado.bajaLogica == null ? Color.Gray : Color.Black;
             if (gradoSeleccionado.bajaLogica == null)
-                gradoSeleccionado.bajaLogica = DateTime.Now.Date;
+                gradoSeleccionado.bajaLogica = Generals.getFecha().Date;
             else
                 gradoSeleccionado.bajaLogica = null;
             dao.habilitarODeshabilitarGrado(gradoSeleccionado);

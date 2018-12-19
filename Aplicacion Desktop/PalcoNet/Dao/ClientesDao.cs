@@ -76,7 +76,8 @@ namespace PalcoNet.Dao
         public void insertarCliente(Cliente cliente, string contraseña) {
             string query = "[TheBigBangQuery].[InsertarNuevoClienteConUsuario]";
             SqlDataReader reader = null;
-            try {
+            try
+            {
                 SqlCommand command = new SqlCommand(query);
                 command.CommandText = query;
                 command.CommandType = CommandType.StoredProcedure;
@@ -84,12 +85,12 @@ namespace PalcoNet.Dao
                 command.Parameters.AddWithValue("@usuario", cliente.usuario.Trim());
                 command.Parameters.AddWithValue("@contraseña", contraseña.Trim());
                 command.Parameters.AddWithValue("@nombre", cliente.nombre.Trim());
-                command.Parameters.AddWithValue("@apellido",cliente.apellido);
-                command.Parameters.AddWithValue("@tipoDoc",cliente.TipoDocumento.Trim());
-                command.Parameters.AddWithValue("@documento",cliente.documento.Trim());
-                command.Parameters.AddWithValue("@cuil",cliente.cuil.Trim());
-                command.Parameters.AddWithValue("@mail",cliente.mail.Trim());
-                command.Parameters.AddWithValue("@telefono",cliente.telefono.Trim());
+                command.Parameters.AddWithValue("@apellido", cliente.apellido);
+                command.Parameters.AddWithValue("@tipoDoc", cliente.TipoDocumento.Trim());
+                command.Parameters.AddWithValue("@documento", cliente.documento.Trim());
+                command.Parameters.AddWithValue("@cuil", cliente.cuil.Trim());
+                command.Parameters.AddWithValue("@mail", cliente.mail.Trim());
+                command.Parameters.AddWithValue("@telefono", cliente.telefono.Trim());
                 command.Parameters.AddWithValue("@calle", cliente.direccion.calle.Trim());
                 command.Parameters.AddWithValue("@altura", cliente.direccion.numero.Trim());
                 command.Parameters.AddWithValue("@piso", cliente.direccion.piso.Trim());
@@ -101,8 +102,16 @@ namespace PalcoNet.Dao
 
                 DatabaseConection.executeNoParamFunction(command);
             }
-            catch(Exception e){
-                throw new SqlInsertException("No se ha podido procesar el alta del cliente",0);
+            catch (SqlException e) { 
+                if(e.Message.Contains("dni")){
+                    throw new SqlInsertException("Ya existe un usuario con el dni ingresado",0);
+                }else{
+                    throw new SqlInsertException("Ya existe un usuario con el cuir ingresado",0);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new SqlInsertException("No se ha podido procesar el alta del cliente", 0);
             }
         }
 
@@ -121,6 +130,32 @@ namespace PalcoNet.Dao
                 return null;
             }
             return clientes;
+        }
+
+        public int getPuntosDelCliente(int clieId) {
+            string query = "SELECT clie_puntos FROM TheBigBangQuery.Cliente WHERE clie_id = @clieId";
+            SqlDataReader reader = null;
+            try
+            {
+                SqlCommand command = new SqlCommand(query);
+                command.Parameters.AddWithValue("@clieId", clieId);
+
+                reader = DatabaseConection.executeQuery(command);
+                int ret = 0;
+                if (reader.HasRows) {
+                    reader.Read();
+                    ret = (int) reader.GetSqlDecimal(0);
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw new DataNotFoundException("No se han encontrado puntos registrados para el cliente");
+            }
+            finally {
+                if (reader != null && !reader.IsClosed)
+                    reader.Close();
+            }
         }
 
         public Cliente getClientePorId(int id) {

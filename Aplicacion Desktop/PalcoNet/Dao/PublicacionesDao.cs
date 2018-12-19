@@ -161,7 +161,7 @@ namespace PalcoNet.Dao
         }
 
 
-        public void actualizarPublicacion(Publicacion publicacion, SqlTransaction transaction) {
+        public void actualizarPublicacion(bool fechaActualizda,Publicacion publicacion, SqlTransaction transaction) {
             string procedure = "[TheBigBangQuery].[ActualizarPublicacion]";
             try
             {
@@ -176,21 +176,20 @@ namespace PalcoNet.Dao
                 command.Parameters.AddWithValue("@descipcion", publicacion.espectaculo.descripcion.ToString());
                 command.Parameters.AddWithValue("@direccion",  publicacion.espectaculo.direccion.ToString());
                 command.Parameters.AddWithValue("@idGradoPublicacion", publicacion.gradoPublicacion.id.ToString());
+                command.Parameters.AddWithValue("@fechaPublicacion", publicacion.fechaPublicacion);
+                command.Parameters.AddWithValue("@fechaEvento", publicacion.fechaEvento);
 
-                SqlParameter fechaPubliParam = new SqlParameter("@fechaPublicacion", SqlDbType.DateTime);
-                fechaPubliParam.Value = publicacion.fechaPublicacion;
-
-                SqlParameter fechaEventoParam = new SqlParameter("@fechaEvento", SqlDbType.DateTime);
-                fechaEventoParam.Value = publicacion.fechaEvento;
-
-                command.Parameters.Add(fechaPubliParam);
-                command.Parameters.Add(fechaEventoParam);
                 command.Parameters.AddWithValue("@estado", publicacion.estado);
+                command.Parameters.AddWithValue("@fechaActualizada", fechaActualizda ? 1 : 0);
 
                 DatabaseConection.executeNoParamFunction(command);
             }
             catch (Exception e) {
-                throw new SqlInsertException("No se ha podido actualizar la publicacion.", SqlInsertException.CODIGO_PUBLICACION);
+                if (e.Message.Contains("Ya existe")) {
+                    throw new SqlInsertException("No se puede actualizar la publicacion porque ya existe una del mismo espectaculo para la fecha seleccionada"
+                        , SqlInsertException.CODIGO_PUBLICACION);
+                }else
+                    throw new SqlInsertException("No se ha podido actualizar la publicacion.", SqlInsertException.CODIGO_PUBLICACION);
             }
         }
 
@@ -402,10 +401,12 @@ namespace PalcoNet.Dao
         }
 
         public int getUlitimaPaginaNoFiltro() {
-            string function = "SELECT [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]()";
+            string function = "SELECT [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@fechaActual)";
             try
             {
-                return DatabaseConection.executeParamFunction<int>(function);
+                SqlCommand command = new SqlCommand(function);
+                command.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
+                return DatabaseConection.executeParamFunction<int>(command);
             }
             catch (Exception e)
             {

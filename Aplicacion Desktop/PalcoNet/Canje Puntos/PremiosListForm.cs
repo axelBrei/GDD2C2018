@@ -17,7 +17,7 @@ namespace PalcoNet.Canje_Puntos
     {
         private PuntosDao puntosDao;
         private Premio premioActual;
-        private Cliente cliente;
+        public Cliente cliente { get; set; }
 
         public delegate void OnCanjePress(int puntosCanjeados);
         public event OnCanjePress onCanjePress;
@@ -64,7 +64,7 @@ namespace PalcoNet.Canje_Puntos
                     puntosDao.canjearPuntos(cliente.id, premioActual.puntosNecesarios);
                     MessageBox.Show("Puntos canjeados con exito!");
                     if (this.onCanjePress != null)
-                        this.onCanjePress((int)cliente.puntos - premioActual.puntosNecesarios);
+                        this.onCanjePress(premioActual.puntosNecesarios);
                 }
                 catch (Exception ex) {
                     MessageBox.Show("Error al canjear los puntos intente de nuevo mas tarde.");

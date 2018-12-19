@@ -49,7 +49,7 @@ namespace PalcoNet.Abm_Cliente
             CuilCliente.Text = cliente.cuil;
             cli.direccion = cliente.direccion;
             ListaTiposDocumento.SelectedItem = ListaTiposDocumento.Items[ListaTiposDocumento.Items.IndexOf(cliente.TipoDocumento)];
-            
+            ListaTiposDocumento.SelectedIndex = 0;
             FechaNacimientoCliente.Value = (DateTime)cliente.fechaNacimiento;
 
             AceptarButton.Visible = true;
@@ -68,6 +68,7 @@ namespace PalcoNet.Abm_Cliente
 
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE);
             direccionForm.getDireccion += this.getDireccionEvent;
+            ListaTiposDocumento.SelectedIndex = 0;
         }
 
         private void getDireccionEvent(Direccion dir) {
@@ -133,7 +134,7 @@ namespace PalcoNet.Abm_Cliente
         }
 
         // ----------------------------- VALIDAR CAMPOS REQUERIDOS ---------------------------
-        private string getCamposRequeridos() {
+        public string getCamposRequeridos() {
             string requeridos = "";
 
             if (NombreCliente.Text.Length == 0) requeridos += "Nombre \n";
@@ -165,7 +166,7 @@ namespace PalcoNet.Abm_Cliente
 
         private void cuilValidator(object sender, CancelEventArgs e) {
             if (!CuilValidator.validarCuit(CuilCliente.Text)) {
-                errorProveide.SetError(DniCliente, "Cuil Inválido, por favor reingreselo correctamente");
+                errorProveide.SetError(CuilCliente, "Cuil Inválido, por favor reingreselo correctamente");
                 e.Cancel = true;
             }
         }

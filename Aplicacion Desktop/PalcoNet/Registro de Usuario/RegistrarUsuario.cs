@@ -62,8 +62,8 @@ namespace PalcoNet.Registro_de_Usuario
             }else{
                 ClienteRadioButton.Checked = true;
                 EmpresaRadioButton.Checked = false;
-
             }
+            
         }
 
         private void mostrarEnPanel(Form form)
@@ -128,7 +128,9 @@ namespace PalcoNet.Registro_de_Usuario
                 {
                     registrarUsuario(UsuarioTextBox.Text.Trim(), PasswordTextBox.Text.Trim());
                 }
-                else if (UsuarioTextBox.Text.Length == 0 && PasswordTextBox.Text.Length == 0 &&
+                else if (UserData.UserData.getUsuario() != null &&
+                                UserData.UserData.getUsuario().usuarioRegistrable.getTipo() == UserData.UserData.TIPO_ADMIN &&
+                                UsuarioTextBox.Text.Length == 0 && PasswordTextBox.Text.Length == 0 &&
                         DialogResult.Yes == MessageBox.Show("Dese autogenerar el usuario y la contraseña", "Advertencia", MessageBoxButtons.YesNo)) {
                     string usuario = null;
                         if(tipoUsuario == TIPO_CLIENTE){
@@ -183,7 +185,8 @@ namespace PalcoNet.Registro_de_Usuario
             string resp = "";
             if (UsuarioTextBox.Text.Length == 0) resp += " Usuario \n";
             if (PasswordTextBox.Text.Length == 0) resp += "Contraseña \n";
-
+            if (tipoUsuario == TIPO_CLIENTE && altaClieForm.getCamposRequeridos().Length != 0) resp += altaClieForm.getCamposRequeridos();
+            if(tipoUsuario == TIPO_EMPRESA && altaEmpresaForm.getCamposRequeridos().Length != 0) resp += altaEmpresaForm.getCamposRequeridos();
             return resp;
         }
 

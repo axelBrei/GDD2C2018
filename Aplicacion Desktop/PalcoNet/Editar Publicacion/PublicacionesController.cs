@@ -93,10 +93,10 @@ namespace PalcoNet.Editar_Publicacion
         }
 
         public void actualizarPublicacion(Publicacion publicacion, SqlTransaction transaction,
-                                             List<Ubicacion> agregados = null, List<Ubicacion>eliminados = null) {
+                                             List<Ubicacion> agregados = null, List<Ubicacion>eliminados = null, bool fechaModificada = false) {
             try
             {
-                publicacionesDao.actualizarPublicacion(publicacion,transaction);
+                publicacionesDao.actualizarPublicacion(fechaModificada, publicacion,transaction);
                 if(agregados != null){
                     agregados.ForEach(elem => {
                         elem.id = ubicacionesDao.insertarUbicacion(elem,transaction);

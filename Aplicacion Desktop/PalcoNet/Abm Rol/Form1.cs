@@ -11,6 +11,7 @@ using PalcoNet.Model;
 using PalcoNet.UserData;
 using PalcoNet.Dao;
 using System.Drawing;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Abm_Rol
 {
@@ -135,11 +136,11 @@ namespace PalcoNet.Abm_Rol
             if (item.ForeColor == Color.Gray)
             {
                 // Le quito la baja logica al ROl
-                rol.bajaLogica = DateTime.MinValue;
+                rol.bajaLogica = Generals.getFechaMinima();
             }
             else { 
                 // Le agrego la baja logica con la fecha de hoy
-                rol.bajaLogica = DateTime.Now;
+                rol.bajaLogica = Generals.getFecha();
             }
             item.ForeColor = item.ForeColor == Color.Gray ? Color.Black : Color.Gray;
             RolesDao rolesDao = new RolesDao();

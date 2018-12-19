@@ -104,7 +104,6 @@ namespace PalcoNet
                     usuarioValido = loginDao.usuarioValido(username);
                     if (usuarioValido == false)
                     {
-                        // PINTAR DE ROJO EL CAMPO DE USAURIO
                         ErrorImage.Visible = true;
                     }
                     else { ErrorImage.Visible = false; }

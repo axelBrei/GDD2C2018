@@ -33,17 +33,17 @@
             this.NombreRolHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ContraseñaActualTextBox = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.NuevaContraseñaTextBox = new System.Windows.Forms.TextBox();
+            this.ContraseñaActualTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.IdLabel = new System.Windows.Forms.Label();
+            this.UsuarioLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.TitleLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.ModificarRolesButton = new System.Windows.Forms.Button();
-            this.UsuarioLabel = new System.Windows.Forms.Label();
-            this.IdLabel = new System.Windows.Forms.Label();
             this.VolverButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -70,6 +70,7 @@
             this.RolesListView.UseCompatibleStateImageBehavior = false;
             this.RolesListView.View = System.Windows.Forms.View.Details;
             this.RolesListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.RolesListView_ItemChecked);
+            this.RolesListView.SelectedIndexChanged += new System.EventHandler(this.RolesListView_SelectedIndexChanged);
             // 
             // idRolHeader
             // 
@@ -106,14 +107,25 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cambiar contraseña";
             // 
-            // label2
+            // button1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 66);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Nueva Contraseña";
+            this.button1.BackColor = System.Drawing.Color.LightGray;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(444, 27);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(93, 50);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Cambiar Contraseña";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // NuevaContraseñaTextBox
+            // 
+            this.NuevaContraseñaTextBox.Location = new System.Drawing.Point(131, 63);
+            this.NuevaContraseñaTextBox.Name = "NuevaContraseñaTextBox";
+            this.NuevaContraseñaTextBox.Size = new System.Drawing.Size(284, 20);
+            this.NuevaContraseñaTextBox.TabIndex = 4;
+            this.NuevaContraseñaTextBox.UseSystemPasswordChar = true;
             // 
             // ContraseñaActualTextBox
             // 
@@ -123,13 +135,14 @@
             this.ContraseñaActualTextBox.TabIndex = 3;
             this.ContraseñaActualTextBox.UseSystemPasswordChar = true;
             // 
-            // NuevaContraseñaTextBox
+            // label2
             // 
-            this.NuevaContraseñaTextBox.Location = new System.Drawing.Point(131, 63);
-            this.NuevaContraseñaTextBox.Name = "NuevaContraseñaTextBox";
-            this.NuevaContraseñaTextBox.Size = new System.Drawing.Size(284, 20);
-            this.NuevaContraseñaTextBox.TabIndex = 4;
-            this.NuevaContraseñaTextBox.UseSystemPasswordChar = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(28, 66);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(96, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Nueva Contraseña";
             // 
             // label3
             // 
@@ -158,6 +171,24 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Datos del usuario";
             // 
+            // IdLabel
+            // 
+            this.IdLabel.AutoSize = true;
+            this.IdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IdLabel.Location = new System.Drawing.Point(297, 26);
+            this.IdLabel.Name = "IdLabel";
+            this.IdLabel.Size = new System.Drawing.Size(0, 16);
+            this.IdLabel.TabIndex = 5;
+            // 
+            // UsuarioLabel
+            // 
+            this.UsuarioLabel.AutoSize = true;
+            this.UsuarioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UsuarioLabel.Location = new System.Drawing.Point(87, 26);
+            this.UsuarioLabel.Name = "UsuarioLabel";
+            this.UsuarioLabel.Size = new System.Drawing.Size(0, 16);
+            this.UsuarioLabel.TabIndex = 4;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -179,18 +210,6 @@
             this.TitleLabel.TabIndex = 4;
             this.TitleLabel.Text = "Datos del usuario";
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.LightGray;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(444, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 50);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Cambiar Contraseña";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // ModificarRolesButton
             // 
             this.ModificarRolesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -203,24 +222,6 @@
             this.ModificarRolesButton.Text = "Modificar roles";
             this.ModificarRolesButton.UseVisualStyleBackColor = false;
             this.ModificarRolesButton.Click += new System.EventHandler(this.ModificarRolesButton_Click);
-            // 
-            // UsuarioLabel
-            // 
-            this.UsuarioLabel.AutoSize = true;
-            this.UsuarioLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UsuarioLabel.Location = new System.Drawing.Point(87, 26);
-            this.UsuarioLabel.Name = "UsuarioLabel";
-            this.UsuarioLabel.Size = new System.Drawing.Size(0, 16);
-            this.UsuarioLabel.TabIndex = 4;
-            // 
-            // IdLabel
-            // 
-            this.IdLabel.AutoSize = true;
-            this.IdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IdLabel.Location = new System.Drawing.Point(297, 26);
-            this.IdLabel.Name = "IdLabel";
-            this.IdLabel.Size = new System.Drawing.Size(0, 16);
-            this.IdLabel.TabIndex = 5;
             // 
             // VolverButton
             // 

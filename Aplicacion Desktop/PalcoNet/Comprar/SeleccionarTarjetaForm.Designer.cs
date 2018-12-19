@@ -31,6 +31,7 @@
             this.TarjetasListView = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.EliminarTarjetaButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TarjetasListView
@@ -67,12 +68,25 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // EliminarTarjetaButton
+            // 
+            this.EliminarTarjetaButton.BackColor = System.Drawing.Color.LightGray;
+            this.EliminarTarjetaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EliminarTarjetaButton.Location = new System.Drawing.Point(17, 374);
+            this.EliminarTarjetaButton.Name = "EliminarTarjetaButton";
+            this.EliminarTarjetaButton.Size = new System.Drawing.Size(153, 23);
+            this.EliminarTarjetaButton.TabIndex = 3;
+            this.EliminarTarjetaButton.Text = "Eliminar Tarjeta";
+            this.EliminarTarjetaButton.UseVisualStyleBackColor = false;
+            this.EliminarTarjetaButton.Click += new System.EventHandler(this.EliminarTarjetaButton_Click);
+            // 
             // SeleccionarTarjetaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(507, 405);
+            this.Controls.Add(this.EliminarTarjetaButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TarjetasListView);
@@ -90,5 +104,6 @@
         private System.Windows.Forms.ListView TarjetasListView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button EliminarTarjetaButton;
     }
 }

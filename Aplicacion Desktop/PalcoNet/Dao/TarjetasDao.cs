@@ -66,6 +66,21 @@ namespace PalcoNet.Dao
             }
         }
 
+        public void elminarTarjetaDelCliente(int clieId, int idTarjeta) {
+            string query = "DELETE FROM [TheBigBangQuery].[Tarjetas] WHERE tarj_id = @tarjId AND tarj_cliente = @clieId";
+            try
+            {
+                SqlCommand command = new SqlCommand(query);
+                command.Parameters.AddWithValue("@tarjId", idTarjeta);
+                command.Parameters.AddWithValue("@clieId", clieId);
+
+                DatabaseConection.executeQuery(command).Close();
+            }
+            catch (Exception ex) {
+                throw new Exception("Error al intentar borrar la tarjeta");
+            }
+        }
+
         private Tarjeta parsearTarjetaDeReader(SqlDataReader reader) {
             Tarjeta tarjeta = new Tarjeta();
 

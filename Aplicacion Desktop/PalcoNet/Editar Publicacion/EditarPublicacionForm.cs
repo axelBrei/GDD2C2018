@@ -101,7 +101,7 @@ namespace PalcoNet.Editar_Publicacion
             SqlTransaction transaction = DatabaseConection.getInstance().BeginTransaction();
             try
             {
-                controller.actualizarPublicacion(publicacionActual, transaction, agregadas, eliminadas);
+                controller.actualizarPublicacion(publicacionActual, transaction, agregadas, eliminadas, publicacionForm.fechaModificada);
                 transaction.Commit();
                 if (this.publicacionEditadaHandler != null)
                     this.publicacionEditadaHandler(publicacionActual);

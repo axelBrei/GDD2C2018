@@ -16,7 +16,7 @@ namespace PalcoNet.Dao
 
         public void habilitarDeshabilitarUsuario(int userId, bool isHabilitado) { 
             string query = "UPDATE [TheBigBangQuery].[Usuario] " +
-                            "SET usua_habilitado = @habilitado " +
+                            "SET usua_habilitado = @habilitado, usua_n_intentos = 0" +
                             "WHERE usua_id = @userId";
             try
             {

@@ -36,8 +36,9 @@
             // 
             // AñadirButton
             // 
-            this.AñadirButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AñadirButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AñadirButton.BackColor = System.Drawing.Color.LightGray;
+            this.AñadirButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AñadirButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.AñadirButton.Location = new System.Drawing.Point(12, 390);
             this.AñadirButton.Name = "AñadirButton";
             this.AñadirButton.Size = new System.Drawing.Size(103, 23);
@@ -58,8 +59,9 @@
             // 
             // AceptarButton
             // 
-            this.AceptarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AceptarButton.BackColor = System.Drawing.Color.LightGray;
+            this.AceptarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AceptarButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.AceptarButton.Location = new System.Drawing.Point(364, 417);
             this.AceptarButton.Name = "AceptarButton";
             this.AceptarButton.Size = new System.Drawing.Size(75, 23);
@@ -70,8 +72,9 @@
             // 
             // CancelarButton
             // 
-            this.CancelarButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.CancelarButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.CancelarButton.BackColor = System.Drawing.Color.LightGray;
+            this.CancelarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CancelarButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.CancelarButton.Location = new System.Drawing.Point(283, 417);
             this.CancelarButton.Name = "CancelarButton";
             this.CancelarButton.Size = new System.Drawing.Size(75, 23);

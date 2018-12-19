@@ -21,14 +21,19 @@ namespace PalcoNet.Dao
                     "CONVERT(datetime, '" + rol.bajaLogica.ToString("yyyy-MM-dd HH:mm:ss") + "',20) " +
                 "WHERE rol_cod = " + rol.id;
 
-            if (rol.bajaLogica == DateTime.MinValue) {
+            if (rol.bajaLogica == DateTime.MinValue)
+            {
                 query = "UPDATE TheBigBangQuery.Rol " +
                 "SET rol_nombre= '" + rol.nombre + "', rol_dado_baja = NULL " +
                 "WHERE rol_cod = " + rol.id;
             }
-            
-            
-            
+            else {
+                string query2 = "DELETE FROM [TheBigBangQuery].[Roles_usuario] WHERE rolu_rol = @rolId";
+                SqlCommand command = new SqlCommand(query2);
+
+                command.Parameters.AddWithValue("@rolId", rol.id);
+                DatabaseConection.executeNoParamFunction(command);
+            }
             DatabaseConection.executeQuery(query).Close();
 
             

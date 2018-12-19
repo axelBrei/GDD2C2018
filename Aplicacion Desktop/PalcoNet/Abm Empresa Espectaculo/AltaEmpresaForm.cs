@@ -96,7 +96,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
 
         // --------------------------- VALIDAR CAMPOS REQUERIDOS--------------------------------------------------
-        private string getCamposRequeridos()
+        public string getCamposRequeridos()
         {
             string requeridos = "";
 

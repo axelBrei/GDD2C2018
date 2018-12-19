@@ -46,6 +46,7 @@ namespace PalcoNet.Generar_Publicacion
 
         private bool modificandoPublicacion = false;
         public Publicacion publicacionAModificar { get; set; }
+        public bool fechaModificada { get; set; }
 
 
         public GenerarPublicacionForm()
@@ -53,9 +54,9 @@ namespace PalcoNet.Generar_Publicacion
             InitializeComponent();
             // Dia Minimo: ayer
             fechaMinima = Generals.getFechaMinima().Subtract(new TimeSpan(1,0,0,0));
-            fechasDeLaPublicacion.Add(fechaMinima);
+            fechasDeLaPublicacion.Add(Generals.getFecha());
             this.FechaEventoTimePicker.MinDate = fechaMinima;
-            this.FechaEventoTimePicker.Value = fechaMinima;
+            this.FechaEventoTimePicker.Value = Generals.getFecha();
 
             initContent();
         }
@@ -88,7 +89,7 @@ namespace PalcoNet.Generar_Publicacion
 
             fechasDeLaPublicacion.Add( (DateTime) publicacion.fechaEvento);
 
-            fechaMinima = ((DateTime)publicacion.fechaEvento).Subtract(new TimeSpan(1, 0, 0, 0));
+            fechaMinima = Generals.getFecha();
             this.FechaEventoTimePicker.MinDate = fechaMinima;
             this.FechaEventoTimePicker.Value = (DateTime) publicacion.fechaEvento;
             this.HoraEventoTimePicker.Value = ((DateTime)publicacion.fechaEvento);
@@ -162,6 +163,7 @@ namespace PalcoNet.Generar_Publicacion
                 fechasDeLaPublicacion.Insert(0, time);
                 fechaMinima = time;
                 if (modificandoPublicacion) {
+                    fechaModificada = DateTime.Compare(fechaMinima, (DateTime)publicacionAModificar.fechaEvento) != 0;
                     publicacionAModificar.fechaEvento = time;
                 }
             }
@@ -183,6 +185,7 @@ namespace PalcoNet.Generar_Publicacion
                 fechasDeLaPublicacion.RemoveAt(0);
                 fechasDeLaPublicacion.Insert(0, fecha);
                 if (modificandoPublicacion) {
+                    fechaModificada = DateTime.Compare(fecha, (DateTime)publicacionAModificar.fechaEvento) != 0;
                     publicacionAModificar.fechaEvento = fecha;
                 }
             }
@@ -302,8 +305,10 @@ namespace PalcoNet.Generar_Publicacion
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-            if(rubro.descripcion.Equals("-")){
+            if(rubro == null || (rubro != null && rubro.descripcion.Equals("-"))){
                     MessageBox.Show("Debe seleccionar una categoria para el espectaculo");
+            }else if(ubicacionesList.Count == 0){
+                MessageBox.Show("Debe ingresar por lo menos una ubicacion");
             }else{
                 if (!modificandoPublicacion)
                 {
@@ -360,7 +365,7 @@ namespace PalcoNet.Generar_Publicacion
                     Publicacion publicacion = new Publicacion();
                     publicacion.gradoPublicacion = gradoPublicacion;
                     publicacion.fechaEvento = elem;
-                    publicacion.fechaPublicacion = DateTime.Now.Date;
+                    publicacion.fechaPublicacion = Generals.getFecha();
                     publicacion.estado = Strings.ESTADO_BORRADOR;
                     publicacion.espectaculo = espec;
                     publicacion.ubicaciones = ubicacionesList;
@@ -380,7 +385,7 @@ namespace PalcoNet.Generar_Publicacion
         }
 
         private void borrarFormulario() {
-            this.FechaEventoTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            this.FechaEventoTimePicker.Value = Generals.getFecha().Subtract(new TimeSpan(1, 0, 0, 0)).Date;
             this.DireccionTextBox.Text = "";
             this.RubroComboBox.SelectedItem = null;
             this.GradoPublicacionComboBox.SelectedItem = null;
@@ -389,7 +394,7 @@ namespace PalcoNet.Generar_Publicacion
 
             this.ubicacionesList.Clear();
             this.fechasDeLaPublicacion.Clear();
-            this.fechasDeLaPublicacion.Add(DateTime.Now.Subtract(new TimeSpan(1, 0, 0, 0)).Date);
+            this.fechasDeLaPublicacion.Add(Generals.getFecha());
             direccionPublicacion = "";
             rubro = null;
             gradoPublicacion = null;

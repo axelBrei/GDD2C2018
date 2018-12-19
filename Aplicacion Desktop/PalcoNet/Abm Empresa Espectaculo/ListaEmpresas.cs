@@ -12,6 +12,7 @@ using PalcoNet.Model;
 using PalcoNet.Registro_de_Usuario;
 using PalcoNet.Exceptions;
 using System.Data.SqlClient;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Abm_Empresa_Espectaculo
 {
@@ -143,7 +144,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
             {
                 if (habilitado)
                 {
-                    empresaSeleccionada.bajaLogica = DateTime.Now;
+                    empresaSeleccionada.bajaLogica = Generals.getFecha();
                 }
                 else
                 {
@@ -152,7 +153,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 empresasDao.habilitarODesahabilitarEmpresa(empresaSeleccionada);
                 reemplazarEnLista(empresaSeleccionada);
                 var empre = empresasList.First(elem => elem.id == empresaSeleccionada.id);
-                if (empre != null) ((Empresa)empre).bajaLogica = (habilitado ? (Nullable<DateTime>)DateTime.Now : null);
+                if (empre != null) ((Empresa)empre).bajaLogica = (habilitado ? (Nullable<DateTime>)Generals.getFecha() : null);
             }
             catch (SqlException ex)
             {

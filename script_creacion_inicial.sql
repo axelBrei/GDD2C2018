@@ -378,6 +378,11 @@ END
 GO
 
 BEGIN TRANSACTION
+
+-- Le delcaro un dia en particular en vez de usar GETDATE();
+DECLARE @fechaDeHoy DATETIME;
+	SET @fechaDeHoy = '2018-10-12'
+
 -- Inserto los Roles por Default del enunciado
 INSERT INTO [TheBigBangQuery].[Rol](rol_nombre) VALUES ('Empresa');
 INSERT INTO [TheBigBangQuery].[Rol](rol_nombre) VALUES ('Administrativo');
@@ -451,7 +456,7 @@ INSERT INTO [TheBigBangQuery].[Funcionalidades_rol](fpr_id, fpr_rol)
 
 	-- INSERTO EL USUARIO ADMIN
 INSERT INTO [TheBigBangQuery].[Usuario] (usua_usuario, usua_password, usua_rol) VALUES (
-	'admin', [TheBigBangQuery].[getHashPassword]('admin') ,1
+	'admin', [TheBigBangQuery].[getHashPassword]('w23e') ,1
 );
 INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1);
 
@@ -461,7 +466,7 @@ INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1
     INSERT INTO [TheBigBangQuery].[Premio] VALUES (1500, 'Mochila BigBangQuery','20181220 12:00:00 AM');
 
     -- CREO FACTURA QUE CONTEMPLA TODAS LAS COMISIONES POR VENTAS ANTERIORES
-     INSERT INTO [TheBigBangQuery].Factura VALUES ('efectivo',0,GETDATE(),00001,1)
+     INSERT INTO [TheBigBangQuery].Factura VALUES ('efectivo',0,@fechaDeHoy,00001,1)
 
 	 -- AGREGO LOS GRADOS DE PUBLICACION CON SU RESPECTIVA COMISION
 	 INSERT INTO [TheBigBangQuery].[GradoPublicaciones](grad_nivel,grad_comision) VALUES ('ALTO', 15);
@@ -476,6 +481,8 @@ INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1
 COMMIT
 
 BEGIN TRANSACTION
+
+	
 
 
 	-- INSERTO LAS FORMAS DE PAGO
@@ -526,7 +533,7 @@ BEGIN TRANSACTION
 		[clie_telefono],
 		[clie_cuil]
 	)
-	SELECT M.Cli_Dni,Cli_Apeliido, M.Cli_Nombre,M.Cli_Fecha_Nac, M.Cli_Mail,Cli_Dom_Calle, M.Cli_Nro_Calle,M.Cli_Piso,M.Cli_Depto,M.Cli_Cod_Postal,D.tipo_id, GETDATE(), 0, 
+	SELECT M.Cli_Dni,Cli_Apeliido, M.Cli_Nombre,M.Cli_Fecha_Nac, M.Cli_Mail,Cli_Dom_Calle, M.Cli_Nro_Calle,M.Cli_Piso,M.Cli_Depto,M.Cli_Cod_Postal,D.tipo_id, @fechaDeHoy, 0, 
 		'Sin Especificar', 'Sin Especificar','Sin Especificar'
 	FROM [gd_esquema].[Maestra] M, [TheBigBangQuery].[Tipo_Documento] D
 	WHERE Cli_Dni IS NOT NULL AND D.tipo_descripcion = 'DNI'
@@ -853,7 +860,7 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 
 		IF (SELECT COUNT(*)
 				FROM [TheBigBangQuery].[Cliente] c
-				WHERE c.clie_dni = CONVERT(NUMERIC,@documento) AND c.clie_tipo_documento = @tipoDoc) < 1 
+				WHERE (c.clie_dni = CONVERT(NUMERIC,@documento) AND c.clie_tipo_documento = @tipoDoc) OR c.clie_cuil = @cuil) < 1 
 		BEGIN
 
 		INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
@@ -905,7 +912,16 @@ CREATE PROCEDURE [TheBigBangQuery].[InsertarNuevoClienteConUsuario] (
 				0
 			);
 			END ELSE BEGIN
-				RAISERROR('Ya existe el cliente',16,1);
+			IF (
+				SELECT COUNT(*)
+				FROM [TheBigBangQuery].[Cliente] c
+				WHERE (c.clie_dni = CONVERT(NUMERIC,@documento) AND c.clie_tipo_documento = @tipoDoc)
+			) > 1
+				BEGIN
+					RAISERROR('Ya hay un cliente con el dni ingresado',16,1);
+				END ELSE BEGIN
+					RAISERROR('Ya existe un cliente con el cuil ingresado',16,1);
+				END
 				ROLLBACK TRANSACTION;
 			END
 
@@ -947,51 +963,69 @@ AS BEGIN
 	BEGIN TRY
 
 		BEGIN TRANSACTION
+
+		IF (
+			SELECT COUNT(*)
+			FROM TheBigBangQuery.Empresa 
+			WHERE empr_cuit = @cuit OR empr_razon_social = @razonSocial
+		) < 1 BEGIN
+			INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
+			(@usuario, 0, 0, [TheBigBangQuery].[getHashPassword](@contraseña));
 		
-		INSERT INTO [TheBigBangQuery].[Usuario](usua_usuario, usua_rol, usua_n_intentos, usua_password) VALUES 
-		(@usuario, 0, 0, [TheBigBangQuery].[getHashPassword](@contraseña));
+			INSERT INTO [TheBigBangQuery].[Roles_usuario] (rolu_usuario, rolu_rol) 
+			SELECT usua_id, usua_rol
+			FROM [TheBigBangQuery].[Usuario]	
+			WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
+
+
+			INSERT INTO [TheBigBangQuery].[Empresa](
+			empr_usuario,
+			empr_razon_social,
+			empr_cuit,
+			empr_mail,
+			empr_telefono,
+			empr_direccion,
+			empr_numero_calle,
+			empr_piso,
+			empr_dpto,
+			empr_localidad,
+			empr_codigo_postal,
+			empr_ciudad,
+			empr_creacion
+			) VALUES (
+				(
+					SELECT TOP 1  usua_id
+					FROM [TheBigBangQuery].[Usuario]
+					WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña) 
+				),
+				@razonSocial,
+				@cuit,
+				@mail,
+				@telefono,
+				@calle,
+				CONVERT(numeric, @altura),
+				CONVERT(numeric, @piso),
+				@depto,
+				@localidad,
+				@codigoPostal,
+				@ciudad,
+				CONVERT(datetime, @fechaCreacion, 20)
+			);
+			COMMIT
+		END ELSE BEGIN 
+			IF (
+				SELECT COUNT(*)
+				FROM TheBigBangQuery.Empresa 
+				WHERE empr_cuit = @cuit 
+			) < 1 BEGIN
+				RAISERROR('Ya existe una empresa con el cuil ingreado',16,1);
+			END ELSE
+				RAISERROR('Ya existe una empresa con la razon social ingresada',16,1);
+
+			ROLLBACK TRANSACTION;
+		END
+
 		
-		INSERT INTO [TheBigBangQuery].[Roles_usuario] (rolu_usuario, rolu_rol) 
-		SELECT usua_id, usua_rol
-		FROM [TheBigBangQuery].[Usuario]	
-		WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña)
-
-
-		INSERT INTO [TheBigBangQuery].[Empresa](
-		empr_usuario,
-		empr_razon_social,
-		empr_cuit,
-		empr_mail,
-		empr_telefono,
-		empr_direccion,
-		empr_numero_calle,
-		empr_piso,
-		empr_dpto,
-		empr_localidad,
-		empr_codigo_postal,
-		empr_ciudad,
-		empr_creacion
-		) VALUES (
-			(
-				SELECT TOP 1  usua_id
-				FROM [TheBigBangQuery].[Usuario]
-				WHERE usua_usuario = @usuario AND usua_password = [TheBigBangQuery].[getHashPassword](@contraseña) 
-			),
-			@razonSocial,
-			@cuit,
-			@mail,
-			@telefono,
-			@calle,
-			CONVERT(numeric, @altura),
-			CONVERT(numeric, @piso),
-			@depto,
-			@localidad,
-			@codigoPostal,
-			@ciudad,
-			CONVERT(datetime, @fechaCreacion, 20)
-		);
-
-		COMMIT
 
 	END TRY
 	BEGIN CATCH
@@ -1254,16 +1288,18 @@ CREATE PROCEDURE [TheBigBangQuery].[ActualizarPublicacion](
 	@idGradoPublicacion nvarchar(255),
 	@fechaPublicacion DATETIME,
 	@fechaEvento DATETIME,
-	@estado nvarchar(255))
+	@estado nvarchar(255),
+	@fechaActualizada BIT)
 AS BEGIN
 	
 	BEGIN TRANSACTION
 	IF (
 		SELECT COUNT(*)
 		FROM TheBigBangQuery.Publicacion
-		WHERE publ_fecha_hora_espectaculo = @fechaEvento
-			AND publ_id = CONVERT(NUMERIC,@publId)
-	) <= 1 
+		WHERE publ_espectaculo = @espeId
+			AND @fechaEvento = publ_fecha_hora_espectaculo
+			AND @fechaActualizada = 1
+	) < 1
 	BEGIN
 		BEGIN TRY
 			-- SE PUEDE ACTUALIZAR
@@ -1285,7 +1321,6 @@ AS BEGIN
 		END TRY
 		BEGIN CATCH
 			RAISERROR( 'No se ha podido actualizar la publicacion' ,16,1);
-			ROLLBACK TRANSACTION;
 		END CATCH
 
 		COMMIT;
@@ -1477,6 +1512,7 @@ RETURNS @temp TABLE (
 		FROM [TheBigBangQuery].[Publicacion] t 
 			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
+		
 	END ELSE BEGIN 
 		INSERT INTO @ordenada 
 		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
@@ -1485,7 +1521,7 @@ RETURNS @temp TABLE (
 		FROM [TheBigBangQuery].[Publicacion] t 
 			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
-		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo > @fechaActual
+		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo > @fechaActual 
 	END
 
 

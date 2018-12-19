@@ -74,7 +74,7 @@ namespace PalcoNet.Generar_Publicacion
                         }
                     case 5: {
                         Usuario user = UserData.UserData.getUsuario();
-                        if (filtroActual.tipo == 5 & user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA) {
+                        if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA) {
                             publicaciones = publiDao.getPublicacionesPorPagina(pagina, user.usuarioRegistrable.getId());
                         }else
                             publicaciones = publiDao.getPublicacionesPorPagina(pagina);
@@ -105,8 +105,8 @@ namespace PalcoNet.Generar_Publicacion
             item.Text = publi.id.ToString();
             item.SubItems.Add(publi.espectaculo.descripcion);
             item.SubItems.Add(publi.estado);
-            item.SubItems.Add(((DateTime)publi.fechaPublicacion).Date.ToString());
-            item.SubItems.Add(((DateTime)publi.fechaEvento).Date.ToString());
+            item.SubItems.Add(((DateTime)publi.fechaPublicacion).ToString());
+            item.SubItems.Add(((DateTime)publi.fechaEvento).ToString());
             item.SubItems.Add(publi.espectaculo.direccion);
             item.SubItems.Add(publi.gradoPublicacion.nivel);
 

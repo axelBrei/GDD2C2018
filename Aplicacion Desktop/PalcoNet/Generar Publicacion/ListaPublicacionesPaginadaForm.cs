@@ -201,5 +201,10 @@ namespace PalcoNet.Generar_Publicacion
                 e.Handled = true;
             }
         }
+
+        private void ListaPublicacionesPaginadaForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -45,6 +45,7 @@
             this.Empresa = new System.Windows.Forms.GroupBox();
             this.RazonSocialTextBox = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.VerFacturasButton = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CantidadARedimirNumericDD)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -84,6 +85,11 @@
             this.CantidadARedimirNumericDD.Name = "CantidadARedimirNumericDD";
             this.CantidadARedimirNumericDD.Size = new System.Drawing.Size(102, 20);
             this.CantidadARedimirNumericDD.TabIndex = 12;
+            this.CantidadARedimirNumericDD.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label7
             // 
@@ -182,6 +188,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.VerFacturasButton);
             this.groupBox3.Controls.Add(this.DetalleButton);
             this.groupBox3.Controls.Add(this.ComprasListView);
             this.groupBox3.Location = new System.Drawing.Point(24, 215);
@@ -247,6 +254,19 @@
             this.label11.TabIndex = 8;
             this.label11.Text = "Razon Social";
             // 
+            // VerFacturasButton
+            // 
+            this.VerFacturasButton.BackColor = System.Drawing.Color.LightGray;
+            this.VerFacturasButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VerFacturasButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.VerFacturasButton.Location = new System.Drawing.Point(166, 19);
+            this.VerFacturasButton.Name = "VerFacturasButton";
+            this.VerFacturasButton.Size = new System.Drawing.Size(133, 23);
+            this.VerFacturasButton.TabIndex = 2;
+            this.VerFacturasButton.Text = "Facturas anteriores";
+            this.VerFacturasButton.UseVisualStyleBackColor = false;
+            this.VerFacturasButton.Click += new System.EventHandler(this.VerFacturasButton_Click);
+            // 
             // GenerarComisionesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,5 +310,6 @@
         private System.Windows.Forms.GroupBox Empresa;
         private System.Windows.Forms.Label RazonSocialTextBox;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button VerFacturasButton;
     }
 }

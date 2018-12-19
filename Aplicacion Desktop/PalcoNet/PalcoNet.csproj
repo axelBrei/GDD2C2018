@@ -183,6 +183,7 @@
     <Compile Include="Dao\EspectaculosDao.cs" />
     <Compile Include="Dao\EstadisticasDao.cs" />
     <Compile Include="Dao\FacturasDao.cs" />
+    <Compile Include="Dao\FormasDePagoDao.cs" />
     <Compile Include="Dao\FuncionalidadesDao.cs" />
     <Compile Include="Dao\FuncionalidadesPorRolDao.cs" />
     <Compile Include="Dao\GradoDePublicacionDao.cs" />
@@ -277,6 +278,12 @@
     </Compile>
     <Compile Include="Generar Rendicion Comisiones\GenerarComisionesForm.Designer.cs">
       <DependentUpon>GenerarComisionesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Rendicion Comisiones\VerFactuasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Rendicion Comisiones\VerFactuasForm.Designer.cs">
+      <DependentUpon>VerFactuasForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Historial Cliente\DetalleCompraForm.cs">
       <SubType>Form</SubType>
@@ -463,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Rendicion Comisiones\GenerarComisionesForm.resx">
       <DependentUpon>GenerarComisionesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Rendicion Comisiones\VerFactuasForm.resx">
+      <DependentUpon>VerFactuasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Historial Cliente\DetalleCompraForm.resx">
       <DependentUpon>DetalleCompraForm.cs</DependentUpon>

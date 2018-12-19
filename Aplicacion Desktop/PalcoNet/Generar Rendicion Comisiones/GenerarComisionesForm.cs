@@ -37,6 +37,11 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             this.ComprasListView.Columns.Insert(3, "Cantidad", 15 * (int)ComprasListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.ComprasListView.Columns.Insert(4, "Total", 15 * (int)ComprasListView.Font.SizeInPoints, HorizontalAlignment.Center);
 
+            FormaPagoComboBox.Items.Clear();
+            new FormasDePagoDao().getFormasDePago().ForEach(elem => {
+                FormaPagoComboBox.Items.Add(elem);
+            });
+            FormaPagoComboBox.SelectedIndex = 0;
             
 
             this.CantidadComboBox.SelectedItem = "50";
@@ -50,11 +55,8 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
         }
 
         private void actualizarlista() {
-            if (empresaSelec == null)
+            if (empresaSelec != null)
             {
-
-            }
-            else {
                 this.ComprasListView.Items.Clear();
                 new ComprasDao().getComprasPorEmpresa(
                 (int)empresaSelec.id,
@@ -104,6 +106,7 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             try
             {
                 cantidad = int.Parse(this.CantidadComboBox.SelectedItem.ToString());
+                actualizarlista();
             }
             catch (Exception ex) { }
         }
@@ -112,6 +115,7 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             try
             {
                 cantidad = int.Parse(this.CantidadComboBox.Text);
+                actualizarlista();
             }
             catch (Exception ex) { }
         }
@@ -127,8 +131,13 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
 
         private void DetalleButton_Click(object sender, EventArgs e)
         {
-            Historial_Cliente.DetalleCompraForm form = new Historial_Cliente.DetalleCompraForm(new ComprasDao().getDetalleCompraPorId(compraSelec.id));
-            form.Show(this);
+            if (compraSelec != null)
+            {
+                Historial_Cliente.DetalleCompraForm form = new Historial_Cliente.DetalleCompraForm(new ComprasDao().getDetalleCompraPorId(compraSelec.id));
+                form.Show(this);
+            }
+            else
+                MessageBox.Show("Debe seleccinar una compra para poder ver su detalle");
         }
 
         private void ListaComprasButton_Click(object sender, EventArgs e)
@@ -148,26 +157,32 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             try
             {
 
-                if (CantidadARedimirNumericDD.Value < int.Parse(CantidadComboBox.SelectedItem.ToString()))
+                if (empresaSelec != null)
                 {
-                    for (int i = 0; i < this.CantidadARedimirNumericDD.Value; i++)
+                    if (CantidadARedimirNumericDD.Value < int.Parse(CantidadComboBox.SelectedItem.ToString()))
                     {
-                        Compra compra = (Compra)this.ComprasListView.Items[i].Tag;
-                        compra.publicacion = publisDao.getPublicacionPorId(compra.publicacion.id, trans);
-                        compra.publicacion.gradoPublicacion =
-                                gradosDao.getGradoPorId(compra.publicacion.gradoPublicacion.id, trans);
-                        compra.publicacion.espectaculo = espeDao.getEspectaculoPorId((int)compra.publicacion.espectaculo.id, trans);
-                        new UbicacionesCompraDao().getUbicacionesDeLaCompra(compra,
-                            (comprasList) => compra.ubicaciones = comprasList,
-                            trans);
-                        insertarFactura(trans, factDao, compra);
+                        for (int i = 0; i < this.CantidadARedimirNumericDD.Value; i++)
+                        {
+                            Compra compra = (Compra)this.ComprasListView.Items[i].Tag;
+                            compra.publicacion = publisDao.getPublicacionPorId(compra.publicacion.id, trans);
+                            compra.publicacion.gradoPublicacion =
+                                    gradosDao.getGradoPorId(compra.publicacion.gradoPublicacion.id, trans);
+                            compra.publicacion.espectaculo = espeDao.getEspectaculoPorId((int)compra.publicacion.espectaculo.id, trans);
+                            new UbicacionesCompraDao().getUbicacionesDeLaCompra(compra,
+                                (comprasList) => compra.ubicaciones = comprasList,
+                                trans);
+                            insertarFactura(trans, factDao, compra);
+                        }
+                        trans.Commit();
+                        MessageBox.Show("Generación de comisiones exitosa!");
                     }
-                    trans.Commit();
-                    MessageBox.Show("Generación de comisiones exitosa!");
+                    else
+                    {
+                        MessageBox.Show("La cantidad de compras a rendir debe ser menor que la cantidad seleccionadas para mostrar en la pagina");
+                    }
                 }
-                else {
-                    MessageBox.Show("La cantidad de compras a rendir debe ser menor que la cantidad seleccionadas para mostrar en la pagina");
-                }
+                else
+                    MessageBox.Show("Debe seleccionar una empresa a la cual rendirle las compras realizadas");
                 
                 
             }
@@ -204,6 +219,18 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
         private void FormaPagoComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void VerFacturasButton_Click(object sender, EventArgs e)
+        {
+            // MOSTRAR FACTURAS DEL LA EMPRESA
+            if (empresaSelec != null)
+            {
+                VerFactuasForm form = new VerFactuasForm(empresaSelec);
+                form.Show(this);
+            }
+            else
+                MessageBox.Show("Debe seleccionar alguna empresa para poder ver sus facturas");
         }
 
     }

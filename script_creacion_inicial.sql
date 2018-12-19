@@ -470,6 +470,8 @@ INSERT INTO [TheBigBangQuery].[Roles_usuario](rolu_usuario, rolu_rol) VALUES(0,1
 
 	 -- INSERTO EMPRESA DEFAULT PARA CUANDO UN ADMIN CARGA UNA PUBLICACION
 		INSERT INTO [TheBigBangQuery].[Empresa](empr_usuario, empr_cuit, empr_razon_social) VALUES (0, '3623613623', 'RazonSocial123');
+	-- INSERTO LAS FORMAS DE PAGO DEL SISTEMA
+		INSERT INTO [TheBigBangQuery].[FormaDePago] (form_nombre) VALUES ('Transferencia'), ('Tarjeta de Credito');
 
 COMMIT
 
@@ -481,6 +483,9 @@ BEGIN TRANSACTION
 		SELECT DISTINCT Forma_Pago_Desc
 		FROM gd_esquema.Maestra
 		WHERE Forma_Pago_Desc != '' OR Forma_Pago_Desc IS NOT NULL
+
+	-- INSERTO LAS FORMAS DE PAGO DEL SISTEMA( por un tema de orden se insertan en este punto)
+	INSERT INTO [TheBigBangQuery].[FormaDePago] (form_nombre) VALUES ('Transferencia'), ('Tarjeta de Credito');
 	
 	-- INSERTO LAS EMPRESAS
 	INSERT INTO [TheBigBangQuery].[Empresa] (
@@ -1650,7 +1655,7 @@ RETURNS INT AS BEGIN
 			ELSE COUNT(*)/40 END   
 		FROM [TheBigBangQuery].[Publicacion]
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
-		WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%'
+		WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo > @fechaActual
 	)
 END
 GO
@@ -1907,7 +1912,7 @@ RETURNS @return TABLE (
 	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
 		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
 		JOIN [TheBigBangQuery].[Empresa] em ON (em.empr_id = e.espe_empresa)
-	WHERE em.empr_id = @empId AND comp_n_factura IS NULL
+	WHERE em.empr_id = @empId AND comp_n_factura IS NULL AND empr_dado_baja IS NOT NULL
 
 	INSERT INTO @return
 	SELECT [coml_id] , [coml_fecha_y_hora] ,[coml_medio_pago] ,
@@ -2103,3 +2108,52 @@ AS BEGIN
 	END
 
 END
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getFacturasDeLaEmpresaPorPagina]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getFacturasDeLaEmpresaPorPagina];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getFacturasDeLaEmpresaPorPagina] (@empresaId NUMERIC(18,0) , @pagina int)
+RETURNS @ret TABLE (
+	numero NUMERIC(18,0),
+	formaPago NVARCHAR(255),
+	total NUMERIC(18,2),
+	fecha DATETIME
+) AS BEGIN 
+
+	DECLARE @ordenada TABLE (
+		fila bigint,
+		numero NUMERIC(18,0),
+		formaDePago NVARCHAR(255),
+		total NUMERIC(18,2),
+		fecha DATETIME
+	);
+
+	SET @pagina = @pagina - 1;
+	
+	INSERT INTO @ordenada
+	SELECT ROW_NUMBER() OVER (ORDER BY fact_fecha DESC) AS ROW ,fact_numero, fact_forma_de_pago, fact_total, fact_fecha
+	FROM [TheBigBangQuery].[Factura]
+	WHERE fact_empresa = @empresaId
+
+	INSERT INTO @ret
+	SELECT numero ,formaDePago,total ,fecha 
+	FROM @ordenada
+	WHERE fila > (30 * @pagina) AND fila < ( (30 * @pagina) + 31 )
+
+	RETURN;
+END
+GO
+IF OBJECT_ID('[TheBigBangQuery].[getLastPaginaFacturasPorEmpresa]') IS NOT NULL
+	DROP FUNCTION [TheBigBangQuery].[getLastPaginaFacturasPorEmpresa];
+GO
+CREATE FUNCTION [TheBigBangQuery].[getLastPaginaFacturasPorEmpresa](@idEmpresa NUMERIC(12,0))
+RETURNS INT AS BEGIN
+	RETURN (
+		SELECT CASE WHEN COUNT(*) % 30 > 0 THEN (COUNT(*)/30) + 1
+					WHEN COUNT(*) % 30 < 0 THEN (COUNT(*)/30) - 1
+				ELSE COUNT(*)/30 END 
+		FROM [TheBigBangQuery].[Factura]
+		WHERE fact_empresa = @idEmpresa
+	);
+END
+GO

@@ -40,6 +40,68 @@ namespace PalcoNet.Dao
                 throw new SqlInsertException("Error al realizar la rendicion de comisiones", 0);
             }
         }
-        
+
+
+        public List<Factura> getFacturasDeEmpresaPorpagina(int idEmpresa, int pagina) {
+            string function = "SELECT * FROM [TheBigBangQuery].[getFacturasDeLaEmpresaPorPagina](@empresaId, @pagina)";
+            SqlDataReader reader = null;
+            try
+            {
+                List<Factura> facturasList = new List<Factura>();
+                SqlCommand command = new SqlCommand(function);
+                command.CommandText = function;
+
+
+                command.Parameters.AddWithValue("@empresaId", idEmpresa);
+                command.Parameters.AddWithValue("@pagina", pagina);
+
+                reader = DatabaseConection.executeQuery(command);
+                if (reader.HasRows)
+                {
+                    while (reader.Read()) {
+                        facturasList.Add(getItemDelReader(reader, idEmpresa));
+                    }
+                }
+
+                return facturasList;
+            }
+            catch (Exception ex)
+            {
+                throw new DataNotFoundException("No se han encontrado facturas asociadas");
+            }
+            finally { 
+                if (reader != null & !reader.IsClosed)
+                {
+                    reader.Close();
+                }
+            
+            }
+        }
+
+        public int getUltimaPaginaFacturasPorEmpresa(int emprId) {
+            string query = "SELECT [TheBigBangQuery].[getLastPaginaFacturasPorEmpresa](@idEmpresa)";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(query);
+                command.Parameters.AddWithValue("@idEmpresa", emprId);
+                return DatabaseConection.executeParamFunction<int>(command);
+            }
+            catch (Exception ex) {
+                throw new DataNotFoundException("No se ha podido cargar la ultima pagina de facturas");
+            }
+        }
+
+        private Factura getItemDelReader(SqlDataReader reader, int idEmpresa) {
+            Factura fact = new Factura();
+
+            fact.numero = (int)reader.GetSqlDecimal(0);
+            fact.formaDePago = reader.GetSqlString(1).ToString();
+            fact.IdEmpresa = idEmpresa;
+            fact.total = float.Parse(reader["total"].ToString());
+            fact.fecha = (DateTime) reader.GetSqlDateTime(3);
+
+            return fact;
+        }
     }
 }

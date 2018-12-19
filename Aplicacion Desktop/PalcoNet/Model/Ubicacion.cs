@@ -50,7 +50,7 @@ namespace PalcoNet.Model
         {
             var ubic = obj as Ubicacion;
             if (ubic != null)
-                return this.fila.ToUpper().Equals(ubic.fila.ToUpper()) & this.asiento.Equals(ubic.asiento);
+                return this.fila.ToUpper().Equals(ubic.fila.ToUpper()) & this.asiento.Equals(ubic.asiento) & this.sinEnumerar.Equals(ubic.sinEnumerar);
             else
                 return false;
         }

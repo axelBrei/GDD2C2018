@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Dao;
 using PalcoNet.Exceptions;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Comprar
 {
@@ -40,6 +41,10 @@ namespace PalcoNet.Comprar
                 this.RubrosListView.Items.Add(elem, false);
             });
 
+            FechaIDatePicker.MinDate = Generals.getFechaMinima();
+            FechaIDatePicker.Value = Generals.getFecha();
+            FechaFDatePicker.MinDate = Generals.getFechaMinima().AddDays(1);
+            FechaFDatePicker.Value = Generals.getFecha().AddDays(1);
             this.DescripcionFilterTextBox.Enabled = true;
             this.FechaIDatePicker.Enabled = false;
             this.FechaFDatePicker.Enabled = false;

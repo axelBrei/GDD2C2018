@@ -66,7 +66,7 @@ namespace PalcoNet.MainMenu
             {
                 case 0: {
                     // ABM USUARIOS
-                    if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE) {
+                    if (usuario.usuarioRegistrable.getTipo() != UserData.UserData.TIPO_ADMIN) {
                         form = new UserDataForm(usuario);
                         form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                     }
@@ -80,49 +80,49 @@ namespace PalcoNet.MainMenu
                         form = new Abm_Rol.Form1();
                         break;
                     }
-                case 3:
+                case 2:
                     {
                         //ABM CLIENTES
                         form = new Abm_Cliente.ListadoClientesForm();
                         break;
                     }
-                case 4:
+                case 3:
                     {
                         // ABM EMPRESAS
                         form = new Abm_Empresa_Espectaculo.ListaEmpresas();
                         break;
                     }
-                case 5:
+                case 4:
                     {
                         // ABM CATEGORIAS
                         form = new Abm_Rubro.ListadoRubros();
                         break;
                     }
-                case 6:
+                case 5:
                     {
                         // ABM GRADO DE PUBLICACION
                         form = new Abm_Grado.ListaGradosDePublicacion();
                         break;
                     }
-                case 7:
+                case 6:
                     {
                         // GENERACION DE ESPECTACULOS 
                         form = new Generar_Publicacion.GenerarPublicacionForm();
                         break;
                     }
-                case 8:
+                case 7:
                     {
                         // EDITAR PUBLICACIONES
                         form = new Editar_Publicacion.ListaPublicacionesForm();
                         break;
                     }
-                case 9:
+                case 8:
                     {
                         // COMPRAR
                         form = new Comprar.ListadoPublicacionesComprasForm();
                         break;
                     }
-                case 10:
+                case 9:
                     {
                         // HISTORIAL CLIENTE
                         if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
@@ -137,7 +137,7 @@ namespace PalcoNet.MainMenu
                         
                         break;
                     }
-                case 11:
+                case 10:
                     {
                         // CANJE DE PUNTOS
                         if (usuario.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE)
@@ -153,13 +153,13 @@ namespace PalcoNet.MainMenu
                         
                         break;
                     }
-                case 12:
+                case 11:
                     {
                         // GENERAR PAGO DE COMISIONES
                         form = new Generar_Rendicion_Comisiones.GenerarComisionesForm();
                         break;
                     }
-                case 13:
+                case 12:
                     {
                         // LISTADO ESTADISTICO
                         form = new Listado_Estadistico.ListadoForm();

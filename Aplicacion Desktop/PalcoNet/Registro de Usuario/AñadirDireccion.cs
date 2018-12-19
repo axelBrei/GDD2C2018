@@ -175,5 +175,6 @@ namespace PalcoNet.Registro_de_Usuario
                 e.Cancel = true;
             }
         }
+
     }
 }

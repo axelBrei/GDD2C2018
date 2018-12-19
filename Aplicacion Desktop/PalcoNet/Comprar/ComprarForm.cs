@@ -95,14 +95,15 @@ namespace PalcoNet.Comprar
                 }
                 this.NextButton.Text = "Siguiente";
                 this.BackButton.Text = "Anterior";
-
+                if (currentForm == 4)
+                    this.NextButton.Text = "Confirmar";
             }
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
             if (actualizarDatosDelFormBack(ref currentForm)) {
-                if (currentForm == 0) {
+                if (currentForm == 1) {
                     this.BackButton.Text = "Salir";
                 }
                 else
@@ -167,7 +168,10 @@ namespace PalcoNet.Comprar
                             currentForm = 4;
                         }
                         else
+                        {
+                            tarjetaForm.cliente = clienteActual;
                             currentForm = 3;
+                        }
                         return true;
                     }
                     else {
@@ -183,12 +187,16 @@ namespace PalcoNet.Comprar
                         return false;
                     }
                     tarjetasDelCliente = tarjetasDao.getTardejtasDelCliente(clienteActual.id);
-                    if (tarjetasDelCliente.Count > 0){
+                    if (tarjetasDelCliente.Count > 0)
+                    {
                         tarjetaForm.tarjetas = tarjetasDelCliente;
+                        tarjetaForm.cliente = clienteActual;
                         currentForm = 4;
                     }
-                    else
+                    else {
+                        tarjetaForm.cliente = clienteActual;
                         currentForm = 3;
+                    }
                     
                     return true;
                 }
@@ -205,12 +213,14 @@ namespace PalcoNet.Comprar
                     }
                     tarjetasDelCliente.Add(ingresarTarjetaFrom.tarjeta);
                     tarjetaForm.tarjetas = tarjetasDelCliente;
+                    tarjetaForm.cliente = clienteActual;
                     tarjetasDao.insertarTarjetaDeCliente(ingresarTarjetaFrom.tarjeta, clienteActual.id);
                     currentForm = 4;
                     return true;
                 }
                 case 4: {                        
                     Tarjeta tarj = tarjetaForm.tarjetaSeleccionada;
+                    tarjetaForm.cliente = clienteActual;
                     if (tarj == null) {
                         MessageBox.Show("Debe seleccionar un metodo de pago valido");
                         return false;

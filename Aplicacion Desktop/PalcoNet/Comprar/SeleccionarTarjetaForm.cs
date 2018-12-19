@@ -16,6 +16,7 @@ namespace PalcoNet.Comprar
     public partial class SeleccionarTarjetaForm : Form
     {
         public Tarjeta tarjetaSeleccionada { get; set; }
+        private IngresarTarjetaForm form;
         public List<Tarjeta> tarjetas {
             set {
                 this.TarjetasListView.Items.Clear();
@@ -24,12 +25,10 @@ namespace PalcoNet.Comprar
                 });
             }
         }
-        public Cliente cliente {
-            set {
-                tarjetasDao.getTardejtasDelCliente(value.id).ForEach(
-                    elem => this.TarjetasListView.Items.Add(creatItemDeTarjeta(elem))
-                    );
-            }
+        public Cliente cliente
+        {
+            get;
+            set;
         }
         private TarjetasDao tarjetasDao;
 
@@ -75,5 +74,55 @@ namespace PalcoNet.Comprar
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            form = new IngresarTarjetaForm();
+            form.cli = cliente;
+            form.FormClosing += this.tarjetaClosing;
+            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            Button button = Utils.crearBoton("Aceptar");
+            button.ForeColor = Color.Black;
+            button.Location = new Point(428, 384);
+            button.Size = new Size(75,30);
+            button.Click += this.OnClickAceptarTarjeta;
+            form.Controls.Add(button);
+            form.Show(this);
+        }
+
+        private void OnClickAceptarTarjeta(object sender, EventArgs e) {
+            if (esTarjetaValida(form.tarjeta).Length != 0)
+            {
+                MessageBox.Show("Debe completar los campos requeridos: \n\n:" + esTarjetaValida(form.tarjeta));
+            }
+            else {
+                form.Close();
+            }
+        }
+
+        private void tarjetaClosing(object sender, FormClosingEventArgs e) {
+            if (form != null) {
+                if (form.tarjeta != null)
+                {
+                    new TarjetasDao().insertarTarjetaDeCliente(form.tarjeta, cliente.id);
+                    TarjetasListView.Items.Clear();
+                    new TarjetasDao().getTardejtasDelCliente(cliente.id).ForEach(elem => {
+                        TarjetasListView.Items.Add(creatItemDeTarjeta(elem));
+                    });
+                }
+                else {
+                    MessageBox.Show("Debe completar todos los datos de la tarjeta");
+                }
+                
+            }
+        }
+        private string esTarjetaValida(Tarjeta tar) {
+            string res = "";
+            if(tar.numero.Length == 0) res += "Numero de tarjeta \n";
+            if (tar.titular.Length == 0) res += "Nombre del titular \n";
+            if (tar.vencimiento.Length == 9) res += "Vencimiento \n";
+            if (tar.vcc.Length == 0) res += "Codigo de seguridad \n";
+
+            return res;
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace PalcoNet.Abm_Rol
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-            if (funcionalidadesDelRol.Count != 0)
+            if (funcionalidadesDelRol.Count != 0 || nombreNuevoRol.Length != 0)
             {
                 Rol rol = new Rol();
                 rol.nombre = nombreNuevoRol;
@@ -74,7 +74,7 @@ namespace PalcoNet.Abm_Rol
                 this.Close();
             }
             else
-                MessageBox.Show("Debe seleecionar al menos una funcionalidad para crear un rol.");
+                MessageBox.Show("El nombre del rol no puede estar vacio, ademas debe seleecionar al menos una funcionalidad para crear un rol.");
         }
 
         private void CancelarButton_Click(object sender, EventArgs e)

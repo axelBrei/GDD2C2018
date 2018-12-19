@@ -126,35 +126,50 @@ namespace PalcoNet.Registro_de_Usuario
             {
                 if (validarCamposRequeridos().Length == 0)
                 {
-                    if (tipoUsuario == TIPO_CLIENTE)
-                    {
-                        Cliente cli = altaClieForm.getCliente();
-                        cli.usuario = UsuarioTextBox.Text.Trim();
-                        ClientesDao clientesDao = new ClientesDao();
-                        clientesDao.insertarCliente(cli, PasswordTextBox.Text.Trim());
-                    }
-                    else if (tipoUsuario == TIPO_EMPRESA)
-                    {
-                        Empresa empre = altaEmpresaForm.getEmpresa();
-                        empre.usuario = UsuarioTextBox.Text.Trim();
-                        EmpresasDao empresasDao = new EmpresasDao();
-                        empresasDao.insertarEmpresaConUsuario(empre,
-                            UsuarioTextBox.Text.Trim(),
-                            PasswordTextBox.Text.Trim());
-                    }
-                    MessageBox.Show("Usuario registrado con exito");
-                    new PalcoNet.Form1().Show(this);
-                    this.Close();
+                    registrarUsuario(UsuarioTextBox.Text.Trim(), PasswordTextBox.Text.Trim());
                 }
-                else
-                {
-                    string mensaje = "Los siguientes campos son requeridos:\n\n" + validarCamposRequeridos();
-                    MessageBox.Show(mensaje);
+                else if (UsuarioTextBox.Text.Length == 0 && PasswordTextBox.Text.Length == 0 &&
+                        DialogResult.Yes == MessageBox.Show("Dese autogenerar el usuario y la contraseña", "Advertencia", MessageBoxButtons.YesNo)) {
+                    string usuario = null;
+                        if(tipoUsuario == TIPO_CLIENTE){
+                            Cliente cli = altaClieForm.getCliente();
+                            usuario = cli.nombre + "." + cli.apellido;
+                        }else if(tipoUsuario == TIPO_EMPRESA){
+                            Empresa emp = altaEmpresaForm.getEmpresa();
+                            usuario = emp.razonSocial.Substring(0, 2) + emp.cuit.Substring(emp.cuit.Length - 2);
+                        }
+                        registrarUsuario(usuario , "1234");
+
+                }else
+                    {
+                        string mensaje = "Los siguientes campos son requeridos:\n\n" + validarCamposRequeridos();
+                        MessageBox.Show(mensaje);
+                    }
                 }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+        }
+
+        private void registrarUsuario(string usuario, string password) {
+            if (tipoUsuario == TIPO_CLIENTE)
+            {
+                Cliente cli = altaClieForm.getCliente();
+                cli.usuario = usuario.Trim();
+                ClientesDao clientesDao = new ClientesDao();
+                clientesDao.insertarCliente(cli, password.Trim());
             }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
+            else if (tipoUsuario == TIPO_EMPRESA)
+            {
+                Empresa empre = altaEmpresaForm.getEmpresa();
+                empre.usuario = usuario.Trim();
+                EmpresasDao empresasDao = new EmpresasDao();
+                empresasDao.insertarEmpresaConUsuario(empre,
+                    usuario.Trim(), password.Trim());
             }
+            MessageBox.Show("Usuario registrado con exito");
+            new PalcoNet.Form1().Show(this);
+            this.Close();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

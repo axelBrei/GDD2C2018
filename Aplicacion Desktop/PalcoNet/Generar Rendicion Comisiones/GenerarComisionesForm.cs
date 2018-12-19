@@ -148,20 +148,27 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             try
             {
 
-
-                for (int i = 0; i < this.CantidadARedimirNumericDD.Value; i++) {
-                    Compra compra = (Compra)this.ComprasListView.Items[i].Tag;
-                    compra.publicacion = publisDao.getPublicacionPorId(compra.publicacion.id, trans);
-                    compra.publicacion.gradoPublicacion =
-                            gradosDao.getGradoPorId(compra.publicacion.gradoPublicacion.id, trans);
-                    compra.publicacion.espectaculo = espeDao.getEspectaculoPorId((int)compra.publicacion.espectaculo.id, trans);
-                    new UbicacionesCompraDao().getUbicacionesDeLaCompra(compra,
-                        (comprasList) => compra.ubicaciones = comprasList,
-                        trans);
-                    insertarFactura(trans, factDao, compra);
+                if (CantidadARedimirNumericDD.Value < int.Parse(CantidadComboBox.SelectedItem.ToString()))
+                {
+                    for (int i = 0; i < this.CantidadARedimirNumericDD.Value; i++)
+                    {
+                        Compra compra = (Compra)this.ComprasListView.Items[i].Tag;
+                        compra.publicacion = publisDao.getPublicacionPorId(compra.publicacion.id, trans);
+                        compra.publicacion.gradoPublicacion =
+                                gradosDao.getGradoPorId(compra.publicacion.gradoPublicacion.id, trans);
+                        compra.publicacion.espectaculo = espeDao.getEspectaculoPorId((int)compra.publicacion.espectaculo.id, trans);
+                        new UbicacionesCompraDao().getUbicacionesDeLaCompra(compra,
+                            (comprasList) => compra.ubicaciones = comprasList,
+                            trans);
+                        insertarFactura(trans, factDao, compra);
+                    }
+                    trans.Commit();
+                    MessageBox.Show("Generación de comisiones exitosa!");
                 }
-                trans.Commit();
-                MessageBox.Show("Generación de comisiones exitosa!");
+                else {
+                    MessageBox.Show("La cantidad de compras a rendir debe ser menor que la cantidad seleccionadas para mostrar en la pagina");
+                }
+                
                 
             }
             catch (Exception ex) {

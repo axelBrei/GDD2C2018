@@ -28,6 +28,12 @@ namespace PalcoNet.Editar_Publicacion
             this.HoraDatePicker.Value = ((DateTime)publicacion.fechaPublicacion);
 
             this.CodigoLabel.Text = this.CodigoLabel.Text + ": " + publicacion.id;
+
+            if (publicacion.estado == "Publicada" || publicacion.estado == "Finaliada")
+            {
+                FechaDatePicker.Enabled = false;
+                HoraDatePicker.Enabled = false;
+            }
         }
 
         private void EstadoComboBox_SelectedIndexChanged(object sender, EventArgs e)

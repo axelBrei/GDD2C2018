@@ -11,6 +11,8 @@ using PalcoNet.Dao;
 using PalcoNet.Exceptions;
 using PalcoNet.Model;
 using System.Data;
+using PalcoNet.Constants;
+using PalcoNet.Validators;
 
 
 namespace PalcoNet.Generar_Publicacion
@@ -40,6 +42,8 @@ namespace PalcoNet.Generar_Publicacion
         public event OnFinishNewLocations onFinishregistration;
 
         private List<Ubicacion> listaUbicaciones = new List<Ubicacion>();
+
+        private readonly ErrorProvider errorProvide = new ErrorProvider();
 
         public AñadirUbicacionForm()
         {
@@ -138,35 +142,66 @@ namespace PalcoNet.Generar_Publicacion
         {
             List<Ubicacion> ubicaciones = new List<Ubicacion>();
             Ubicacion ubicacion;
-            if (!modificando)
+            if (esFormularioValido().Length == 0)
             {
-                for (char c = filasDesde[0]; c <= filasHasta[0]; c++)
+                if (!modificando)
                 {
-                    for (int i = int.Parse(asientosDesde); i <= int.Parse(asientosHasta); i++)
+                    for (char c = filasDesde[0]; c <= filasHasta[0]; c++)
                     {
-                        ubicacion = getUbicacionFromDatos();
-                        ubicacion.fila = c.ToString();
-                        ubicacion.asiento = i;
+                        for (int i = int.Parse(asientosDesde); i <= int.Parse(asientosHasta); i++)
+                        {
+                            ubicacion = getUbicacionFromDatos();
+                            ubicacion.fila = c.ToString();
+                            ubicacion.asiento = i;
+                            ubicacion.sinEnumerar = EnumeracionCheckbox.Checked ? 1 : 0;
+                            listaUbicaciones.Add(ubicacion);
 
-                        listaUbicaciones.Add(ubicacion);
-
+                        }
                     }
                 }
+                else
+                {
+                    ubicacion = getUbicacionFromDatos();
+                    ubicacion.fila = ubicacionAModificar.fila;
+                    ubicacion.asiento = ubicacionAModificar.asiento;
+                    listaUbicaciones.Add(getUbicacionFromDatos());
+                }
+                if (onFinishregistration != null)
+                    this.onFinishregistration(listaUbicaciones);
+                this.Close();
             }
             else {
-                ubicacion = getUbicacionFromDatos();
-                ubicacion.fila = ubicacionAModificar.fila;
-                ubicacion.asiento = ubicacionAModificar.asiento;
-                listaUbicaciones.Add(getUbicacionFromDatos());
+                MessageBox.Show("Los siguientes campos son obligatorios: \n\n" + esFormularioValido());
             }
-            if (onFinishregistration != null)
-                this.onFinishregistration(listaUbicaciones);
-            this.Close();
         }
 
         private void SalirButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        // VALIDACIONES
+        private void PrecioTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(PrecioTextBox.Text))
+            {
+                errorProvide.SetError(PrecioTextBox, "El campo precio debe ser numerico, sin comas y/o puntos");
+                e.Cancel = true;
+            }
+            else {
+                errorProvide.Dispose();
+            }
+        }
+
+        private string esFormularioValido() {
+            string res = "";
+            if (TipoUbicacionComboBox.SelectedItem == null) res += "Tipo de ubicacion \n";
+            if (PrecioTextBox.Text.Length == 0) res += "Precio \n";
+            if (FilasDesdeTextBox.Text.Length == 0) res += "Fila desde \n";
+            if (FilasHastaTextBox.Text.Length == 0) res += "Fila hasta \n";
+            if (AsientosDesdeTextBox.Text.Length == 0) res += " Asientos desde \n";
+            if (AsientosHastaTextBox.Text.Length == 0) res += "Asientos hasta \n";
+
+            return res;
         }
     }
 }

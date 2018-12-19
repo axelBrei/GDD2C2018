@@ -56,8 +56,7 @@ namespace PalcoNet.Dao
 
                 command.Parameters.AddWithValue("@fila", ubic.fila);
                 command.Parameters.AddWithValue("@asiento", ubic.asiento.ToString());
-                // TODO CAMBIAR OPCION PARA GENERAR UBICACIONES SIN ENUMERAR
-                command.Parameters.AddWithValue("@sinEnumerar", "1");
+                command.Parameters.AddWithValue("@sinEnumerar", ubic.sinEnumerar.ToString());
                 command.Parameters.AddWithValue("@tipoUbi", ubic.tipoUbicaciones.id.ToString());
 
                 SqlParameter outId = new SqlParameter("@newId", SqlDbType.Decimal) { Direction = ParameterDirection.Output };

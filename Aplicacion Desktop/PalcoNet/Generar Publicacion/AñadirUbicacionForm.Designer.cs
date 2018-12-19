@@ -47,6 +47,7 @@
             this.AceptarButton = new System.Windows.Forms.Button();
             this.SalirButton = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.EnumeracionCheckbox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +84,7 @@
             // 
             // FilasDesdeTextBox
             // 
+            this.FilasDesdeTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.FilasDesdeTextBox.Location = new System.Drawing.Point(56, 32);
             this.FilasDesdeTextBox.MaxLength = 1;
             this.FilasDesdeTextBox.Name = "FilasDesdeTextBox";
@@ -110,6 +112,7 @@
             // 
             // FilasHastaTextBox
             // 
+            this.FilasHastaTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.FilasHastaTextBox.Location = new System.Drawing.Point(167, 32);
             this.FilasHastaTextBox.MaxLength = 1;
             this.FilasHastaTextBox.Name = "FilasHastaTextBox";
@@ -201,6 +204,7 @@
             this.PrecioTextBox.Size = new System.Drawing.Size(85, 20);
             this.PrecioTextBox.TabIndex = 7;
             this.PrecioTextBox.TextChanged += new System.EventHandler(this.onPriceChanged);
+            this.PrecioTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.PrecioTextBox_Validating);
             // 
             // label8
             // 
@@ -245,6 +249,16 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Añadir ubicaciones";
             // 
+            // EnumeracionCheckbox
+            // 
+            this.EnumeracionCheckbox.AutoSize = true;
+            this.EnumeracionCheckbox.Location = new System.Drawing.Point(26, 342);
+            this.EnumeracionCheckbox.Name = "EnumeracionCheckbox";
+            this.EnumeracionCheckbox.Size = new System.Drawing.Size(88, 17);
+            this.EnumeracionCheckbox.TabIndex = 17;
+            this.EnumeracionCheckbox.Text = "Sin enumerar";
+            this.EnumeracionCheckbox.UseVisualStyleBackColor = true;
+            // 
             // AñadirUbicacionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -252,6 +266,7 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(373, 441);
             this.ControlBox = false;
+            this.Controls.Add(this.EnumeracionCheckbox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.SalirButton);
             this.Controls.Add(this.AceptarButton);
@@ -296,5 +311,6 @@
         private System.Windows.Forms.Button AceptarButton;
         private System.Windows.Forms.Button SalirButton;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox EnumeracionCheckbox;
     }
 }

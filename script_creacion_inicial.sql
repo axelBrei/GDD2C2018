@@ -1391,7 +1391,7 @@ GO
 IF OBJECT_ID('[TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion]') IS NOT NULL
 	DROP FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion];
 GO
-CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pagina int, @desc varchar(255))
+CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pagina int, @desc varchar(255), @fechaActual DATETIME)
 RETURNS @temp  TABLE (
 	publ_id NUMERIC(12,0),
 	publ_espectaculo NUMERIC(12,0),
@@ -1418,7 +1418,7 @@ RETURNS @temp  TABLE (
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
 		JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (g.grad_id = publ_grad_nivel)
-	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%'
+	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo > @fechaActual
 	ORDER BY g.grad_comision DESC
 
 	INSERT INTO @temp 
@@ -1433,7 +1433,7 @@ IF OBJECT_ID('[TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa]') 
 	DROP FUNCTION [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa];
 GO
 
-CREATE FUNCTION [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina int, @empresa NUMERIC(18,0))
+CREATE FUNCTION [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina int, @empresa NUMERIC(18,0),@fechaActual DATETIME)
 RETURNS @temp TABLE (
 	publ_id NUMERIC(12,0),
 	publ_espectaculo NUMERIC(12,0),
@@ -1480,7 +1480,7 @@ RETURNS @temp TABLE (
 		FROM [TheBigBangQuery].[Publicacion] t 
 			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
-		WHERE @empresa = espe_empresa
+		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo > @fechaActual
 	END
 
 
@@ -1509,12 +1509,13 @@ IF OBJECT_ID('[TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]') IS NOT N
 	DROP FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro];
 GO
 
-CREATE FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]()
+CREATE FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@fechaActual DATETIME)
 RETURNS INT AS BEGIN
 	RETURN (
 		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
 			ELSE COUNT(*)/40 END 
 		FROM [TheBigBangQuery].[Publicacion] 
+		WHERE publ_fecha_hora_espectaculo > @fechaActual
 	)
 END
 
@@ -1581,7 +1582,7 @@ CREATE TYPE [TheBigBangQuery].[RubrosList] AS TABLE (
 )
 GO
 
-CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro](@rubros [theBigBangQuery].[RubrosList] READONLY)
+CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroRubro](@rubros [theBigBangQuery].[RubrosList] READONLY, @fechaActual DATETIME)
 RETURNS INT AS BEGIN
 
 	RETURN (
@@ -1589,8 +1590,7 @@ RETURNS INT AS BEGIN
 			ELSE COUNT(*)/40 END 
 		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-		WHERE e.espe_rubro IN (SELECT *
-								FROM @rubros)
+		WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo > @fechaActual
 	)
 END
 GO
@@ -1599,7 +1599,8 @@ GO
 CREATE FUNCTION [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros]
 (
 	@pagina int,
-	@rubros [TheBigBangQuery].[RubrosList] READONLY
+	@rubros [TheBigBangQuery].[RubrosList] READONLY,
+	@fechaActual DATETIME
 )
 RETURNS @temp  TABLE (
 	publ_id NUMERIC(12,0),
@@ -1626,8 +1627,7 @@ RETURNS @temp  TABLE (
 		r.rub_descripcion
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-	WHERE e.espe_rubro IN (SELECT *
-							FROM @rubros)
+	WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo > @fechaActual
 
 
 	INSERT INTO @temp 
@@ -1640,7 +1640,7 @@ GO
 IF OBJECT_ID('[TheBigBangQuery].[getUltimaLineaFiltroDesc]') IS NOT NULL
 	DROP FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroDesc];
 GO
-CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc nvarchar(255))
+CREATE FUNCTION [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc nvarchar(255), @fechaActual DATETIME)
 RETURNS INT AS BEGIN
 	DECLARE @temp TABLE ([cant] int, [grad] NUMERIC(12,0));
 

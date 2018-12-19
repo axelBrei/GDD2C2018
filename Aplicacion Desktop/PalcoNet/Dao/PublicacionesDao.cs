@@ -8,6 +8,7 @@ using PalcoNet.ConectionUtils;
 using PalcoNet.Exceptions;
 using System.Data.SqlClient;
 using System.Data;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Dao
 {
@@ -231,7 +232,7 @@ namespace PalcoNet.Dao
         }
 
         public List<Publicacion> filtrarPaginasPorRubro(int pagina, List<Rubro> rubros) {
-            string funcion = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros](@pagina, @table)";
+            string funcion = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroRubros](@pagina, @table, @fechaActual)";
             List<Publicacion> publis = new List<Publicacion>();
             SqlDataReader reader = null;
             try
@@ -253,6 +254,7 @@ namespace PalcoNet.Dao
 
                 command.Parameters.AddWithValue("@pagina", pagina);
                 command.Parameters.Add(param);
+                command.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
 
                 reader = DatabaseConection.executeQuery(command);
                 if (reader.HasRows)
@@ -283,7 +285,7 @@ namespace PalcoNet.Dao
         public List<Publicacion> filtrarPaginasPorDescripcion(int pagina, string descripcion) {
             List<Publicacion> publis;
             SqlDataReader reader = null;
-            string function = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pag, @desc)";
+            string function = "SELECT * FROM [TheBigBangQuery].[getPaginaPublicacionesPorFiltroDescripcion](@pag, @desc,@fechaActual)";
             try
             {
                 publis = new List<Publicacion>();
@@ -292,6 +294,7 @@ namespace PalcoNet.Dao
 
                 command.Parameters.AddWithValue("@pag", pagina);
                 command.Parameters.AddWithValue("@desc", descripcion);
+                command.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
 
                 reader = DatabaseConection.executeQuery(command);
                 if (reader.HasRows)
@@ -358,7 +361,7 @@ namespace PalcoNet.Dao
         }
 
         public List<Publicacion> getPublicacionesPorPagina(int pagina, Nullable<int> empresaId = null) {
-            string function = "SELECT * FROM [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina, @empresa)";
+            string function = "SELECT * FROM [TheBigBangQuery].[GetPublicacionesPorPaginaSinFiltroDeEmpresa](@pagina, @empresa, @fechaActual)";
             SqlDataReader reader = null;
             List<Publicacion> publicacionesList = new List<Publicacion>();
             try
@@ -371,6 +374,8 @@ namespace PalcoNet.Dao
                     command.Parameters.AddWithValue("@empresa", empresaId);
                 else
                     command.Parameters.AddWithValue("@empresa", DBNull.Value);
+
+                command.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
 
                 reader = DatabaseConection.executeQuery(command);
                 if (reader.HasRows)
@@ -409,11 +414,12 @@ namespace PalcoNet.Dao
         }
 
         public int getUltimaPaginaDesc(string desc) {
-            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc)";
+            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroDesc](@desc, @fechaActual)";
             try
             {
                 SqlCommand com = new SqlCommand(query);
                 com.Parameters.AddWithValue("@desc", desc);
+                com.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
                 return DatabaseConection.executeParamFunction<int>(com);
             }
             catch (Exception e) {
@@ -439,7 +445,7 @@ namespace PalcoNet.Dao
 
         public int getUltimaPaginaRubros(List<Rubro> rubros)
         {
-            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroRubro](@table)";
+            string query = "SELECT [TheBigBangQuery].[getUltimaLineaFiltroRubro](@table, @fechaActual)";
             try
             {
                 SqlCommand com = new SqlCommand(query);
@@ -457,6 +463,7 @@ namespace PalcoNet.Dao
                 param.Value = table;
 
                 com.Parameters.Add(param);
+                com.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
 
                 return DatabaseConection.executeParamFunction<int>(com);
             }

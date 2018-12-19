@@ -41,6 +41,12 @@ namespace PalcoNet.Editar_Publicacion
 
             publicacionForm.Size = new Size(this.ContentPanel.Size.Width, this.ContentPanel.Size.Height - 40);
 
+            if (publi.estado == "Publicada" || publi.estado == "Finaliada") {
+                ubicacionesForm.Enabled = false;
+
+                publicacionForm.Enabled = false;
+            }
+
             botonAceptar = new Button();
             botonAceptar.Text = "Aceptar";
             botonAceptar.Click += AceptarButton_Click;

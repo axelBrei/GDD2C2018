@@ -127,6 +127,7 @@ namespace PalcoNet.Generar_Publicacion
             this.UbicacionesListView.Columns.Insert(1, "Asiento", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(2, "Tipo de Ubicacion", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(3, "Precio", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.UbicacionesListView.Columns.Insert(4, "Numerada", 10 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
         }
  
 
@@ -219,6 +220,7 @@ namespace PalcoNet.Generar_Publicacion
             item.SubItems.Add(elem.asiento.ToString());
             item.SubItems.Add(elem.tipoUbicaciones.descripcion);
             item.SubItems.Add("$" + elem.precio.ToString());
+            item.SubItems.Add(elem.sinEnumerar == 1 ? "No" : "Si");
 
             item.Tag = elem;
 
@@ -250,8 +252,12 @@ namespace PalcoNet.Generar_Publicacion
 
         private void EliminarUbicacionButton_Click(object sender, EventArgs e)
         {
-            UbicacionesListView.Items.Remove(UbicacionesListView.SelectedItems[0]);
-            ubicacionesList.Remove((Ubicacion)UbicacionesListView.Items[0].Tag);
+            try
+            {
+                UbicacionesListView.Items.Remove(UbicacionesListView.SelectedItems[0]);
+                ubicacionesList.Remove((Ubicacion)UbicacionesListView.Items[0].Tag);
+            }
+            catch (Exception ex) { }
         }
 
         private void button2_Click(object sender, EventArgs e)

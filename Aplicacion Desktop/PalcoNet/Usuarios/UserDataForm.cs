@@ -39,7 +39,7 @@ namespace PalcoNet.Usuarios
             rolesTotales = rolesDao.getRoles();
             actualizarRolesDelUsuario();
 
-            if (user.usuarioRegistrable != null && user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_CLIENTE) {
+            if (user.usuarioRegistrable != null && user.usuarioRegistrable.getTipo() != UserData.UserData.TIPO_ADMIN) {
                 RolesListView.Enabled = false;
                 ModificarRolesButton.Visible = false;
                 RolesListView.BackColor = Color.White;

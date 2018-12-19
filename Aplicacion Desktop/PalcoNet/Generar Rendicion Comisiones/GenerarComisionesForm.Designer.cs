@@ -124,7 +124,7 @@
             "50",
             "100",
             "200",
-            "500"});
+            "300"});
             this.CantidadComboBox.Location = new System.Drawing.Point(63, 20);
             this.CantidadComboBox.Name = "CantidadComboBox";
             this.CantidadComboBox.Size = new System.Drawing.Size(78, 21);

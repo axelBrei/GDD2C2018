@@ -34,9 +34,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TitularTextBox = new System.Windows.Forms.TextBox();
             this.NumeroTextBox = new System.Windows.Forms.TextBox();
-            this.VencimientoTextBox = new System.Windows.Forms.TextBox();
             this.CVVTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.VencimientoDatePicker = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // label1
@@ -95,14 +95,6 @@
             this.NumeroTextBox.TabIndex = 5;
             this.NumeroTextBox.TextChanged += new System.EventHandler(this.NumeroTextBox_TextChanged);
             // 
-            // VencimientoTextBox
-            // 
-            this.VencimientoTextBox.Location = new System.Drawing.Point(25, 215);
-            this.VencimientoTextBox.Name = "VencimientoTextBox";
-            this.VencimientoTextBox.Size = new System.Drawing.Size(145, 20);
-            this.VencimientoTextBox.TabIndex = 6;
-            this.VencimientoTextBox.TextChanged += new System.EventHandler(this.VencimientoTextBox_TextChanged);
-            // 
             // CVVTextBox
             // 
             this.CVVTextBox.Location = new System.Drawing.Point(25, 274);
@@ -121,15 +113,26 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Registrar Tarjeta";
             // 
+            // VencimientoDatePicker
+            // 
+            this.VencimientoDatePicker.CustomFormat = "yyyy/MM";
+            this.VencimientoDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.VencimientoDatePicker.Location = new System.Drawing.Point(28, 215);
+            this.VencimientoDatePicker.Name = "VencimientoDatePicker";
+            this.VencimientoDatePicker.ShowUpDown = true;
+            this.VencimientoDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.VencimientoDatePicker.TabIndex = 9;
+            this.VencimientoDatePicker.ValueChanged += new System.EventHandler(this.VencimientoTextBox_TextChanged);
+            // 
             // IngresarTarjetaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(515, 419);
+            this.Controls.Add(this.VencimientoDatePicker);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.CVVTextBox);
-            this.Controls.Add(this.VencimientoTextBox);
             this.Controls.Add(this.NumeroTextBox);
             this.Controls.Add(this.TitularTextBox);
             this.Controls.Add(this.label4);
@@ -152,8 +155,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox TitularTextBox;
         private System.Windows.Forms.TextBox NumeroTextBox;
-        private System.Windows.Forms.TextBox VencimientoTextBox;
         private System.Windows.Forms.TextBox CVVTextBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DateTimePicker VencimientoDatePicker;
     }
 }

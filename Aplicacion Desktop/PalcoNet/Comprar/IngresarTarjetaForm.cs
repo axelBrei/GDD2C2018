@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PalcoNet.Model;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Comprar
 {
@@ -20,6 +21,8 @@ namespace PalcoNet.Comprar
         {
             tarjeta = new Tarjeta();
             InitializeComponent();
+
+            VencimientoDatePicker.Value = Generals.getFecha().AddHours(-1);
         }
         private void TitularTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -40,7 +43,14 @@ namespace PalcoNet.Comprar
         private void VencimientoTextBox_TextChanged(object sender, EventArgs e)
         {
             try {
-                tarjeta.vencimiento = this.VencimientoTextBox.Text.ToString();
+                DateTime fecha = VencimientoDatePicker.Value;
+                if (fecha.CompareTo(Generals.getFecha()) < 0)
+                {
+                    // FECHA ANTERIOR A HOY
+                    tarjeta.vencimiento = "";
+                }
+                else
+                    tarjeta.vencimiento = fecha.ToString("yyyy/MM");
             }
             catch (Exception ex) { }
         }

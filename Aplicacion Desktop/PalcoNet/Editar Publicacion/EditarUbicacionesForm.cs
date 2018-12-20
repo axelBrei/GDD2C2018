@@ -37,6 +37,7 @@ namespace PalcoNet.Editar_Publicacion
             this.UbicacionesListView.Columns.Insert(1, "Asiento", 5 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(2, "Tipo de Ubicacion", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
             this.UbicacionesListView.Columns.Insert(3, "Precio", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
+            this.UbicacionesListView.Columns.Insert(3, "Enumerada", 15 * (int)UbicacionesListView.Font.SizeInPoints, HorizontalAlignment.Center);
 
             ubicaciones.ForEach(elem => {
                 this.UbicacionesListView.Items.Add(getItemDeUbicacion(elem));
@@ -51,7 +52,7 @@ namespace PalcoNet.Editar_Publicacion
             item.SubItems.Add(elem.asiento.ToString());
             item.SubItems.Add(elem.tipoUbicaciones.descripcion);
             item.SubItems.Add("$" + elem.precio.ToString());
-
+            item.SubItems.Add(elem.sinEnumerar == 1 ? "Si" : "No");
             item.Tag = elem;
 
             return item;
@@ -84,9 +85,14 @@ namespace PalcoNet.Editar_Publicacion
 
         private void ModificarButtton_Click(object sender, EventArgs e)
         {
-            AñadirUbicacionForm form = new AñadirUbicacionForm(ubiSeleccionada);
-            form.onFinishregistration += this.onFinishModification;
-            form.ShowDialog(this);
+            if (ubiSeleccionada != null)
+            {
+                AñadirUbicacionForm form = new AñadirUbicacionForm(ubiSeleccionada);
+                form.onFinishregistration += this.onFinishModification;
+                form.ShowDialog(this);
+            }
+            else
+                MessageBox.Show("Debe seleccionar una ubicación");
         }
         private void onFinishModification(List<Ubicacion> ubis) {
             eliminadas.Add(ubis[0]);

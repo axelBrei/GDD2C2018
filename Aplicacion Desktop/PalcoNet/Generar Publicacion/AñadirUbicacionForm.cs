@@ -142,7 +142,7 @@ namespace PalcoNet.Generar_Publicacion
         {
             List<Ubicacion> ubicaciones = new List<Ubicacion>();
             Ubicacion ubicacion;
-            if (esFormularioValido().Length == 0)
+            if (esFormularioValido().Length == 0 || esFormularioValidoModificacion().Length == 0)
             {
                 if (!modificando)
                 {
@@ -164,7 +164,7 @@ namespace PalcoNet.Generar_Publicacion
                     ubicacion = getUbicacionFromDatos();
                     ubicacion.fila = ubicacionAModificar.fila;
                     ubicacion.asiento = ubicacionAModificar.asiento;
-                    listaUbicaciones.Add(getUbicacionFromDatos());
+                    listaUbicaciones.Add(ubicacion);
                 }
                 if (onFinishregistration != null)
                     this.onFinishregistration(listaUbicaciones);
@@ -200,6 +200,13 @@ namespace PalcoNet.Generar_Publicacion
             if (FilasHastaTextBox.Text.Length == 0) res += "Fila hasta \n";
             if (AsientosDesdeTextBox.Text.Length == 0) res += " Asientos desde \n";
             if (AsientosHastaTextBox.Text.Length == 0) res += "Asientos hasta \n";
+
+            return res;
+        }
+        private string esFormularioValidoModificacion() {
+            string res = "";
+            if (TipoUbicacionComboBox.SelectedItem == null) res += "Tipo de ubicacion \n";
+            if (PrecioTextBox.Text.Length == 0) res += "Precio \n";
 
             return res;
         }

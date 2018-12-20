@@ -105,6 +105,7 @@ namespace PalcoNet.Editar_Publicacion
                 transaction.Commit();
                 if (this.publicacionEditadaHandler != null)
                     this.publicacionEditadaHandler(publicacionActual);
+                MessageBox.Show("Cambios realizados con exito");
                 this.Close();
             }
             catch (SqlInsertException ex)

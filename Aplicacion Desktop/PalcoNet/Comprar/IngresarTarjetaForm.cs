@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PalcoNet.Model;
 using PalcoNet.Constants;
+using PalcoNet.Validators;
 
 namespace PalcoNet.Comprar
 {
@@ -17,12 +18,14 @@ namespace PalcoNet.Comprar
         public Tarjeta tarjeta { get; set; }
         public Cliente cli { set; get; }
 
+        private readonly ErrorProvider eProvideer = new ErrorProvider();
+
         public IngresarTarjetaForm()
         {
             tarjeta = new Tarjeta();
             InitializeComponent();
 
-            VencimientoDatePicker.Value = Generals.getFecha().AddHours(-1);
+            VencimientoDatePicker.Value = Generals.getFecha();
         }
         private void TitularTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -47,7 +50,7 @@ namespace PalcoNet.Comprar
                 if (fecha.CompareTo(Generals.getFecha()) < 0)
                 {
                     // FECHA ANTERIOR A HOY
-                    tarjeta.vencimiento = "";
+                    tarjeta.vencimiento = null;
                 }
                 else
                     tarjeta.vencimiento = fecha.ToString("yyyy/MM");
@@ -62,7 +65,51 @@ namespace PalcoNet.Comprar
             }
             catch (Exception ex) { }
         }
-    }
 
-    
+        private void TitularTextBox_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        // VALIDACIONES
+
+        private void NumeroTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(NumeroTextBox.Text)) { 
+                eProvideer.SetError(NumeroTextBox, "El campo debe ser numerico unicamente");
+                e.Cancel = true;
+            }
+        }
+
+        private void CVVTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            if (!Validator.esNumerico(CVVTextBox.Text))
+            {
+                eProvideer.SetError(CVVTextBox, "El campo debe ser numerico unicamente");
+                e.Cancel = true;
+            }
+            else if (CVVTextBox.Text.Length > 4)
+            {
+                eProvideer.SetError(CVVTextBox, "El código de seguridad no puede poseer mas de 3 digitos");
+                e.Cancel = true;
+            }
+
+        }
+
+        public string esTarjetaValida(Tarjeta tar)
+        {
+            string res = "";
+            if (tar.numero.Length == 0) res += "Numero de tarjeta \n";
+            if (tar.titular.Length == 0) res += "Nombre del titular \n";
+            if (tar.vencimiento == null) res += "Vencimiento \n";
+            if (tar.vcc.Length == 0) res += "Codigo de seguridad \n";
+
+            return res;
+        }
+
+
+
+
+
+    }
 }

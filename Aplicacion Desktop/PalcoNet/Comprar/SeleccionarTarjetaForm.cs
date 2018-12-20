@@ -89,9 +89,9 @@ namespace PalcoNet.Comprar
         }
 
         private void OnClickAceptarTarjeta(object sender, EventArgs e) {
-            if (esTarjetaValida(form.tarjeta).Length != 0)
+            if (form.esTarjetaValida(form.tarjeta).Length != 0)
             {
-                MessageBox.Show("Debe completar los campos requeridos: \n\n:" + esTarjetaValida(form.tarjeta));
+                MessageBox.Show("Debe completar los campos requeridos: \n\n:" + form.esTarjetaValida(form.tarjeta));
             }
             else {
                 new TarjetasDao().insertarTarjetaDeCliente(form.tarjeta, cliente.id);
@@ -119,16 +119,7 @@ namespace PalcoNet.Comprar
         }
 
 
-        private string esTarjetaValida(Tarjeta tar) {
-            string res = "";
-            if(tar.numero.Length == 0) res += "Numero de tarjeta \n";
-            if (tar.titular.Length == 0) res += "Nombre del titular \n";
-            if (tar.vencimiento.Length == 9) res += "Vencimiento \n";
-            if (tar.vcc.Length == 0) res += "Codigo de seguridad \n";
-
-            return res;
-        }
-
+        
         
     }
 }

@@ -202,21 +202,30 @@ namespace PalcoNet.Comprar
                 }
                 case 3: {
                     Tarjeta tarj = ingresarTarjetaFrom.tarjeta;
-                    if (string.IsNullOrWhiteSpace(tarj.titular)
-                    || string.IsNullOrWhiteSpace(tarj.numero)
-                    || string.IsNullOrWhiteSpace(tarj.vencimiento)
-                    || string.IsNullOrWhiteSpace(tarj.vcc))
-                    {
+                    //if (string.IsNullOrWhiteSpace(tarj.titular)
+                    //|| string.IsNullOrWhiteSpace(tarj.numero)
+                    //|| string.IsNullOrWhiteSpace(tarj.vencimiento)
+                    //|| tarj.vencimiento == null
+                    //|| string.IsNullOrWhiteSpace(tarj.vcc))
+                    //{
 
-                        MessageBox.Show("Debe tener todos los campos completos para poder continuar");
+                    //    MessageBox.Show("Debe tener todos los campos completos para poder continuar");
+                    //    return false;
+                    //}
+                    if (ingresarTarjetaFrom.esTarjetaValida(tarj).Length == 0 )
+                    {
+                        tarjetasDelCliente.Add(ingresarTarjetaFrom.tarjeta);
+                        tarjetaForm.tarjetas = tarjetasDelCliente;
+                        tarjetaForm.cliente = clienteActual;
+                        tarjetasDao.insertarTarjetaDeCliente(ingresarTarjetaFrom.tarjeta, clienteActual.id);
+                        currentForm = 4;
+                        return true;
+                    }
+                    else {
+                        MessageBox.Show("Debe completar los campos requeridos \n\n" + ingresarTarjetaFrom.esTarjetaValida(tarj) );
                         return false;
                     }
-                    tarjetasDelCliente.Add(ingresarTarjetaFrom.tarjeta);
-                    tarjetaForm.tarjetas = tarjetasDelCliente;
-                    tarjetaForm.cliente = clienteActual;
-                    tarjetasDao.insertarTarjetaDeCliente(ingresarTarjetaFrom.tarjeta, clienteActual.id);
-                    currentForm = 4;
-                    return true;
+                    
                 }
                 case 4: {                        
                     Tarjeta tarj = tarjetaForm.tarjetaSeleccionada;

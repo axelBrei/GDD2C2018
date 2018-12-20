@@ -94,6 +94,7 @@
             this.NumeroTextBox.Size = new System.Drawing.Size(250, 20);
             this.NumeroTextBox.TabIndex = 5;
             this.NumeroTextBox.TextChanged += new System.EventHandler(this.NumeroTextBox_TextChanged);
+            this.NumeroTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.NumeroTextBox_Validating);
             // 
             // CVVTextBox
             // 
@@ -102,6 +103,7 @@
             this.CVVTextBox.Size = new System.Drawing.Size(99, 20);
             this.CVVTextBox.TabIndex = 7;
             this.CVVTextBox.TextChanged += new System.EventHandler(this.CVVTextBox_TextChanged);
+            this.CVVTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.CVVTextBox_Validating);
             // 
             // label5
             // 

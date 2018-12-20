@@ -29,7 +29,7 @@ namespace PalcoNet.Editar_Publicacion
 
             this.CodigoLabel.Text = this.CodigoLabel.Text + ": " + publicacion.id;
 
-            if (publicacion.estado == "Publicada" || publicacion.estado == "Finaliada")
+            if (publicacion.estado == "Publicada" || publicacion.estado == "Finalizada")
             {
                 FechaDatePicker.Enabled = false;
                 HoraDatePicker.Enabled = false;
@@ -67,8 +67,10 @@ namespace PalcoNet.Editar_Publicacion
 
         private string permisosEstado(string nuevoEstado) {
             string estado = nuevoEstado.ToLower();
-            if(publicacionActual.estado.ToLower().Equals(Strings.ESTADO_FINALIZADA.ToLower()) 
-                    && estado.ToLower().Equals(Strings.ESTADO_FINALIZADA.ToLower())){
+            if(publicacionActual.estado.ToLower().Equals(Strings.ESTADO_FINALIZADA.ToLower())
+                    && (estado.ToLower().Equals(Strings.ESTADO_ACTIVA.ToLower()) ||
+                            estado.ToLower().Equals(Strings.ESTADO_BORRADOR.ToLower())))
+            {
                 accionNuevoEstado();
                 return null;
             }else if(publicacionActual.estado.ToLower().Equals(Strings.ESTADO_ACTIVA.ToLower()) 

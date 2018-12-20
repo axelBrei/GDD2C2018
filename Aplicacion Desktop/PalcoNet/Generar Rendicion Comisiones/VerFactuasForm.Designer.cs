@@ -71,6 +71,7 @@
             this.DetallesButton.TabIndex = 2;
             this.DetallesButton.Text = "Detalle";
             this.DetallesButton.UseVisualStyleBackColor = false;
+            this.DetallesButton.Click += new System.EventHandler(this.DetallesButton_Click);
             // 
             // SalirButton
             // 

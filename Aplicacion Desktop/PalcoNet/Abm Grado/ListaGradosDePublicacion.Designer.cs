@@ -66,8 +66,9 @@
             // AgregarGradoButton
             // 
             this.AgregarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AgregarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.AgregarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.AgregarGradoButton.BackColor = System.Drawing.Color.LightGray;
+            this.AgregarGradoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AgregarGradoButton.ForeColor = System.Drawing.Color.Black;
             this.AgregarGradoButton.Location = new System.Drawing.Point(604, 75);
             this.AgregarGradoButton.Name = "AgregarGradoButton";
             this.AgregarGradoButton.Size = new System.Drawing.Size(93, 23);
@@ -79,8 +80,9 @@
             // ModificarGradoButton
             // 
             this.ModificarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ModificarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ModificarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ModificarGradoButton.BackColor = System.Drawing.Color.LightGray;
+            this.ModificarGradoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModificarGradoButton.ForeColor = System.Drawing.Color.Black;
             this.ModificarGradoButton.Location = new System.Drawing.Point(604, 113);
             this.ModificarGradoButton.Name = "ModificarGradoButton";
             this.ModificarGradoButton.Size = new System.Drawing.Size(93, 23);
@@ -92,8 +94,9 @@
             // DeshabilitarGradoButton
             // 
             this.DeshabilitarGradoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeshabilitarGradoButton.BackColor = System.Drawing.SystemColors.Desktop;
-            this.DeshabilitarGradoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.DeshabilitarGradoButton.BackColor = System.Drawing.Color.LightGray;
+            this.DeshabilitarGradoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeshabilitarGradoButton.ForeColor = System.Drawing.Color.Black;
             this.DeshabilitarGradoButton.Location = new System.Drawing.Point(604, 151);
             this.DeshabilitarGradoButton.Name = "DeshabilitarGradoButton";
             this.DeshabilitarGradoButton.Size = new System.Drawing.Size(93, 23);

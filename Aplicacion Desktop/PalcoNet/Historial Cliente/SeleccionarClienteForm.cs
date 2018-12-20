@@ -91,12 +91,18 @@ namespace PalcoNet.Historial_Cliente
 
         private void SeleccionarButton_Click(object sender, EventArgs e)
         {
-            HistorialCliente form = new HistorialCliente(cliSeleccionado.id, 2);
-            form.onBackPress += this.onBackPressComprasDelCliente;
-            if (this.onSelectClient != null) {
-                this.Hide();
-                this.onSelectClient(cliSeleccionado.id);
+            if (cliSeleccionado != null)
+            {
+                HistorialCliente form = new HistorialCliente(cliSeleccionado.id, 2);
+                form.onBackPress += this.onBackPressComprasDelCliente;
+                if (this.onSelectClient != null)
+                {
+                    this.Hide();
+                    this.onSelectClient(cliSeleccionado.id);
+                }
             }
+            else
+                MessageBox.Show("Debe seleccionar un cliente para poder ver su historial");
         }
 
         private void ClientesListView_SelectedIndexChanged(object sender, EventArgs e)

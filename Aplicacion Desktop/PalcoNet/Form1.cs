@@ -63,7 +63,11 @@ namespace PalcoNet
                     loginDao.resetearIntentos(usuario);
                     if (usuario.roles.Count > 1)
                     {
-                        new PalcoNet.MainMenu.SeleccionDeRol().Show();
+                        if (UserData.UserData.setRolActivo(usuario.roles[0])) {
+                            new PalcoNet.MainMenu.SeleccionDeRol().Show();
+                            this.Hide();
+                        }else
+                            MessageBox.Show("El usuario con el que intenta aceder tiene su rol principal deshabilitado");
                     }
                     else
                     {

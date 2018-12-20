@@ -106,5 +106,10 @@ namespace PalcoNet.Generar_Publicacion
                 
 
         }
+
+        private void CancelarButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

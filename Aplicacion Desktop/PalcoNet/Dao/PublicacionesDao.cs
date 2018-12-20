@@ -400,11 +400,17 @@ namespace PalcoNet.Dao
             }
         }
 
-        public int getUlitimaPaginaNoFiltro() {
-            string function = "SELECT [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@fechaActual)";
+        public int getUlitimaPaginaNoFiltro(Nullable<int> empresaId = null) {
+            string function = "SELECT [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@empresa,@fechaActual)";
             try
             {
                 SqlCommand command = new SqlCommand(function);
+                if (empresaId == null)
+                {
+                    command.Parameters.AddWithValue("@empresa", DBNull.Value);
+                }
+                else
+                    command.Parameters.AddWithValue("@empresa", (int) empresaId);
                 command.Parameters.AddWithValue("@fechaActual", Generals.getFecha());
                 return DatabaseConection.executeParamFunction<int>(command);
             }

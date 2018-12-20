@@ -53,10 +53,10 @@ namespace PalcoNet.Generar_Publicacion
         {
             InitializeComponent();
             // Dia Minimo: ayer
-            
-            fechasDeLaPublicacion.Add(Generals.getFecha());
-            this.FechaEventoTimePicker.MinDate = Generals.getFechaMinima().Subtract(new TimeSpan(0,1,0,0));
-            this.FechaEventoTimePicker.Value = Generals.getFecha();
+            DateTime fecha = Generals.getFecha();
+            fechasDeLaPublicacion.Add(fecha);
+            this.FechaEventoTimePicker.MinDate = fecha;
+            this.FechaEventoTimePicker.Value = fecha;
 
             initContent();
         }
@@ -90,7 +90,7 @@ namespace PalcoNet.Generar_Publicacion
             fechasDeLaPublicacion.Add( (DateTime) publicacion.fechaEvento);
 
             //fechaMinima = Generals.getFecha();
-            //this.FechaEventoTimePicker.MinDate = Generals.getFecha().Subtract(new TimeSpan(0,1,0,0));
+            this.FechaEventoTimePicker.MinDate = (DateTime)publicacion.fechaEvento;
             this.FechaEventoTimePicker.Value = (DateTime) publicacion.fechaEvento;
             this.HoraEventoTimePicker.Value = ((DateTime)publicacion.fechaEvento);
 
@@ -305,11 +305,7 @@ namespace PalcoNet.Generar_Publicacion
 
         private void AceptarButton_Click(object sender, EventArgs e)
         {
-            if(rubro == null || (rubro != null && rubro.descripcion.Equals("-"))){
-                    MessageBox.Show("Debe seleccionar una categoria para el espectaculo");
-            }else if(ubicacionesList.Count == 0){
-                MessageBox.Show("Debe ingresar por lo menos una ubicacion");
-            }else{
+            if (getCamposRequeridos().Length == 0) { 
                 if (!modificandoPublicacion)
                 {
                     Empresa empre = new Empresa();
@@ -326,19 +322,18 @@ namespace PalcoNet.Generar_Publicacion
                     }
                     
                 }
-                else { 
-                    /*
-                     * ESTRATEGIA MODIFICACION:
-                     *  - UNA PUBLICACION SIEMRPE TENDRA EL MISMO ESPCTACULO-
-                     *  - UNA UBICACION QUE NO ESTA DISPONIBLE NO SE PUEDE HABILITAR, TAMPOCO AL REVEZ
-                     *  - 
-                    */
+            }else
+                MessageBox.Show("Debe ingresar los campos requeridos \n\n" + getCamposRequeridos());
+        }
 
-
-                    // TODO: METODO PARA UPDATEAR LA PUBLICACION EN LA BASE DE DATOS
-                    // PONER UN EVENT HANDLER PARA AVISARLE AL PADRE QUE SE ACTUALIZA LA PUBLICACION
-                }
-            }
+        private string getCamposRequeridos() {
+            string res = "";
+            if (DireccionTextBox.Text.Length == 0) res += "Dirección \n";
+            if (RubroComboBox.Text.Length == 0) res += "Categoría \n";
+            if (GradoPublicacionComboBox.Text.Length == 0) res += "Grado de publicación \n";
+            if (textBox1.Text.Length == 0) res += "Descripción \n";
+            if (ubicacionesList.Count == 0) res += "Ubicaciones \n";
+            return res;
         }
 
         private void onSelectCompany(Empresa empre) {
@@ -385,7 +380,7 @@ namespace PalcoNet.Generar_Publicacion
         }
 
         private void borrarFormulario() {
-            this.FechaEventoTimePicker.Value = Generals.getFecha().Subtract(new TimeSpan(1, 0, 0, 0)).Date;
+            this.FechaEventoTimePicker.Value = FechaEventoTimePicker.MinDate;
             this.DireccionTextBox.Text = "";
             this.RubroComboBox.SelectedItem = null;
             this.GradoPublicacionComboBox.SelectedItem = null;

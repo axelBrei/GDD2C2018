@@ -138,33 +138,41 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         private void DeshabilitarButton_Click(object sender, EventArgs e)
         {
-            EmpresasDao empresasDao = new EmpresasDao();
-            bool habilitado = empresaSeleccionada.bajaLogica == null;
             try
             {
-                if (habilitado)
+
+                EmpresasDao empresasDao = new EmpresasDao();
+                bool habilitado = empresaSeleccionada.bajaLogica == null;
+                try
                 {
-                    empresaSeleccionada.bajaLogica = Generals.getFecha();
+                    if (habilitado)
+                    {
+                        empresaSeleccionada.bajaLogica = Generals.getFecha();
+                    }
+                    else
+                    {
+                        empresaSeleccionada.bajaLogica = null;
+                    }
+                    empresasDao.habilitarODesahabilitarEmpresa(empresaSeleccionada);
+                    reemplazarEnLista(empresaSeleccionada);
+                    var empre = empresasList.First(elem => elem.id == empresaSeleccionada.id);
+                    if (empre != null) ((Empresa)empre).bajaLogica = (habilitado ? (Nullable<DateTime>)Generals.getFecha() : null);
                 }
-                else
+                catch (SqlException ex)
                 {
-                    empresaSeleccionada.bajaLogica = null;
+                    MessageBoxButtons alert = MessageBoxButtons.OK;
+                    MessageBox.Show("No se ha podido deshabilitar la empresa seleccionada", "ERROR!", alert);
                 }
-                empresasDao.habilitarODesahabilitarEmpresa(empresaSeleccionada);
-                reemplazarEnLista(empresaSeleccionada);
-                var empre = empresasList.First(elem => elem.id == empresaSeleccionada.id);
-                if (empre != null) ((Empresa)empre).bajaLogica = (habilitado ? (Nullable<DateTime>)Generals.getFecha() : null);
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    ((ListViewItem)EmpresasListView.Items[indexEmpresaSeleccionada]).ForeColor = !habilitado ? Color.Black : Color.Gray;
+                }
             }
-            catch (SqlException ex)
-            {
-                MessageBoxButtons alert = MessageBoxButtons.OK;
-                MessageBox.Show("No se ha podido deshabilitar la empresa seleccionada", "ERROR!", alert);
-            }
-            catch (Exception ex) 
-            { 
-            }
-            finally {
-                ((ListViewItem)EmpresasListView.Items[indexEmpresaSeleccionada]).ForeColor = !habilitado ? Color.Black : Color.Gray;
+            catch (Exception ex) {
+                MessageBox.Show("Debe seleccionar una empresa para poder habilitarla o deshabilitarla");
             }
         }
 

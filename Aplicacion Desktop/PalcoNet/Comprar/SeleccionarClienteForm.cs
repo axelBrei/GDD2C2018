@@ -47,10 +47,10 @@ namespace PalcoNet.Comprar
 
         private void actualizarLista(string filtro) {
             List<Cliente> clieList = this.clientes.FindAll(elem =>
-                        elem.nombre.Contains(filtro) |
-                        elem.apellido.Contains(filtro) |
-                        elem.documento.Equals(filtro) |
-                        elem.mail.Contains(filtro)
+                        elem.nombre.ToLower().Contains(filtro.ToLower()) ||
+                        elem.apellido.ToLower().Contains(filtro.ToLower()) ||
+                        elem.documento.ToLower().Equals(filtro.ToLower()) ||
+                        elem.mail.ToLower().Contains(filtro.ToLower())
                     );
 
             this.ClientesListView.BeginUpdate();

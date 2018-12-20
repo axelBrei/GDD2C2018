@@ -15,7 +15,7 @@ namespace PalcoNet.Abm_Rol
     public partial class NuevRol : Form
     {
 
-        private string nombreNuevoRol;
+        private string nombreNuevoRol = "";
         private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
         private List<Funcionalidad> funcionalidadesDelRol = new List<Funcionalidad>();
 

@@ -74,10 +74,12 @@ namespace PalcoNet.Generar_Publicacion
                         }
                     case 5: {
                         Usuario user = UserData.UserData.getUsuario();
-                        if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA) {
+                        if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA)
+                        {
                             publicaciones = publiDao.getPublicacionesPorPagina(pagina, user.usuarioRegistrable.getId());
-                        }else
-                            publicaciones = publiDao.getPublicacionesPorPagina(pagina);
+                        }
+                        else
+                            publicaciones = publiDao.filtrarPaginasPorDescripcion(pagina, "");
                         break;
                     }
                     default:
@@ -136,7 +138,13 @@ namespace PalcoNet.Generar_Publicacion
                         break;
                     }
                 case 5: {
-                    i = publiDao.getUlitimaPaginaNoFiltro();
+                    Usuario user = UserData.UserData.getUsuario();
+                    if (user.usuarioRegistrable.getTipo() == UserData.UserData.TIPO_EMPRESA)
+                    {
+                        i = publiDao.getUlitimaPaginaNoFiltro( ((Empresa)user.usuarioRegistrable).id );
+                    }
+                    else
+                        i = publiDao.getUltimaPaginaDesc("");
                     break;
                 }
                 default:

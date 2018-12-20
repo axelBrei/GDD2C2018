@@ -129,22 +129,29 @@ namespace PalcoNet.Abm_Rol
 
         private void EliminarButton_Click(object sender, EventArgs e)
         {
-            
-            ListViewItem item = listaRoles.SelectedItems[0];
-            
-            Rol rol = roles.Find(elem => elem.nombre.Equals(item.Text));
-            if (item.ForeColor == Color.Gray)
+
+            try
             {
-                // Le quito la baja logica al ROl
-                rol.bajaLogica = Generals.getFechaMinima();
+                ListViewItem item = listaRoles.SelectedItems[0];
+
+                Rol rol = roles.Find(elem => elem.nombre.Equals(item.Text));
+                if (item.ForeColor == Color.Gray)
+                {
+                    // Le quito la baja logica al ROl
+                    rol.bajaLogica = Generals.getFechaMinima();
+                }
+                else
+                {
+                    // Le agrego la baja logica con la fecha de hoy
+                    rol.bajaLogica = Generals.getFecha();
+                }
+                item.ForeColor = item.ForeColor == Color.Gray ? Color.Black : Color.Gray;
+                RolesDao rolesDao = new RolesDao();
+                rolesDao.actualizarRol(rol);
             }
-            else { 
-                // Le agrego la baja logica con la fecha de hoy
-                rol.bajaLogica = Generals.getFecha();
+            catch (Exception ex) {
+                MessageBox.Show("Debe seleccionar algun rol para poder deshabilitarlo/habilitarlo");
             }
-            item.ForeColor = item.ForeColor == Color.Gray ? Color.Black : Color.Gray;
-            RolesDao rolesDao = new RolesDao();
-            rolesDao.actualizarRol(rol);
         }
     }
 }

@@ -113,17 +113,23 @@ namespace PalcoNet.Abm_Grado
 
         private void DeshabilitarGradoButton_Click(object sender, EventArgs e)
         {
-            GradosListView.Items[indexSeleccionado].ForeColor = gradoSeleccionado.bajaLogica == null ? Color.Gray : Color.Black;
-            if (gradoSeleccionado.bajaLogica == null)
-                gradoSeleccionado.bajaLogica = Generals.getFecha().Date;
-            else
-                gradoSeleccionado.bajaLogica = null;
-            dao.habilitarODeshabilitarGrado(gradoSeleccionado);
+            try
+            {
+                GradosListView.Items[indexSeleccionado].ForeColor = gradoSeleccionado.bajaLogica == null ? Color.Gray : Color.Black;
+                if (gradoSeleccionado.bajaLogica == null)
+                    gradoSeleccionado.bajaLogica = Generals.getFecha().Date;
+                else
+                    gradoSeleccionado.bajaLogica = null;
+                dao.habilitarODeshabilitarGrado(gradoSeleccionado);
 
-            GradosListView.BeginUpdate();
+                GradosListView.BeginUpdate();
                 GradosListView.Items.RemoveAt(indexSeleccionado);
                 GradosListView.Items.Insert(indexSeleccionado, getItemFromGrado(gradoSeleccionado));
-            GradosListView.EndUpdate();
+                GradosListView.EndUpdate();
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Debe seleccionar algún grado de publicación para poder habilitarlo o deshabilitarlo");
+            }
         }
     }
 }

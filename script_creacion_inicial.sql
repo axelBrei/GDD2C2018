@@ -1550,13 +1550,13 @@ IF OBJECT_ID('[TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro]') IS NOT N
 	DROP FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro];
 GO
 
-CREATE FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@fechaActual DATETIME)
+CREATE FUNCTION [TheBigBangQuery].[getLastPaginaPublicacionesSinFiltro](@empresa NUMERIC(18,0),@fechaActual DATETIME)
 RETURNS INT AS BEGIN
 	RETURN (
 		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
 			ELSE COUNT(*)/40 END 
-		FROM [TheBigBangQuery].[Publicacion] 
-		WHERE publ_fecha_hora_espectaculo >= @fechaActual
+		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] ON (espe_id = publ_espectaculo)
+		WHERE publ_fecha_hora_espectaculo >= @fechaActual AND @empresa = espe_empresa
 	)
 END
 

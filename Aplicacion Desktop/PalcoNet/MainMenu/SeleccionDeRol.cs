@@ -51,7 +51,6 @@ namespace PalcoNet.MainMenu
                 }
                 else {
                     MessageBox.Show("El usuario con el que se quiere acceder se encuentra deshabilitado");
-                    new PalcoNet.Form1().Show();
                 }
             }
         }

@@ -178,11 +178,11 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
                     }
                     else
                     {
-                        MessageBox.Show("La cantidad de compras a rendir debe ser menor que la cantidad seleccionadas para mostrar en la pagina");
+                        throw new Exception("La cantidad de compras a rendir debe ser menor que la cantidad seleccionadas para mostrar en la pagina");
                     }
                 }
                 else
-                    MessageBox.Show("Debe seleccionar una empresa a la cual rendirle las compras realizadas");
+                    throw new Exception("Debe seleccionar una empresa a la cual rendirle las compras realizadas");
                 
                 
             }

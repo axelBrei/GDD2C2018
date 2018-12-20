@@ -81,9 +81,11 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
 
         private void LastButton_Click(object sender, EventArgs e)
         {
-            pagina--;
-            PaginaTextBox.Text = pagina.ToString();
-            actualizarPagina();
+            if (pagina > 1) {
+                pagina--;
+                PaginaTextBox.Text = pagina.ToString();
+                actualizarPagina();
+            } 
         }
 
         private void FirstPageButton_Click(object sender, EventArgs e)
@@ -98,6 +100,11 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
             pagina = facturasDao.getUltimaPaginaFacturasPorEmpresa( (int) empresa.id);
             PaginaTextBox.Text = pagina.ToString();
             actualizarPagina();
+        }
+
+        private void DetallesButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1939,7 +1939,7 @@ RETURNS @return TABLE (
 	)
 
 	INSERT INTO @ordenada
-	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora ASC) AS ROW, 
+	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora DESC) AS ROW, 
 		c.comp_id, c.comp_fecha_y_hora, 
 		c.comp_medio_de_pago, c.comp_cantidad,
 		c.comp_total,
@@ -1948,7 +1948,7 @@ RETURNS @return TABLE (
 	FROM [TheBigBangQuery].[Compras] c JOIN [TheBigBangQuery].[Publicacion] p ON (c.comp_publicacion = p.publ_id)
 		JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = p.publ_espectaculo)
 		JOIN [TheBigBangQuery].[Empresa] em ON (em.empr_id = e.espe_empresa)
-	WHERE em.empr_id = @empId AND comp_n_factura IS NULL AND empr_dado_baja IS NOT NULL
+	WHERE em.empr_id = @empId AND comp_n_factura IS NULL AND empr_dado_baja IS NULL
 
 	INSERT INTO @return
 	SELECT [coml_id] , [coml_fecha_y_hora] ,[coml_medio_pago] ,

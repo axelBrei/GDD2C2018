@@ -174,6 +174,7 @@ namespace PalcoNet.Generar_Rendicion_Comisiones
                             insertarFactura(trans, factDao, compra);
                         }
                         trans.Commit();
+                        actualizarlista();
                         MessageBox.Show("Generación de comisiones exitosa!");
                     }
                     else

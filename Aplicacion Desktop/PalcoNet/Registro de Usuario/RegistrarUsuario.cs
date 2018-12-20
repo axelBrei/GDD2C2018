@@ -130,27 +130,45 @@ namespace PalcoNet.Registro_de_Usuario
                 }
                 else if (UserData.UserData.getUsuario() != null &&
                                 UserData.UserData.getUsuario().usuarioRegistrable.getTipo() == UserData.UserData.TIPO_ADMIN &&
-                                UsuarioTextBox.Text.Length == 0 && PasswordTextBox.Text.Length == 0 &&
-                        DialogResult.Yes == MessageBox.Show("Dese autogenerar el usuario y la contraseña", "Advertencia", MessageBoxButtons.YesNo)) {
-                    string usuario = null;
-                        if(tipoUsuario == TIPO_CLIENTE){
-                            Cliente cli = altaClieForm.getCliente();
-                            usuario = cli.nombre + "." + cli.apellido;
-                        }else if(tipoUsuario == TIPO_EMPRESA){
-                            Empresa emp = altaEmpresaForm.getEmpresa();
-                            usuario = emp.razonSocial.Substring(0, 2) + emp.cuit.Substring(emp.cuit.Length - 2);
-                        }
-                        registrarUsuario(usuario , "1234");
-
-                }else
+                                UsuarioTextBox.Text.Length == 0 && PasswordTextBox.Text.Length == 0)
+                {
+                    var res = MessageBox.Show("Dese autogenerar el usuario y la contraseña", "Advertencia", MessageBoxButtons.YesNo);
+                    if( res == DialogResult.Yes){
+                        string usuario = null;
+                    if (tipoUsuario == TIPO_CLIENTE)
                     {
-                        string mensaje = "Los siguientes campos son requeridos:\n\n" + validarCamposRequeridos();
-                        MessageBox.Show(mensaje);
+                        Cliente cli = altaClieForm.getCliente();
+                        if (cli != null)
+                            usuario = cli.nombre + "." + cli.apellido;
                     }
+                    else if (tipoUsuario == TIPO_EMPRESA)
+                    {
+                        Empresa emp = altaEmpresaForm.getEmpresa();
+                        if (emp != null)
+                            usuario = emp.razonSocial.Substring(0, 2) + emp.cuit.Substring(emp.cuit.Length - 2);
+                    }
+                    if (usuario != null && usuario.Length != 0)
+                        registrarUsuario(usuario, "1234");
+                    else
+                        throw new GenericException("");
+                    }else
+                        throw new GenericException("");
+                    
+
                 }
-                catch (Exception ex) {
-                    MessageBox.Show(ex.Message);
+                else
+                {
+                    string mensaje = "Los siguientes campos son requeridos:\n\n" + validarCamposRequeridos();
+                    MessageBox.Show(mensaje);
                 }
+            }
+            catch (GenericException ex) { 
+            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void registrarUsuario(string usuario, string password) {

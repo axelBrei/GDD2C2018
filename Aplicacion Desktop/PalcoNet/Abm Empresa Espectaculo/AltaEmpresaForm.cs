@@ -66,9 +66,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 return empresa;
             }
             else {
-                //string mensaje = "Los siguientes campos son requeridos:\n\n" + getCamposRequeridos();
-                //MessageBox.Show(mensaje);
-                throw new Exception(getCamposRequeridos());
+                throw new Exception("Los siguientes campos son requeridos:\n\n" + getCamposRequeridos());
             }
 
             

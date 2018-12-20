@@ -79,7 +79,7 @@ namespace PalcoNet.Generar_Publicacion
                             publicaciones = publiDao.getPublicacionesPorPagina(pagina, user.usuarioRegistrable.getId());
                         }
                         else
-                            publicaciones = publiDao.filtrarPaginasPorDescripcion(pagina, "");
+                            publicaciones = publiDao.getPublicacionesPorPagina(pagina);
                         break;
                     }
                     default:

@@ -1400,7 +1400,7 @@ RETURNS @temp  TABLE (
 	SET @numeroPagina = @numeroPagina - 1;
 
 	INSERT INTO @ordenada 
-	SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+	SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC, publ_fecha_hora_espectaculo DESC) AS RowNum, 
 		t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
 		t.publ_estado, t.espe_descripcion, t.espe_direccion, g.grad_nivel
 	FROM @tablaAPAginar t JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
@@ -1506,7 +1506,7 @@ RETURNS @temp TABLE (
 	IF @empresa IS NULL
 	BEGIN
 		INSERT INTO @ordenada 
-		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC, publ_fecha_hora_espectaculo DESC) AS RowNum, 
 			t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
 			t.publ_estado, e.espe_descripcion, e.espe_direccion, g.grad_nivel
 		FROM [TheBigBangQuery].[Publicacion] t 
@@ -1515,13 +1515,13 @@ RETURNS @temp TABLE (
 		
 	END ELSE BEGIN 
 		INSERT INTO @ordenada 
-		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC) AS RowNum, 
+		SELECT ROW_NUMBER() OVER( ORDER BY grad_comision DESC, publ_fecha_hora_espectaculo DESC) AS RowNum, 
 			t.publ_id, t.publ_espectaculo, t.publ_grad_nivel, t.publ_fecha_publicacion, t.publ_fecha_hora_espectaculo,
 			t.publ_estado, e.espe_descripcion, e.espe_direccion, g.grad_nivel
 		FROM [TheBigBangQuery].[Publicacion] t 
 			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
-		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo >= @fechaActual 
+		WHERE @empresa = espe_empresa 
 	END
 
 

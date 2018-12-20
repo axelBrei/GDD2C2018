@@ -20,8 +20,14 @@ namespace PalcoNet.Model
 
         public override bool Equals(object obj)
         {
-            GradoPublicacion grado = (GradoPublicacion)obj;
-            return grado.id.Equals(this.id);
+            try
+            {
+                GradoPublicacion grado = (GradoPublicacion)obj;
+                return grado.id.Equals(this.id);
+            }
+            catch (Exception e) {
+                return false;
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ USE [GD2C2018]
 
 BEGIN TRANSACTION
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name='TheBigBangQuery')
-EXEC ('CREATE SCHEMA [TheBigBangQuery] AUTHORIZATION [gd]')
+EXEC ('CREATE SCHEMA [TheBigBangQuery] AUTHORIZATION [TheBigBangQuery]')
 COMMIT 
 
 IF object_id('TheBigBangQuery.Premio') IS NOT NULL

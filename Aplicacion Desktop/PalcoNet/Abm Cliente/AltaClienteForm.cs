@@ -142,7 +142,7 @@ namespace PalcoNet.Abm_Cliente
             if (DniCliente.Text.Length == 0) requeridos += "Dni \n";
             if (MailCliente.Text.Length == 0) requeridos += "Mail \n";
             if (TelefonoCliente.Text.Length == 0) requeridos += "Telefono \n";
-            if (CuilCliente.Text.Length == 0) requeridos += "Nombre \n";
+            if (CuilCliente.Text.Length == 0) requeridos += "CUIL \n";
             if (dirDelCliente == null) requeridos += "Direccion \n";
 
             return requeridos;

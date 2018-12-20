@@ -38,7 +38,7 @@
             // AgregarButton
             // 
             this.AgregarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.AgregarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.AgregarButton.BackColor = System.Drawing.Color.Silver;
             this.AgregarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.AgregarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AgregarButton.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -53,7 +53,7 @@
             // EditarButton
             // 
             this.EditarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.EditarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.EditarButton.BackColor = System.Drawing.Color.Silver;
             this.EditarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.EditarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditarButton.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -68,7 +68,7 @@
             // EliminarButton
             // 
             this.EliminarButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.EliminarButton.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.EliminarButton.BackColor = System.Drawing.Color.Silver;
             this.EliminarButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.EliminarButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EliminarButton.ForeColor = System.Drawing.SystemColors.ControlText;

@@ -19,12 +19,13 @@ namespace PalcoNet.Dao
             SqlTransaction trans = DatabaseConection.getInstance().BeginTransaction();
             try
             {
-                SqlCommand command = new SqlCommand(query);
-                command.CommandText = query;
-                command.Transaction = trans;
+                
 
                 roles.ForEach(elem =>
                 {
+                    SqlCommand command = new SqlCommand(query);
+                    command.CommandText = query;
+                    command.Transaction = trans;
                     command.Parameters.AddWithValue("@userId", userId);
                     command.Parameters.AddWithValue("@rolId", elem.id);
                     DatabaseConection.executeNoParamFunction(command);
@@ -43,12 +44,13 @@ namespace PalcoNet.Dao
             SqlTransaction trans = DatabaseConection.getInstance().BeginTransaction();
             try
             {
-                SqlCommand command = new SqlCommand(query);
-                command.CommandText = query;
-                command.Transaction = trans;
+                
 
                 roles.ForEach(elem =>
                 {
+                    SqlCommand command = new SqlCommand(query);
+                    command.CommandText = query;
+                    command.Transaction = trans;
                     command.Parameters.AddWithValue("@userId", userId);
                     command.Parameters.AddWithValue("@rolId", elem.id);
                     DatabaseConection.executeNoParamFunction(command);

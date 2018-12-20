@@ -74,10 +74,10 @@
             this.EmpresasListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.EmpresasListView.AutoArrange = false;
             this.EmpresasListView.FullRowSelect = true;
             this.EmpresasListView.GridLines = true;
             this.EmpresasListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.EmpresasListView.HoverSelection = true;
             this.EmpresasListView.Location = new System.Drawing.Point(16, 111);
             this.EmpresasListView.MultiSelect = false;
             this.EmpresasListView.Name = "EmpresasListView";

@@ -13,6 +13,8 @@ using PalcoNet.Exceptions;
 using PalcoNet.Constants;
 using PalcoNet.Generar_Publicacion;
 using PalcoNet;
+using PalcoNet.UserData;
+
 namespace PalcoNet.Comprar
 {
     public partial class ListadoPublicacionesComprasForm : Form

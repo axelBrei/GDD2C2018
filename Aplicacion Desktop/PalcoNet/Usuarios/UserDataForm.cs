@@ -89,6 +89,8 @@ namespace PalcoNet.Usuarios
             try
             {
                 bool insertados = false;
+                roles.RemoveAll(elem => usuario.roles.Contains(elem) );
+                //rolesEliminar.RemoveAll(elem => usuario.roles.Contains(elem) );
                 if (roles.Count > 0) {
                     rolesPorUsuarioDao.insertarRolesPorUsuario(roles, usuario.id);
                     insertados = true;

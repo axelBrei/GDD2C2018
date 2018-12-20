@@ -174,9 +174,11 @@ namespace PalcoNet.Generar_Publicacion
 
         private void LastButton_Click(object sender, EventArgs e)
         {
-            paginaActual -= 1;
-            this.PaginaTextBox.Text = paginaActual.ToString();
-            actualizarPagina(paginaActual);
+            if (paginaActual > 1) {
+                paginaActual -= 1;
+                this.PaginaTextBox.Text = paginaActual.ToString();
+                actualizarPagina(paginaActual);
+            }
         }
 
         private void PublicacionesListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -195,7 +197,7 @@ namespace PalcoNet.Generar_Publicacion
                 MessageBox.Show("Solo se pueden introducir numeros para la pagina");
                 e.Handled = true;
             }
-            else if (e.KeyChar.Equals('0'))
+            else if (int.Parse(e.KeyChar.ToString()) > 0)
             {
                 MessageBox.Show("EL numero de pagina debe ser mayor a 0");
                 e.Handled = true;

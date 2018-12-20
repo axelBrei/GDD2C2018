@@ -53,9 +53,9 @@ namespace PalcoNet.Generar_Publicacion
         {
             InitializeComponent();
             // Dia Minimo: ayer
-            fechaMinima = Generals.getFechaMinima().Subtract(new TimeSpan(1,0,0,0));
+            
             fechasDeLaPublicacion.Add(Generals.getFecha());
-            this.FechaEventoTimePicker.MinDate = fechaMinima;
+            this.FechaEventoTimePicker.MinDate = Generals.getFechaMinima().Subtract(new TimeSpan(0,1,0,0));
             this.FechaEventoTimePicker.Value = Generals.getFecha();
 
             initContent();
@@ -89,8 +89,8 @@ namespace PalcoNet.Generar_Publicacion
 
             fechasDeLaPublicacion.Add( (DateTime) publicacion.fechaEvento);
 
-            fechaMinima = Generals.getFecha();
-            this.FechaEventoTimePicker.MinDate = fechaMinima;
+            //fechaMinima = Generals.getFecha();
+            //this.FechaEventoTimePicker.MinDate = Generals.getFecha().Subtract(new TimeSpan(0,1,0,0));
             this.FechaEventoTimePicker.Value = (DateTime) publicacion.fechaEvento;
             this.HoraEventoTimePicker.Value = ((DateTime)publicacion.fechaEvento);
 

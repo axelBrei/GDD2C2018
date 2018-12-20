@@ -33,7 +33,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         public AltaEmpresaForm(Empresa empre) {
             InitializeComponent();
-
+            dirEmpresa = empre.direccion;
 
             RazonSocialEmpresa.Text = empre.razonSocial;
             MailEmpresa1.Text = empre.mailEmpresa;
@@ -76,12 +76,14 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         private void AñadirDirButton_Click(object sender, EventArgs e)
         {
+            añadirDirForm = new AñadirDireccion(AñadirDireccion.TIPO_EMPRESA,dirEmpresa);
+            añadirDirForm.getDireccion += this.getDireccion;
             añadirDirForm.Show(this);
         }
 
         private void CancelarButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         public void LimpiarButton_Click(object sender, EventArgs e)
@@ -94,6 +96,18 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         }
 
+        private void AceptarButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.onAccpetClientClick != null)
+                    this.onAccpetClientClick((int)getEmpresa().id);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
 
         // --------------------------- VALIDAR CAMPOS REQUERIDOS--------------------------------------------------
         public string getCamposRequeridos()
@@ -123,6 +137,8 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
                 e.Cancel = true;
             }
         }
+
+       
 
         
         

@@ -37,7 +37,7 @@ namespace PalcoNet.Abm_Cliente
                 ListaTiposDocumento.Items.Add(elem);
             });
             cli = cliente;
-
+            dirDelCliente = cli.direccion;
             AñadirDireccionButton.Text = "Editar Dirección";
             direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE, cliente.direccion);
             direccionForm.getDireccion += this.getDireccionEvent;
@@ -73,6 +73,8 @@ namespace PalcoNet.Abm_Cliente
 
         private void getDireccionEvent(Direccion dir) {
             dirDelCliente = dir;
+            if (dirDelCliente == null)
+                dirDelCliente = cli.direccion;
         }
 
         public Cliente getCliente() {
@@ -100,6 +102,8 @@ namespace PalcoNet.Abm_Cliente
 
         private void AñadirDireccionButton_Click(object sender, EventArgs e)
         {
+            direccionForm = new AñadirDireccion(AñadirDireccion.TIPO_CLIENTE, cli.direccion);
+            direccionForm.getDireccion += this.getDireccionEvent;
             direccionForm.Show(this);
         }
 
@@ -109,7 +113,7 @@ namespace PalcoNet.Abm_Cliente
             if (this.onAccpetClientClick != null && cliente != null) {
                 new ClientesDao().actualizarCliente(cliente);
                 this.onAccpetClientClick(cliente.id);
-                this.Close();
+                this.Hide();
             }
                 
                 
@@ -117,7 +121,7 @@ namespace PalcoNet.Abm_Cliente
 
         private void CancelarButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         public void LimpiarButton_Click(object sender, EventArgs e)

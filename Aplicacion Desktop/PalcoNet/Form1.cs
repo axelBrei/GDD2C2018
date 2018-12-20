@@ -67,11 +67,16 @@ namespace PalcoNet
                     }
                     else
                     {
-                        UserData.UserData.setRolActivo(usuario.getRol(0));
-                        new PalcoNet.MainMenu.Form1().Show(); ;
-
+                        if (UserData.UserData.setRolActivo(usuario.getRol(0)))
+                        {
+                            new PalcoNet.MainMenu.Form1().Show();
+                            this.Hide();
+                        }
+                        else {
+                            MessageBox.Show("El usuario con el que se quiere acceder se encuentra deshabilitado");
+                        }
                     }
-                    this.Hide();
+                    
 
                 }
             }

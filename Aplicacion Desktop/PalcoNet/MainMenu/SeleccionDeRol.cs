@@ -44,9 +44,15 @@ namespace PalcoNet.MainMenu
         private void AceptarRol_Click(object sender, EventArgs e)
         {
             if (rolSeleccionado != null) {
-                UserData.UserData.setRolActivo(rolSeleccionado);
-                new MainMenu.Form1().Show();
-                this.Hide();
+                if (UserData.UserData.setRolActivo(rolSeleccionado))
+                {
+                    new MainMenu.Form1().Show();
+                    this.Hide();
+                }
+                else {
+                    MessageBox.Show("El usuario con el que se quiere acceder se encuentra deshabilitado");
+                    new PalcoNet.Form1().Show();
+                }
             }
         }
     }

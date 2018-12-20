@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PalcoNet.Model;
 using PalcoNet.ConectionUtils;
 using System.Data.SqlClient;
+using PalcoNet.Constants;
 
 namespace PalcoNet.Dao
 {
@@ -21,7 +22,7 @@ namespace PalcoNet.Dao
                     "CONVERT(datetime, '" + rol.bajaLogica.ToString("yyyy-MM-dd HH:mm:ss") + "',20) " +
                 "WHERE rol_cod = " + rol.id;
 
-            if (rol.bajaLogica == DateTime.MinValue)
+            if (rol.bajaLogica == Generals.getFechaMinima())
             {
                 query = "UPDATE TheBigBangQuery.Rol " +
                 "SET rol_nombre= '" + rol.nombre + "', rol_dado_baja = NULL " +

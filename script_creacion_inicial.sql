@@ -1458,7 +1458,7 @@ RETURNS @temp  TABLE (
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
 		JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (g.grad_id = publ_grad_nivel)
-	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo > @fechaActual
+	WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo >= @fechaActual
 	ORDER BY g.grad_comision DESC
 
 	INSERT INTO @temp 
@@ -1521,7 +1521,7 @@ RETURNS @temp TABLE (
 		FROM [TheBigBangQuery].[Publicacion] t 
 			JOIN [TheBigBangQuery].[GradoPublicaciones] g ON (publ_grad_nivel = grad_id)
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = t.publ_espectaculo)
-		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo > @fechaActual 
+		WHERE @empresa = espe_empresa AND t.publ_fecha_hora_espectaculo >= @fechaActual 
 	END
 
 
@@ -1556,7 +1556,7 @@ RETURNS INT AS BEGIN
 		SELECT CASE WHEN COUNT(*) % 40 > 0 THEN (COUNT(*)/40) + 1
 			ELSE COUNT(*)/40 END 
 		FROM [TheBigBangQuery].[Publicacion] 
-		WHERE publ_fecha_hora_espectaculo > @fechaActual
+		WHERE publ_fecha_hora_espectaculo >= @fechaActual
 	)
 END
 
@@ -1631,7 +1631,7 @@ RETURNS INT AS BEGIN
 			ELSE COUNT(*)/40 END 
 		FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 			JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-		WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo > @fechaActual
+		WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo >= @fechaActual
 	)
 END
 GO
@@ -1668,7 +1668,7 @@ RETURNS @temp  TABLE (
 		r.rub_descripcion
 	FROM [TheBigBangQuery].[Publicacion] JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
 		JOIN [TheBigBangQuery].[Rubro] r ON (e.espe_rubro = r.rub_id)
-	WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo > @fechaActual
+	WHERE e.espe_rubro IN (SELECT * FROM @rubros) AND publ_fecha_hora_espectaculo >= @fechaActual
 
 
 	INSERT INTO @temp 
@@ -1691,7 +1691,7 @@ RETURNS INT AS BEGIN
 			ELSE COUNT(*)/40 END   
 		FROM [TheBigBangQuery].[Publicacion]
 			JOIN [TheBigBangQuery].[Espectaculo] e ON (e.espe_id = publ_espectaculo) 
-		WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo > @fechaActual
+		WHERE LOWER(e.espe_descripcion) LIKE '%'+LOWER(@desc)+'%' AND publ_fecha_hora_espectaculo >= @fechaActual
 	)
 END
 GO

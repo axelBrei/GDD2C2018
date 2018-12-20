@@ -51,9 +51,10 @@ namespace PalcoNet.Usuarios
 
         private void ModificarButton_Click(object sender, EventArgs e)
         {
-            Usuario user = (Usuario)this.UsuariosListView.SelectedItems[0].Tag;
+            
             try
             {
+                Usuario user = (Usuario)this.UsuariosListView.SelectedItems[0].Tag;
                 if (user != null)
                 {
                     user.roles = new RolesDao().getRolesPorUserId(user.id);
@@ -62,8 +63,8 @@ namespace PalcoNet.Usuarios
                     form.Show(this);
                 }
             }
-            catch (Exception ex) { 
-                
+            catch (Exception ex) {
+                MessageBox.Show("Debe seleccionar un usuario a modificar");
             }
         }
 

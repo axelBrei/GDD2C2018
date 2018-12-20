@@ -68,7 +68,6 @@ namespace PalcoNet.Abm_Rol
 
         private void CancelarButton_Click(object sender, EventArgs e)
         {
-            new Abm_Rol.Form1().Show();
             this.Hide();
         }
 

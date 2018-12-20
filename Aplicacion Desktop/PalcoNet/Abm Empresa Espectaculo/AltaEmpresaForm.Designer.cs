@@ -169,6 +169,7 @@
             this.AceptarButton.Text = "Aceptar";
             this.AceptarButton.UseVisualStyleBackColor = false;
             this.AceptarButton.Visible = false;
+            this.AceptarButton.Click += new System.EventHandler(this.AceptarButton_Click);
             // 
             // LimpiarButton
             // 

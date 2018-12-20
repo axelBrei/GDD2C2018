@@ -38,6 +38,8 @@ namespace PalcoNet.Registro_de_Usuario
         public AñadirDireccion(string tipo, Direccion dir) {
             InitializeComponent();
             tipoDireccion = tipo;
+            if (dir == null)
+                dir = new Direccion();
 
             DirCalle.Text = dir.calle;
             DirPiso.Text = dir.piso;

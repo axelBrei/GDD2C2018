@@ -187,6 +187,8 @@ namespace PalcoNet.Registro_de_Usuario
                 empresasDao.insertarEmpresaConUsuario(empre,
                     usuario.Trim(), password.Trim());
             }
+            if (this.onFinishregistration != null)
+                this.onFinishregistration();
             MessageBox.Show("Usuario registrado con exito");
             new PalcoNet.Form1().Show(this);
             this.Close();

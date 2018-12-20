@@ -78,6 +78,7 @@ namespace PalcoNet.Abm_Empresa_Espectaculo
 
         private void updateEmpresasAfterInsert() {
             try {
+                EmpresasListView.Items.Clear();
                 new EmpresasDao().getEmpresas().ForEach(elem =>
                 {
                     EmpresasListView.Items.Add(getItemEmpresa(elem));

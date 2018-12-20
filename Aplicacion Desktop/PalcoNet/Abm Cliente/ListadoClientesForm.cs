@@ -91,6 +91,7 @@ namespace PalcoNet.Abm_Cliente
             ClientesDao clientesDao = new ClientesDao();
             clientesDao.getClientesMayoresAId(listaClientes.Count - 1).ForEach(elem => {
                 listaClientes.Add(elem);
+                ListaCliente.Items.Add(getItemFromClient(elem));
             });
         }
 

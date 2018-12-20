@@ -281,9 +281,9 @@ namespace PalcoNet.Generar_Publicacion
                 });
             }
             else {
-                for (int i = 1; i < lista.Count; i++) {
+                for (int i = 1; i <= lista.Count; i++) {
                     fechasDeLaPublicacion.RemoveAt(i);
-                    fechasDeLaPublicacion.Insert(i, lista[i]);
+                    fechasDeLaPublicacion.Insert(i, lista[i - 1]);
                 }
             }
             

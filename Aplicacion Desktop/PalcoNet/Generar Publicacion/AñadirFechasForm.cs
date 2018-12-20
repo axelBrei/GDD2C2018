@@ -104,16 +104,23 @@ namespace PalcoNet.Generar_Publicacion
             List<DateTime> respuesta = new List<DateTime>();
             DateTime minDate = fechaAnterior;
             string elementosACorregirFecha = "";
+            List<DateTime> remover = new List<DateTime>();
             items.ForEach(elem => {
-                if(minDate.CompareTo(elem.fecha) < 0 & elem.isChecked ){
-                    minDate = elem.fecha;
-                    respuesta.Add(elem.fecha);
-                }
-                else {
-                    elementosACorregirFecha += elem.index + "-";
+                if (elem.isChecked) { 
+                    if (minDate.CompareTo(elem.fecha) < 0)
+                    {
+                        minDate = elem.fecha;
+                        respuesta.Add(elem.fecha);
+                    }
+                    else {
+                        elementosACorregirFecha += elem.index + "-";
+                        remover.Add(elem.fecha);
+                    }
                 }
                 
+                
             });
+            respuesta.RemoveAll(el => remover.Contains(el));
             if (string.IsNullOrEmpty(elementosACorregirFecha))
             {
                 if (this.onFinishDateInsertion != null)

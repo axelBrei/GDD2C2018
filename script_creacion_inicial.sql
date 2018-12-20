@@ -1939,7 +1939,7 @@ RETURNS @return TABLE (
 	)
 
 	INSERT INTO @ordenada
-	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora DESC) AS ROW, 
+	SELECT ROW_NUMBER() OVER (ORDER BY comp_fecha_y_hora ASC) AS ROW, 
 		c.comp_id, c.comp_fecha_y_hora, 
 		c.comp_medio_de_pago, c.comp_cantidad,
 		c.comp_total,

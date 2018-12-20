@@ -18,7 +18,7 @@ namespace PalcoNet.Generar_Publicacion
         public delegate void OnCheckedChange(bool newState, int index);
         public event OnCheckedChange onCheckedChange;
 
-        private DateTime fecha;
+        private DateTime fecha = new DateTime();
         private DateTime fechaAnterior;
         private int index;
 
@@ -26,7 +26,6 @@ namespace PalcoNet.Generar_Publicacion
         {
             InitializeComponent();
             this.fechaAnterior = lastDate;
-            fecha = lastDate;
             this.index = index;
             this.CheckboxHabilitado.Checked = true;
             this.PickerFecha.MinDate = fechaAnterior;

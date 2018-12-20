@@ -103,6 +103,7 @@
             this.CheckboxHabilitado.Size = new System.Drawing.Size(15, 14);
             this.CheckboxHabilitado.TabIndex = 5;
             this.CheckboxHabilitado.UseVisualStyleBackColor = true;
+            this.CheckboxHabilitado.CheckedChanged += new System.EventHandler(this.CheckboxHabilitado_CheckedChanged);
             // 
             // PanelDateItem
             // 
